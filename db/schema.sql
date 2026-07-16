@@ -10,6 +10,10 @@
 --    it out — shipments.pickup_rider_id and rider_runs.rider_id both need
 --    something to reference, and plan.md section 1 names the riders
 --    (WAL, SAL, ASFAR, SHB) as real entities.
+--  * A `users` table is added for the same reason — plan.md section 2 lists
+--    admin/ops/finance/CS roles and section 6 wants role-based access, but
+--    section 3 never defines who's logging in. shipments.booked_by is a FK
+--    to it rather than a free-text name.
 --  * Money columns are NUMERIC, not FLOAT — this is a ledger.
 
 BEGIN;
@@ -35,6 +39,18 @@ CREATE TYPE cod_direction AS ENUM ('carrier_in', 'sender_out');
 CREATE TYPE cod_status AS ENUM ('pending', 'received', 'paid');
 
 CREATE TYPE cod_payout_method AS ENUM ('bank', 'jazzcash', 'easypaisa', 'cash');
+
+CREATE TYPE user_role AS ENUM ('admin', 'ops', 'finance', 'cs');
+
+CREATE TABLE users (
+    id             SERIAL PRIMARY KEY,
+    name           TEXT NOT NULL,
+    email          TEXT NOT NULL UNIQUE,
+    password_hash  TEXT NOT NULL,
+    role           user_role NOT NULL,
+    active         BOOLEAN NOT NULL DEFAULT true,
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
 
 CREATE TABLE cities (
@@ -114,7 +130,7 @@ CREATE TABLE shipments (
     service_type        TEXT NOT NULL DEFAULT 'standard',
     status              shipment_status NOT NULL DEFAULT 'BOOKED',
     status_updated_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    booked_by           TEXT,
+    booked_by           INTEGER REFERENCES users(id) ON DELETE SET NULL,
     booked_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
     pickup_rider_id     INTEGER REFERENCES riders(id) ON DELETE SET NULL,
     picked_at           TIMESTAMPTZ,
@@ -154,7 +170,9 @@ BEGIN
         picked_at = CASE WHEN NEW.status = 'PICKED' AND picked_at IS NULL
                          THEN NEW.created_at ELSE picked_at END,
         delivered_at = CASE WHEN NEW.status = 'DELIVERED' AND delivered_at IS NULL
-                            THEN NEW.created_at ELSE delivered_at END
+                            THEN NEW.created_at ELSE delivered_at END,
+        attempts_count = CASE WHEN NEW.status = 'OUT_FOR_DELIVERY'
+                              THEN attempts_count + 1 ELSE attempts_count END
     WHERE id = NEW.shipment_id;
     RETURN NEW;
 END;

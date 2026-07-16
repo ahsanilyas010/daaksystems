@@ -2,6 +2,11 @@ __pycache__/
 *.pyc
 .venv/
 
+node_modules/
+dist/
+.env
+!.env.example
+
 # Real business/customer data — never committed. Place the source workbook
 # in data/raw/ locally and run scripts/migrate.py to regenerate data/processed/.
 data/raw/*
