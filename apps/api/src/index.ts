@@ -3,9 +3,12 @@ import cors from "cors";
 import express, { type ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { authRouter } from "./routes/auth.js";
+import { codLedgerRouter } from "./routes/codLedger.js";
 import { customersRouter } from "./routes/customers.js";
 import { rateCardsRouter } from "./routes/rateCards.js";
 import { referenceRouter } from "./routes/reference.js";
+import { reportsRouter } from "./routes/reports.js";
+import { riderRunsRouter } from "./routes/riderRuns.js";
 import { shipmentsRouter } from "./routes/shipments.js";
 import { trackingRouter } from "./routes/tracking.js";
 
@@ -20,6 +23,9 @@ app.use("/customers", customersRouter);
 app.use("/rate-cards", rateCardsRouter);
 app.use("/reference", referenceRouter);
 app.use("/shipments", shipmentsRouter);
+app.use("/cod-ledger", codLedgerRouter);
+app.use("/rider-runs", riderRunsRouter);
+app.use("/reports", reportsRouter);
 app.use("/track", trackingRouter); // public, no auth
 
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {

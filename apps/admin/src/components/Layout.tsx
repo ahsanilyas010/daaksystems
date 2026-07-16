@@ -6,6 +6,9 @@ const navItems = [
   { to: "/shipments", label: "Shipments" },
   { to: "/customers", label: "Customers" },
   { to: "/rate-cards", label: "Rate Cards" },
+  { to: "/cod-ledger", label: "COD Ledger" },
+  { to: "/rider-runs", label: "Rider Runs" },
+  { to: "/reports", label: "Reports" },
 ];
 
 export function Layout() {
@@ -14,7 +17,7 @@ export function Layout() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-slate-900 text-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-6">
             <span className="text-lg font-semibold tracking-tight">DAAK ERP</span>
             <nav className="flex gap-4 text-sm">
@@ -41,7 +44,7 @@ export function Layout() {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-6">
+      <main className="mx-auto max-w-7xl px-4 py-6">
         <Outlet />
       </main>
     </div>

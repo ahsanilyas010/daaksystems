@@ -89,3 +89,66 @@ export interface Carrier {
   name: string;
   active: boolean;
 }
+
+export interface Rider {
+  id: number;
+  name: string;
+  code: string;
+}
+
+export interface CodLedgerEntry {
+  id: number;
+  shipment_id: number;
+  direction: "carrier_in" | "sender_out";
+  amount: string;
+  method: string | null;
+  reference_no: string | null;
+  reconciled_against: number | null;
+  status: "pending" | "received" | "paid";
+  created_at: string;
+  daak_tracking_no: string;
+  shipment_cod_amount: string;
+  customer_id: number;
+  customer_name: string;
+}
+
+export interface CodDispute extends CodLedgerEntry {
+  variance: string;
+}
+
+export interface PayoutPreviewRow {
+  shipment_id: number;
+  daak_tracking_no: string;
+  cod_amount: string;
+  dc_amount: string;
+  payable_amount: string;
+  carrier_in_amount: string;
+  carrier_in_id: number;
+}
+
+export interface PayoutPreview {
+  shipments: PayoutPreviewRow[];
+  total: number;
+  count: number;
+}
+
+export interface RiderRun {
+  id: number;
+  rider_id: number;
+  rider_name: string;
+  rider_code: string;
+  run_date: string;
+  pickups_count: number;
+  payout_per_pickup: string;
+  total_payout: string;
+  paid_at: string | null;
+}
+
+export interface ProfitReportRow {
+  group_label: string;
+  shipment_count: string;
+  total_profit: string;
+  avg_profit_per_parcel: string;
+  total_cod: string;
+  total_dc: string;
+}

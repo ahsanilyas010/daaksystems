@@ -2,9 +2,12 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-d
 import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./lib/auth";
 import { BookingDesk } from "./pages/BookingDesk";
+import { CodLedger } from "./pages/CodLedger";
 import { Customers } from "./pages/Customers";
 import { Login } from "./pages/Login";
 import { RateCards } from "./pages/RateCards";
+import { Reports } from "./pages/Reports";
+import { RiderRuns } from "./pages/RiderRuns";
 import { ShipmentBoard } from "./pages/ShipmentBoard";
 import { ShipmentDetail } from "./pages/ShipmentDetail";
 
@@ -25,6 +28,9 @@ function AppRoutes() {
         <Route path="/shipments/:id" element={<ShipmentDetail />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/rate-cards" element={<RateCards />} />
+        <Route path="/cod-ledger" element={<CodLedger />} />
+        <Route path="/rider-runs" element={<RiderRuns />} />
+        <Route path="/reports" element={<Reports />} />
       </Route>
     </Routes>
   );
