@@ -3,6 +3,7 @@ import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 import { requireRiderAuth } from "../middleware/riderAuth.js";
+import { notifyStatusChange } from "../notifications/service.js";
 
 // Rider PWA API surface (plan.md App 2). Everything here is scoped to
 // req.rider.id — a rider can only see/act on shipments assigned to them.
@@ -95,6 +96,7 @@ riderAppRouter.post(
         [req.rider!.id]
       );
       await client.query("COMMIT");
+      void notifyStatusChange(shipmentId, "PICKED");
     } catch (err) {
       await client.query("ROLLBACK");
       throw err;
@@ -155,6 +157,7 @@ riderAppRouter.post(
         );
       }
       await client.query("COMMIT");
+      void notifyStatusChange(shipmentId, status);
     } catch (err) {
       await client.query("ROLLBACK");
       throw err;

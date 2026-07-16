@@ -3,6 +3,7 @@ import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 import { requireCustomerAuth } from "../middleware/customerAuth.js";
+import { notifyStatusChange } from "../notifications/service.js";
 
 // Customer Portal API surface (plan.md App 3), everything scoped to
 // req.customer.id — a sender only ever sees their own shipments and wallet.
@@ -88,6 +89,7 @@ async function createShipment(customerId: number, body: z.infer<typeof bookingSc
       [shipmentId]
     );
     await client.query("COMMIT");
+    void notifyStatusChange(shipmentId, "BOOKED");
     return inserted.rows[0] as { id: number; daak_tracking_no: string };
   } catch (err) {
     await client.query("ROLLBACK");

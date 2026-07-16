@@ -3,6 +3,7 @@ import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
+import { notifyStatusChange } from "../notifications/service.js";
 
 export const shipmentsRouter = Router();
 shipmentsRouter.use(requireAuth);
@@ -72,6 +73,7 @@ shipmentsRouter.post(
         [shipmentId, req.user!.name]
       );
       await client.query("COMMIT");
+      void notifyStatusChange(shipmentId, "BOOKED");
 
       const { rows } = await pool.query(`${shipmentDetailQuery} WHERE s.id = $1`, [shipmentId]);
       res.status(201).json(rows[0]);
@@ -176,6 +178,7 @@ shipmentsRouter.post(
         ]);
       }
       await client.query("COMMIT");
+      void notifyStatusChange(shipmentId, body.status);
       const { rows } = await pool.query(`${shipmentDetailQuery} WHERE s.id = $1`, [shipmentId]);
       if (!rows[0]) {
         res.status(404).json({ error: "shipment not found" });

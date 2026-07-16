@@ -1,4 +1,5 @@
 import { pool } from "../db/pool.js";
+import { notifyStatusChange } from "../notifications/service.js";
 import type { CarrierStatusUpdate } from "./types.js";
 
 export type ApplyResult =
@@ -40,6 +41,7 @@ export async function applyCarrierStatusUpdate(
      VALUES ($1, $2, 'carrier_api', $3, $4, COALESCE($5, now()))`,
     [shipmentId, mappedStatus, update.location ?? null, update.note ?? null, update.occurredAt ?? null]
   );
+  void notifyStatusChange(shipmentId, mappedStatus);
 
   return { outcome: "applied", shipmentId, mappedStatus };
 }
