@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ShippingLabel } from "../components/ShippingLabel";
 import { ApiError, api } from "../lib/api";
-import { SHIPMENT_STATUSES, type ShipmentDetail as ShipmentDetailType, type ShipmentStatus } from "../lib/types";
+import { SHIPMENT_STATUSES, type Rider, type ShipmentDetail as ShipmentDetailType, type ShipmentStatus } from "../lib/types";
 
 export function ShipmentDetail() {
   const { id } = useParams();
@@ -12,12 +12,21 @@ export function ShipmentDetail() {
   const [returnReason, setReturnReason] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [riders, setRiders] = useState<Rider[]>([]);
+  const [selectedRiderId, setSelectedRiderId] = useState("");
+  const [assignBusy, setAssignBusy] = useState(false);
 
   function load() {
     api.get<ShipmentDetailType>(`/shipments/${id}`).then(setShipment);
   }
 
   useEffect(load, [id]);
+  useEffect(() => {
+    api.get<Rider[]>("/reference/riders").then((rs) => {
+      setRiders(rs);
+      if (rs[0]) setSelectedRiderId(String(rs[0].id));
+    });
+  }, []);
 
   async function addEvent(e: React.FormEvent) {
     e.preventDefault();
@@ -36,6 +45,17 @@ export function ShipmentDetail() {
       setError(err instanceof ApiError ? err.message : "failed to update status");
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function assignRider() {
+    if (!selectedRiderId) return;
+    setAssignBusy(true);
+    try {
+      await api.post(`/shipments/${id}/assign-rider`, { rider_id: Number(selectedRiderId) });
+      load();
+    } finally {
+      setAssignBusy(false);
     }
   }
 
@@ -64,6 +84,18 @@ export function ShipmentDetail() {
               <div className="col-span-2"><dt className="text-slate-500">Return reason</dt><dd>{shipment.return_reason}</dd></div>
             )}
           </dl>
+          <div className="mt-3 flex items-center gap-2 border-t border-gray-100 pt-3 text-sm">
+            <span className="text-slate-500">Rider:</span>
+            <span className="font-medium">{shipment.rider_name ?? "unassigned"}</span>
+            <select value={selectedRiderId} onChange={(e) => setSelectedRiderId(e.target.value)} className="ml-auto rounded border border-gray-300 px-2 py-1 text-xs">
+              {riders.map((r) => (
+                <option key={r.id} value={r.id}>{r.name} ({r.code})</option>
+              ))}
+            </select>
+            <button onClick={assignRider} disabled={assignBusy} className="rounded border border-gray-300 px-2 py-1 text-xs hover:bg-gray-50 disabled:opacity-50">
+              {assignBusy ? "Assigning..." : "Assign for pickup"}
+            </button>
+          </div>
         </div>
 
         <div className="rounded-lg border border-gray-200 bg-white p-4">

@@ -190,3 +190,38 @@ shipmentsRouter.post(
     }
   })
 );
+
+const assignRiderSchema = z.object({ rider_id: z.number().int() });
+
+// Ops assigns a rider for pickup (plan.md App 1: "Rider management:
+// pickup runs"). This is what makes a shipment show up in that rider's
+// Rider PWA pickup list.
+shipmentsRouter.post(
+  "/:id/assign-rider",
+  requireRole("admin", "ops"),
+  asyncHandler(async (req, res) => {
+    const body = assignRiderSchema.parse(req.body);
+    const shipmentId = Number(req.params.id);
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      await client.query("UPDATE shipments SET pickup_rider_id = $1 WHERE id = $2", [body.rider_id, shipmentId]);
+      await client.query(
+        `INSERT INTO shipment_events (shipment_id, status, source, actor) VALUES ($1, 'PICKUP_ASSIGNED', 'manual', $2)`,
+        [shipmentId, req.user!.name]
+      );
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+    const { rows } = await pool.query(`${shipmentDetailQuery} WHERE s.id = $1`, [shipmentId]);
+    if (!rows[0]) {
+      res.status(404).json({ error: "shipment not found" });
+      return;
+    }
+    res.json(rows[0]);
+  })
+);

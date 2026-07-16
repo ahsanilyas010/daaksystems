@@ -11,13 +11,16 @@ import { customersRouter } from "./routes/customers.js";
 import { rateCardsRouter } from "./routes/rateCards.js";
 import { referenceRouter } from "./routes/reference.js";
 import { reportsRouter } from "./routes/reports.js";
+import { riderAppRouter } from "./routes/riderApp.js";
+import { riderAuthRouter } from "./routes/riderAuth.js";
 import { riderRunsRouter } from "./routes/riderRuns.js";
 import { shipmentsRouter } from "./routes/shipments.js";
 import { trackingRouter } from "./routes/tracking.js";
 
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN?.split(",") ?? "*" }));
-app.use(express.json());
+// Rider PWA uploads photo/signature as base64 data URIs — default 100kb is too small.
+app.use(express.json({ limit: "10mb" }));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
@@ -31,6 +34,8 @@ app.use("/rider-runs", riderRunsRouter);
 app.use("/reports", reportsRouter);
 app.use("/carrier-status-map", carrierStatusMapRouter);
 app.use("/carrier-invoices", carrierInvoicesRouter);
+app.use("/rider-auth", riderAuthRouter);
+app.use("/rider-app", riderAppRouter);
 app.use("/track", trackingRouter); // public, no auth
 app.use("/webhooks/carriers", carrierWebhooksRouter); // public, shared-secret auth
 

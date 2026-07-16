@@ -101,12 +101,13 @@ CREATE TABLE carriers (
 );
 
 CREATE TABLE riders (
-    id          SERIAL PRIMARY KEY,
-    name        TEXT NOT NULL,
-    code        TEXT NOT NULL UNIQUE,  -- e.g. WAL, SAL, ASFAR, SHB
-    phone       TEXT,
-    active      BOOLEAN NOT NULL DEFAULT true,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+    id             SERIAL PRIMARY KEY,
+    name           TEXT NOT NULL,
+    code           TEXT NOT NULL UNIQUE,  -- e.g. WAL, SAL, ASFAR, SHB
+    phone          TEXT,
+    password_hash  TEXT,  -- set on rider account creation; rider PWA logs in with phone+password
+    active         BOOLEAN NOT NULL DEFAULT true,
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE shipments (
@@ -156,6 +157,9 @@ CREATE TABLE shipment_events (
     location     TEXT,
     note         TEXT,
     actor        TEXT,
+    -- rider_app events: photo/signature data URIs, OTP verification, COD
+    -- collected at delivery, confirmed weight/pieces at pickup, etc.
+    metadata     JSONB,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX idx_shipment_events_shipment_id ON shipment_events (shipment_id, created_at);
