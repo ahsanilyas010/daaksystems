@@ -207,6 +207,17 @@ CREATE TABLE rider_runs (
     UNIQUE (rider_id, run_date)
 );
 
+-- Maps each carrier's own status vocabulary to the locked shipment_status
+-- enum (plan.md section 4.2). Kept as data, not code, so ops can add a
+-- newly-observed carrier status string without a deploy.
+CREATE TABLE carrier_status_map (
+    id              SERIAL PRIMARY KEY,
+    carrier_id      INTEGER NOT NULL REFERENCES carriers(id) ON DELETE CASCADE,
+    carrier_status  TEXT NOT NULL,
+    mapped_status   shipment_status NOT NULL,
+    UNIQUE (carrier_id, carrier_status)
+);
+
 CREATE TABLE carrier_invoices (
     id               BIGSERIAL PRIMARY KEY,
     carrier_id       INTEGER NOT NULL REFERENCES carriers(id) ON DELETE RESTRICT,

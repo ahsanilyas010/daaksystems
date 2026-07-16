@@ -152,3 +152,26 @@ export interface ProfitReportRow {
   total_cod: string;
   total_dc: string;
 }
+
+export interface CarrierStatusMapEntry {
+  id: number;
+  carrier_id: number;
+  carrier_name: string;
+  carrier_status: string;
+  mapped_status: ShipmentStatus;
+}
+
+export interface CarrierInvoice {
+  id: number;
+  invoice_no: string;
+  carrier_id: number;
+  carrier_name: string;
+  period_start: string;
+  period_end: string;
+  claimed_amount: string;
+  computed_amount: string | null;
+  variance: string | null;
+  status: "open" | "matched" | "disputed" | "paid";
+  file_url: string | null;
+  created_at: string;
+}

@@ -3,6 +3,9 @@ import cors from "cors";
 import express, { type ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { authRouter } from "./routes/auth.js";
+import { carrierInvoicesRouter } from "./routes/carrierInvoices.js";
+import { carrierStatusMapRouter } from "./routes/carrierStatusMap.js";
+import { carrierWebhooksRouter } from "./routes/carrierWebhooks.js";
 import { codLedgerRouter } from "./routes/codLedger.js";
 import { customersRouter } from "./routes/customers.js";
 import { rateCardsRouter } from "./routes/rateCards.js";
@@ -26,7 +29,10 @@ app.use("/shipments", shipmentsRouter);
 app.use("/cod-ledger", codLedgerRouter);
 app.use("/rider-runs", riderRunsRouter);
 app.use("/reports", reportsRouter);
+app.use("/carrier-status-map", carrierStatusMapRouter);
+app.use("/carrier-invoices", carrierInvoicesRouter);
 app.use("/track", trackingRouter); // public, no auth
+app.use("/webhooks/carriers", carrierWebhooksRouter); // public, shared-secret auth
 
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   if (err instanceof ZodError) {

@@ -9,6 +9,7 @@ const navItems = [
   { to: "/cod-ledger", label: "COD Ledger" },
   { to: "/rider-runs", label: "Rider Runs" },
   { to: "/reports", label: "Reports" },
+  { to: "/carrier-ops", label: "Carrier Ops" },
 ];
 
 export function Layout() {

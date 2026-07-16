@@ -2,6 +2,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-d
 import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./lib/auth";
 import { BookingDesk } from "./pages/BookingDesk";
+import { CarrierOps } from "./pages/CarrierOps";
 import { CodLedger } from "./pages/CodLedger";
 import { Customers } from "./pages/Customers";
 import { Login } from "./pages/Login";
@@ -31,6 +32,7 @@ function AppRoutes() {
         <Route path="/cod-ledger" element={<CodLedger />} />
         <Route path="/rider-runs" element={<RiderRuns />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/carrier-ops" element={<CarrierOps />} />
       </Route>
     </Routes>
   );
