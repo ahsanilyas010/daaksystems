@@ -86,6 +86,7 @@ CREATE TABLE customers (
     cod_payout_method  cod_payout_method,
     bank_details       JSONB,
     credit_limit       NUMERIC(12,2) NOT NULL DEFAULT 0,
+    password_hash      TEXT,  -- set on customer portal signup/invite; historical customers have none until invited
     created_at         TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX idx_customers_name ON customers (name);

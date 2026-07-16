@@ -7,6 +7,8 @@ import { carrierInvoicesRouter } from "./routes/carrierInvoices.js";
 import { carrierStatusMapRouter } from "./routes/carrierStatusMap.js";
 import { carrierWebhooksRouter } from "./routes/carrierWebhooks.js";
 import { codLedgerRouter } from "./routes/codLedger.js";
+import { customerAppRouter } from "./routes/customerApp.js";
+import { customerAuthRouter } from "./routes/customerAuth.js";
 import { customersRouter } from "./routes/customers.js";
 import { rateCardsRouter } from "./routes/rateCards.js";
 import { referenceRouter } from "./routes/reference.js";
@@ -36,6 +38,8 @@ app.use("/carrier-status-map", carrierStatusMapRouter);
 app.use("/carrier-invoices", carrierInvoicesRouter);
 app.use("/rider-auth", riderAuthRouter);
 app.use("/rider-app", riderAppRouter);
+app.use("/customer-auth", customerAuthRouter);
+app.use("/customer-app", customerAppRouter);
 app.use("/track", trackingRouter); // public, no auth
 app.use("/webhooks/carriers", carrierWebhooksRouter); // public, shared-secret auth
 
