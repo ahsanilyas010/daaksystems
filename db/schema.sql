@@ -38,6 +38,9 @@ CREATE TYPE event_source AS ENUM ('manual', 'carrier_api', 'rider_app', 'migrati
 CREATE TYPE cod_direction AS ENUM ('carrier_in', 'sender_out');
 CREATE TYPE cod_status AS ENUM ('pending', 'received', 'paid');
 
+CREATE TYPE claim_type AS ENUM ('lost', 'damaged');
+CREATE TYPE claim_status AS ENUM ('open', 'under_review', 'approved', 'rejected', 'paid');
+
 CREATE TYPE cod_payout_method AS ENUM ('bank', 'jazzcash', 'easypaisa', 'cash');
 
 CREATE TYPE user_role AS ENUM ('admin', 'ops', 'finance', 'cs');
@@ -236,5 +239,22 @@ CREATE TABLE carrier_invoices (
     created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (carrier_id, invoice_no)
 );
+
+-- Claims (plan.md SOP-07): "every lost/damaged parcel = a claim record
+-- with status, not a WhatsApp conversation."
+CREATE TABLE claims (
+    id               BIGSERIAL PRIMARY KEY,
+    shipment_id      BIGINT NOT NULL REFERENCES shipments(id) ON DELETE RESTRICT,
+    claim_type       claim_type NOT NULL,
+    claimed_amount   NUMERIC(12,2) NOT NULL,
+    status           claim_status NOT NULL DEFAULT 'open',
+    evidence_note    TEXT,
+    filed_by         TEXT,
+    resolution_note  TEXT,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    resolved_at      TIMESTAMPTZ
+);
+CREATE INDEX idx_claims_shipment_id ON claims (shipment_id);
+CREATE INDEX idx_claims_status ON claims (status);
 
 COMMIT;

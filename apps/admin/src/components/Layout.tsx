@@ -12,6 +12,8 @@ const navItems = [
   { to: "/rider-runs", label: "Rider Runs" },
   { to: "/reports", label: "Reports" },
   { to: "/carrier-ops", label: "Carrier Ops" },
+  { to: "/claims", label: "Claims" },
+  { to: "/sops", label: "SOPs" },
 ];
 
 export function Layout() {

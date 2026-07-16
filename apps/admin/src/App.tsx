@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./lib/auth";
 import { BookingDesk } from "./pages/BookingDesk";
 import { CarrierOps } from "./pages/CarrierOps";
+import { Claims } from "./pages/Claims";
 import { CodLedger } from "./pages/CodLedger";
 import { Customers } from "./pages/Customers";
 import { Dashboard } from "./pages/Dashboard";
@@ -13,6 +14,7 @@ import { Reports } from "./pages/Reports";
 import { RiderRuns } from "./pages/RiderRuns";
 import { ShipmentBoard } from "./pages/ShipmentBoard";
 import { ShipmentDetail } from "./pages/ShipmentDetail";
+import { Sops } from "./pages/Sops";
 
 function ProtectedLayout() {
   const { user } = useAuth();
@@ -37,6 +39,8 @@ function AppRoutes() {
         <Route path="/rider-runs" element={<RiderRuns />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/carrier-ops" element={<CarrierOps />} />
+        <Route path="/claims" element={<Claims />} />
+        <Route path="/sops" element={<Sops />} />
       </Route>
     </Routes>
   );

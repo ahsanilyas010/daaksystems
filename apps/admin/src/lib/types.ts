@@ -206,3 +206,19 @@ export interface Kpis {
     max_age_hours: number | null;
   };
 }
+
+export interface Claim {
+  id: number;
+  shipment_id: number;
+  daak_tracking_no: string;
+  shipment_status: ShipmentStatus;
+  customer_name: string;
+  claim_type: "lost" | "damaged";
+  claimed_amount: string;
+  status: "open" | "under_review" | "approved" | "rejected" | "paid";
+  evidence_note: string | null;
+  filed_by: string | null;
+  resolution_note: string | null;
+  created_at: string;
+  resolved_at: string | null;
+}
