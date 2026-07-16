@@ -175,3 +175,34 @@ export interface CarrierInvoice {
   file_url: string | null;
   created_at: string;
 }
+
+export interface ExceptionRow {
+  id: number;
+  daak_tracking_no: string;
+  status: ShipmentStatus;
+  status_updated_at: string;
+  attempts_count: number;
+  customer_name: string;
+  city_name: string | null;
+  carrier_name: string | null;
+  hours_since_update: string;
+  stale_48h: boolean;
+  repeated_failure: boolean;
+}
+
+export interface Kpis {
+  on_time_delivery_pct: number | null;
+  first_attempt_success_pct: number | null;
+  return_rate_pct: number | null;
+  lost_rate_pct: number | null;
+  delivered_count: number;
+  total_count: number;
+  cod_cycle_hours: {
+    delivered_to_carrier_remittance: number | null;
+    carrier_remittance_to_sender_payout: number | null;
+  };
+  exception_queue: {
+    avg_age_hours: number | null;
+    max_age_hours: number | null;
+  };
+}

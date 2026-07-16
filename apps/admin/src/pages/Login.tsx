@@ -17,7 +17,7 @@ export function Login() {
     setBusy(true);
     try {
       await login(email, password);
-      navigate("/booking");
+      navigate("/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "login failed");
     } finally {

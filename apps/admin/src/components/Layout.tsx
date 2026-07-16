@@ -2,8 +2,10 @@ import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 
 const navItems = [
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/booking", label: "Booking Desk" },
   { to: "/shipments", label: "Shipments" },
+  { to: "/exceptions", label: "Exceptions" },
   { to: "/customers", label: "Customers" },
   { to: "/rate-cards", label: "Rate Cards" },
   { to: "/cod-ledger", label: "COD Ledger" },

@@ -5,6 +5,8 @@ import { BookingDesk } from "./pages/BookingDesk";
 import { CarrierOps } from "./pages/CarrierOps";
 import { CodLedger } from "./pages/CodLedger";
 import { Customers } from "./pages/Customers";
+import { Dashboard } from "./pages/Dashboard";
+import { ExceptionQueue } from "./pages/ExceptionQueue";
 import { Login } from "./pages/Login";
 import { RateCards } from "./pages/RateCards";
 import { Reports } from "./pages/Reports";
@@ -23,10 +25,12 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<ProtectedLayout />}>
-        <Route index element={<Navigate to="/booking" replace />} />
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/booking" element={<BookingDesk />} />
         <Route path="/shipments" element={<ShipmentBoard />} />
         <Route path="/shipments/:id" element={<ShipmentDetail />} />
+        <Route path="/exceptions" element={<ExceptionQueue />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/rate-cards" element={<RateCards />} />
         <Route path="/cod-ledger" element={<CodLedger />} />
