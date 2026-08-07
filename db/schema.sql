@@ -257,4 +257,55 @@ CREATE TABLE claims (
 CREATE INDEX idx_claims_shipment_id ON claims (shipment_id);
 CREATE INDEX idx_claims_status ON claims (status);
 
+-- plan-order-ingestion.md Phase 0.5: auto-ingestion engine (PDF/WhatsApp/
+-- Shopify order intake -> shipments), staged ahead of the real tables so
+-- nothing commits without either ops review or a trusted deterministic
+-- source (Shopify webhook, once 0.5e exists).
+
+-- The order reference a *client* uses for their own order (Shopify order
+-- number, etc.) — distinct from daak_tracking_no, which Daak assigns.
+-- Needed for the ingestion duplicate check (plan-order-ingestion.md
+-- section 5): the same order arriving twice (invoice PDF + airway bill
+-- PDF, or a re-uploaded batch) must resolve to one shipment, not two.
+ALTER TABLE shipments ADD COLUMN customer_order_ref TEXT;
+CREATE UNIQUE INDEX uq_shipments_customer_order_ref
+    ON shipments (customer_id, customer_order_ref)
+    WHERE customer_order_ref IS NOT NULL;
+
+CREATE TYPE ingestion_source AS ENUM ('pdf_upload', 'whatsapp', 'email', 'shopify_webhook');
+CREATE TYPE ingestion_batch_status AS ENUM ('processing', 'needs_review', 'committed', 'failed');
+CREATE TYPE ingestion_match_status AS ENUM ('new', 'possible_duplicate', 'duplicate');
+
+CREATE TABLE ingestion_batches (
+    id            BIGSERIAL PRIMARY KEY,
+    customer_id   INTEGER REFERENCES customers(id) ON DELETE SET NULL, -- nullable until matched to a client
+    source        ingestion_source NOT NULL,
+    source_ref    TEXT, -- filename or WhatsApp message id
+    uploaded_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    uploaded_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    status        ingestion_batch_status NOT NULL DEFAULT 'processing',
+    raw_file_url  TEXT,
+    item_count    INTEGER NOT NULL DEFAULT 0,
+    error_count   INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX idx_ingestion_batches_customer_id ON ingestion_batches (customer_id);
+CREATE INDEX idx_ingestion_batches_status ON ingestion_batches (status);
+
+CREATE TABLE ingestion_items (
+    id                    BIGSERIAL PRIMARY KEY,
+    batch_id              BIGINT NOT NULL REFERENCES ingestion_batches(id) ON DELETE CASCADE,
+    raw_text              TEXT, -- the extracted source text for this one order — audit trail
+    parsed_json           JSONB, -- structured fields Claude returned (plan-order-ingestion.md section 3)
+    confidence_score      NUMERIC(3,2), -- 0.00-1.00
+    match_status          ingestion_match_status NOT NULL DEFAULT 'new',
+    matched_shipment_id   BIGINT REFERENCES shipments(id) ON DELETE SET NULL,
+    field_flags           JSONB NOT NULL DEFAULT '{}'::jsonb, -- which fields were low-confidence + why
+    reviewed_by           INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at           TIMESTAMPTZ,
+    committed_shipment_id BIGINT REFERENCES shipments(id) ON DELETE SET NULL,
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX idx_ingestion_items_batch_id ON ingestion_items (batch_id);
+CREATE INDEX idx_ingestion_items_match_status ON ingestion_items (match_status);
+
 COMMIT;
