@@ -26,6 +26,22 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+// Multipart upload (PDF ingestion) — bypasses `request`'s JSON Content-Type
+// so the browser sets its own multipart boundary.
+async function upload<T>(path: string, formData: FormData): Promise<T> {
+  const token = localStorage.getItem("daak_token");
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({ error: res.statusText }));
+    throw new ApiError(body.error ?? "request failed", res.status);
+  }
+  return res.json() as Promise<T>;
+}
+
 export const api = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body?: unknown) =>
@@ -33,4 +49,5 @@ export const api = {
   patch: <T>(path: string, body?: unknown) =>
     request<T>(path, { method: "PATCH", body: body ? JSON.stringify(body) : undefined }),
   del: <T>(path: string) => request<T>(path, { method: "DELETE" }),
+  upload,
 };

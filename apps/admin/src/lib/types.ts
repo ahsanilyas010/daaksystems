@@ -207,6 +207,53 @@ export interface Kpis {
   };
 }
 
+export interface ExtractedOrder {
+  source_order_ref: string | null;
+  order_date: string | null;
+  consignee_name: string | null;
+  consignee_phone: string | null;
+  consignee_address: string | null;
+  city: string | null;
+  items: { name: string; qty: number }[];
+  order_total: number | null;
+  cod_amount: number | null;
+  carrier_tracking_no: string | null;
+  carrier: string | null;
+  notes: string | null;
+  field_flags: Record<string, string>;
+}
+
+export interface IngestionBatch {
+  id: number;
+  customer_id: number | null;
+  customer_name: string | null;
+  source: "pdf_upload" | "whatsapp" | "email" | "shopify_webhook";
+  source_ref: string | null;
+  uploaded_at: string;
+  status: "processing" | "needs_review" | "committed" | "failed";
+  item_count: number;
+  error_count: number;
+}
+
+export interface IngestionItem {
+  id: number;
+  batch_id: number;
+  raw_text: string | null;
+  parsed_json: ExtractedOrder | null;
+  confidence_score: string | null;
+  match_status: "new" | "possible_duplicate" | "duplicate";
+  matched_shipment_id: number | null;
+  field_flags: Record<string, string>;
+  reviewed_by: number | null;
+  reviewed_at: string | null;
+  committed_shipment_id: number | null;
+  created_at: string;
+}
+
+export interface IngestionBatchDetail extends IngestionBatch {
+  items: IngestionItem[];
+}
+
 export interface Claim {
   id: number;
   shipment_id: number;

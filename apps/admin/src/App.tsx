@@ -8,6 +8,8 @@ import { CodLedger } from "./pages/CodLedger";
 import { Customers } from "./pages/Customers";
 import { Dashboard } from "./pages/Dashboard";
 import { ExceptionQueue } from "./pages/ExceptionQueue";
+import { Ingestion } from "./pages/Ingestion";
+import { IngestionBatchDetail } from "./pages/IngestionBatchDetail";
 import { Login } from "./pages/Login";
 import { RateCards } from "./pages/RateCards";
 import { Reports } from "./pages/Reports";
@@ -33,6 +35,8 @@ function AppRoutes() {
         <Route path="/shipments" element={<ShipmentBoard />} />
         <Route path="/shipments/:id" element={<ShipmentDetail />} />
         <Route path="/exceptions" element={<ExceptionQueue />} />
+        <Route path="/ingestion" element={<Ingestion />} />
+        <Route path="/ingestion/:id" element={<IngestionBatchDetail />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/rate-cards" element={<RateCards />} />
         <Route path="/cod-ledger" element={<CodLedger />} />
