@@ -74,7 +74,7 @@ Rules:
 - consignee_phone should match 03XXXXXXXXX or +923XXXXXXXXX. If the extracted number doesn't match that shape, still return it but flag it in field_flags.
 - Do not merge distinct orders together and do not split one order into two.`;
 
-export async function extractOrders(sourceText: string): Promise<ExtractedOrder[]> {
+async function runExtraction(content: Anthropic.MessageParam["content"]): Promise<ExtractedOrder[]> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error("ANTHROPIC_API_KEY is not configured — order extraction cannot run without it");
@@ -87,7 +87,7 @@ export async function extractOrders(sourceText: string): Promise<ExtractedOrder[
     system: SYSTEM_PROMPT,
     tools: [EXTRACTION_TOOL],
     tool_choice: { type: "tool", name: "record_orders" },
-    messages: [{ role: "user", content: sourceText }],
+    messages: [{ role: "user", content }],
   });
 
   const toolUse = response.content.find((block) => block.type === "tool_use");
@@ -100,6 +100,49 @@ export async function extractOrders(sourceText: string): Promise<ExtractedOrder[
     items: o.items ?? [],
     field_flags: o.field_flags ?? {},
   }));
+}
+
+export async function extractOrders(sourceText: string): Promise<ExtractedOrder[]> {
+  return runExtraction(sourceText);
+}
+
+const PHONE_PATTERN = /^(03\d{9}|\+923\d{9})$/;
+
+// WhatsApp text has no fixed layout to lean on — the schema constraint in
+// SYSTEM_PROMPT is doing all the work. Flag any phone that doesn't match
+// the Pakistani pattern rather than silently accepting it (plan-order-
+// ingestion.md section 4).
+export async function extractOrdersFromText(sourceText: string): Promise<ExtractedOrder[]> {
+  const orders = await runExtraction(sourceText);
+  return orders.map((o) => {
+    if (o.consignee_phone && !PHONE_PATTERN.test(o.consignee_phone)) {
+      return { ...o, field_flags: { ...o.field_flags, consignee_phone: "doesn't match Pakistani phone pattern (03XXXXXXXXX / +923XXXXXXXXX)" } };
+    }
+    return o;
+  });
+}
+
+// Forwarded WhatsApp screenshots: a vision pass first, same extraction
+// contract as text — the model reads the image directly rather than a
+// separate OCR step.
+export async function extractOrdersFromImage(imageBuffer: Buffer, mediaType: string): Promise<ExtractedOrder[]> {
+  const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"] as const;
+  if (!validTypes.includes(mediaType as (typeof validTypes)[number])) {
+    throw new Error(`unsupported image type: ${mediaType}`);
+  }
+  const orders = await runExtraction([
+    {
+      type: "image",
+      source: { type: "base64", media_type: mediaType as (typeof validTypes)[number], data: imageBuffer.toString("base64") },
+    },
+    { type: "text", text: "Extract every order visible in this screenshot." },
+  ]);
+  return orders.map((o) => {
+    if (o.consignee_phone && !PHONE_PATTERN.test(o.consignee_phone)) {
+      return { ...o, field_flags: { ...o.field_flags, consignee_phone: "doesn't match Pakistani phone pattern (03XXXXXXXXX / +923XXXXXXXXX)" } };
+    }
+    return o;
+  });
 }
 
 // Confidence score derived from field_flags rather than asked of the model

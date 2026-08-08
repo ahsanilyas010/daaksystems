@@ -12,7 +12,13 @@ import {
   splitShopifyInvoices,
   airwayBillChunk,
 } from "../ingestion/pdfExtract.js";
-import { extractOrders, computeConfidence, type ExtractedOrder } from "../ingestion/extract.js";
+import {
+  extractOrders,
+  extractOrdersFromText,
+  extractOrdersFromImage,
+  computeConfidence,
+  type ExtractedOrder,
+} from "../ingestion/extract.js";
 import { checkDuplicate } from "../ingestion/duplicateCheck.js";
 
 export const ingestionRouter = Router();
@@ -20,10 +26,70 @@ ingestionRouter.use(requireAuth);
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
 
+interface SourceChunk {
+  sourceOrderRef: string;
+  text: string;
+  extract: () => Promise<ExtractedOrder[]>;
+}
+
+// Shared core for every ingestion source (PDF/text/screenshot): run each
+// chunk's extraction, duplicate-check every returned order, and stage it
+// as an ingestion_item. Nothing here touches `shipments` — that's /commit.
+async function processChunks(batchId: number, customerId: number | null, chunks: SourceChunk[]): Promise<number> {
+  let errorCount = 0;
+  const client = await pool.connect();
+  try {
+    for (const chunk of chunks) {
+      let orders: ExtractedOrder[];
+      try {
+        orders = await chunk.extract();
+      } catch (err) {
+        errorCount++;
+        await client.query(
+          `INSERT INTO ingestion_items (batch_id, raw_text, field_flags) VALUES ($1, $2, $3)`,
+          [batchId, chunk.text, JSON.stringify({ extraction: err instanceof Error ? err.message : "extraction failed" })]
+        );
+        continue;
+      }
+      for (const order of orders) {
+        if (order.source_order_ref === null && chunk.sourceOrderRef) {
+          order.source_order_ref = chunk.sourceOrderRef;
+        }
+        const match = await checkDuplicate(client, customerId, order);
+        const confidence = computeConfidence(order);
+        await client.query(
+          `INSERT INTO ingestion_items
+             (batch_id, raw_text, parsed_json, confidence_score, match_status, matched_shipment_id, field_flags)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            batchId,
+            chunk.text,
+            JSON.stringify(order),
+            confidence,
+            match.matchStatus,
+            match.matchedShipmentId,
+            JSON.stringify({ ...order.field_flags, ...(match.reason ? { _duplicate_check: match.reason } : {}) }),
+          ]
+        );
+      }
+    }
+  } finally {
+    client.release();
+  }
+  return errorCount;
+}
+
+async function finalizeBatch(batchId: number, errorCount: number) {
+  const itemCount = await pool.query(`SELECT count(*) FROM ingestion_items WHERE batch_id = $1`, [batchId]);
+  await pool.query(
+    `UPDATE ingestion_batches SET status = 'needs_review', item_count = $2, error_count = $3 WHERE id = $1`,
+    [batchId, Number(itemCount.rows[0].count), errorCount]
+  );
+}
+
 // Upload a PDF (Shopify order-printer bundle or a carrier airway bill),
 // extract every order in it, run the duplicate check, and stage the
-// results for review — plan-order-ingestion.md Phase 0.5a. Nothing here
-// touches `shipments` yet; that only happens on /commit.
+// results for review — plan-order-ingestion.md Phase 0.5a.
 ingestionRouter.post(
   "/batches",
   requireRole("admin", "ops", "cs"),
@@ -56,54 +122,87 @@ ingestionRouter.post(
         return;
       }
 
-      let errorCount = 0;
-      const client = await pool.connect();
-      try {
-        for (const chunk of chunks) {
-          let orders: ExtractedOrder[];
-          try {
-            orders = await extractOrders(chunk.text);
-          } catch (err) {
-            errorCount++;
-            await client.query(
-              `INSERT INTO ingestion_items (batch_id, raw_text, field_flags)
-               VALUES ($1, $2, $3)`,
-              [batchId, chunk.text, JSON.stringify({ extraction: err instanceof Error ? err.message : "extraction failed" })]
-            );
-            continue;
-          }
-          for (const order of orders) {
-            if (order.source_order_ref === null && chunk.sourceOrderRef) {
-              order.source_order_ref = chunk.sourceOrderRef;
-            }
-            const match = await checkDuplicate(client, customerId, order);
-            const confidence = computeConfidence(order);
-            await client.query(
-              `INSERT INTO ingestion_items
-                 (batch_id, raw_text, parsed_json, confidence_score, match_status, matched_shipment_id, field_flags)
-               VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-              [
-                batchId,
-                chunk.text,
-                JSON.stringify(order),
-                confidence,
-                match.matchStatus,
-                match.matchedShipmentId,
-                JSON.stringify({ ...order.field_flags, ...(match.reason ? { _duplicate_check: match.reason } : {}) }),
-              ]
-            );
-          }
-        }
-      } finally {
-        client.release();
-      }
-
-      const itemCount = await pool.query(`SELECT count(*) FROM ingestion_items WHERE batch_id = $1`, [batchId]);
-      await pool.query(
-        `UPDATE ingestion_batches SET status = 'needs_review', item_count = $2, error_count = $3 WHERE id = $1`,
-        [batchId, Number(itemCount.rows[0].count), errorCount]
+      const errorCount = await processChunks(
+        batchId,
+        customerId,
+        chunks.map((c) => ({ sourceOrderRef: c.sourceOrderRef, text: c.text, extract: () => extractOrders(c.text) }))
       );
+      await finalizeBatch(batchId, errorCount);
 
+      const { rows } = await pool.query(`SELECT * FROM ingestion_batches WHERE id = $1`, [batchId]);
+      res.status(201).json(rows[0]);
+    } catch (err) {
+      await pool.query(`UPDATE ingestion_batches SET status = 'failed' WHERE id = $1`, [batchId]);
+      throw err;
+    }
+  })
+);
+
+// Phase 0.5c stopgap: paste-text upload box, no WhatsApp webhook dependency
+// yet — same extraction pipeline as the PDF path, just no page splitting
+// since it's already one message's worth of text.
+const textBatchSchema = z.object({
+  text: z.string().min(1),
+  customer_id: z.coerce.number().int().optional(),
+});
+
+ingestionRouter.post(
+  "/batches/text",
+  requireRole("admin", "ops", "cs"),
+  asyncHandler(async (req, res) => {
+    const body = textBatchSchema.parse(req.body);
+    const customerId = body.customer_id ?? null;
+
+    const batchInsert = await pool.query(
+      `INSERT INTO ingestion_batches (customer_id, source, source_ref, uploaded_by, status)
+       VALUES ($1, 'whatsapp', 'pasted text', $2, 'processing') RETURNING id`,
+      [customerId, req.user!.id]
+    );
+    const batchId = batchInsert.rows[0].id;
+
+    try {
+      const errorCount = await processChunks(batchId, customerId, [
+        { sourceOrderRef: "", text: body.text, extract: () => extractOrdersFromText(body.text) },
+      ]);
+      await finalizeBatch(batchId, errorCount);
+      const { rows } = await pool.query(`SELECT * FROM ingestion_batches WHERE id = $1`, [batchId]);
+      res.status(201).json(rows[0]);
+    } catch (err) {
+      await pool.query(`UPDATE ingestion_batches SET status = 'failed' WHERE id = $1`, [batchId]);
+      throw err;
+    }
+  })
+);
+
+// Forwarded WhatsApp screenshot -> vision extraction, same pipeline.
+ingestionRouter.post(
+  "/batches/screenshot",
+  requireRole("admin", "ops", "cs"),
+  upload.single("file"),
+  asyncHandler(async (req, res) => {
+    if (!req.file) {
+      res.status(400).json({ error: "file is required (multipart field 'file')" });
+      return;
+    }
+    const customerId = req.body.customer_id ? Number(req.body.customer_id) : null;
+    const mediaType = req.file.mimetype;
+
+    const batchInsert = await pool.query(
+      `INSERT INTO ingestion_batches (customer_id, source, source_ref, uploaded_by, status)
+       VALUES ($1, 'whatsapp', $2, $3, 'processing') RETURNING id`,
+      [customerId, req.file.originalname, req.user!.id]
+    );
+    const batchId = batchInsert.rows[0].id;
+
+    try {
+      const errorCount = await processChunks(batchId, customerId, [
+        {
+          sourceOrderRef: "",
+          text: "[forwarded screenshot]",
+          extract: () => extractOrdersFromImage(req.file!.buffer, mediaType),
+        },
+      ]);
+      await finalizeBatch(batchId, errorCount);
       const { rows } = await pool.query(`SELECT * FROM ingestion_batches WHERE id = $1`, [batchId]);
       res.status(201).json(rows[0]);
     } catch (err) {
