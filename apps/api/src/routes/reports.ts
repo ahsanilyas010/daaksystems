@@ -170,6 +170,9 @@ reportsRouter.get(
 
     const orderRows = rows.map((r) => {
       const transferable = !NON_TRANSFERABLE_STATUSES.includes(r.status);
+      // Returned/cancelled orders: no delivery charge is owed and nothing is
+      // transferred — client isn't billed for a delivery that didn't complete.
+      const deliveryCharge = transferable ? Number(r.dc_amount) : 0;
       return {
         id: r.id,
         order_ref: r.customer_order_ref ?? r.daak_tracking_no,
@@ -179,11 +182,11 @@ reportsRouter.get(
         address: r.consignee_address,
         items: formatItems(r.items),
         order_total: Number(r.cod_amount),
-        delivery_charge: Number(r.dc_amount),
-        amount_to_transfer: transferable ? Number(r.cod_amount) - Number(r.dc_amount) : null,
+        delivery_charge: deliveryCharge,
+        amount_to_transfer: transferable ? Number(r.cod_amount) - deliveryCharge : null,
         delivery_status: STATUS_LABELS[r.status] ?? "Pending",
         return_status: RETURN_LABELS[r.status] ?? "",
-        confirmed_call: "", // Phase 0.5f (stakeholder dashboard) territory — not tracked yet
+        confirmed_call: "",
         notes: formatNotes(r.carrier_tracking_no, r.carrier_name),
         city: r.city_label,
       };
@@ -193,9 +196,13 @@ reportsRouter.get(
     for (const row of orderRows) {
       const z = cities.get(row.city) ?? { orders: 0, total_collected: 0, delivery_charges: 0, amount_to_transfer: 0 };
       z.orders += 1;
-      z.total_collected += row.order_total;
-      z.delivery_charges += row.delivery_charge;
-      z.amount_to_transfer += row.amount_to_transfer ?? 0;
+      // Only count collected/transferable amounts — returned/cancelled orders
+      // contributed nothing to the actual payable total.
+      if (row.amount_to_transfer !== null) {
+        z.total_collected += row.order_total;
+        z.delivery_charges += row.delivery_charge;
+        z.amount_to_transfer += row.amount_to_transfer;
+      }
       cities.set(row.city, z);
     }
     const summary = [...cities.entries()].map(([city, totals]) => ({ city, ...totals }));
