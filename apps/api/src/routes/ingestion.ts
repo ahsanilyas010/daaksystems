@@ -325,6 +325,20 @@ async function commitNewShipment(
     cityId = cityMatch.rows[0]?.id ?? null;
   }
 
+  // Carriers get discovered from real order text (a PostEx tracking note on
+  // a Shopify invoice, say) — find-or-create by name rather than requiring
+  // every carrier to be pre-seeded before an order mentioning it can commit.
+  let carrierId: number | null = null;
+  if (order.carrier) {
+    const existing = await client.query(`SELECT id FROM carriers WHERE name ILIKE $1 LIMIT 1`, [order.carrier]);
+    if (existing.rows[0]) {
+      carrierId = existing.rows[0].id;
+    } else {
+      const created = await client.query(`INSERT INTO carriers (name) VALUES ($1) RETURNING id`, [order.carrier]);
+      carrierId = created.rows[0].id;
+    }
+  }
+
   // No parsed weight from a Shopify/WhatsApp order — flat base_rate, same
   // as plan-order-ingestion.md's "Rs. 350/delivery flat" today.
   let dcAmount = 0;
@@ -337,16 +351,17 @@ async function commitNewShipment(
   const inserted = await client.query(
     `INSERT INTO shipments (
        id, daak_tracking_no, customer_id, customer_order_ref, consignee_name, consignee_phone,
-       consignee_address, city_id, cod_amount, dc_amount, carrier_tracking_no, booked_by
+       consignee_address, city_id, cod_amount, dc_amount, carrier_tracking_no, carrier_id, items, booked_by
      )
      SELECT nextval(pg_get_serial_sequence('shipments','id')),
             'DAAK-' || to_char(now(), 'YYMMDD') || '-' || lpad(currval(pg_get_serial_sequence('shipments','id'))::text, 5, '0'),
-            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10
+            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12
      RETURNING id`,
     [
       item.customer_id, order.source_order_ref ?? null, order.consignee_name,
       order.consignee_phone ?? null, order.consignee_address ?? null, cityId,
-      order.cod_amount ?? 0, dcAmount, order.carrier_tracking_no ?? null, actorId,
+      order.cod_amount ?? 0, dcAmount, order.carrier_tracking_no ?? null, carrierId,
+      order.items?.length ? JSON.stringify(order.items) : null, actorId,
     ]
   );
   const shipmentId = inserted.rows[0].id;

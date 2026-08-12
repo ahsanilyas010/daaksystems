@@ -254,6 +254,37 @@ export interface IngestionBatchDetail extends IngestionBatch {
   items: IngestionItem[];
 }
 
+export interface DeliveryRunRow {
+  id: number;
+  order_ref: string;
+  date: string;
+  customer_name: string;
+  phone: string | null;
+  address: string | null;
+  items: string;
+  order_total: number;
+  delivery_charge: number;
+  amount_to_transfer: number | null;
+  delivery_status: string;
+  return_status: string;
+  confirmed_call: string;
+  notes: string;
+  zone: string;
+}
+
+export interface DeliveryRunZoneSummary {
+  zone: string;
+  orders: number;
+  total_collected: number;
+  delivery_charges: number;
+  amount_to_transfer: number;
+}
+
+export interface DeliveryRunReport {
+  summary: DeliveryRunZoneSummary[];
+  rows: DeliveryRunRow[];
+}
+
 export interface Claim {
   id: number;
   shipment_id: number;

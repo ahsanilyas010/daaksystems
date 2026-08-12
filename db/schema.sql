@@ -308,4 +308,12 @@ CREATE TABLE ingestion_items (
 CREATE INDEX idx_ingestion_items_batch_id ON ingestion_items (batch_id);
 CREATE INDEX idx_ingestion_items_match_status ON ingestion_items (match_status);
 
+-- Line items, carried over from ingestion_items.parsed_json.items at commit
+-- time (plan-order-ingestion.md section 7's per-client delivery-run export
+-- needs an "Item(s)" column, and shipments had nowhere to keep it before
+-- this). Null for shipments booked the old way (booking desk / historical
+-- migration) rather than through ingestion — the export just leaves that
+-- column blank for those, it was never captured for them either.
+ALTER TABLE shipments ADD COLUMN items JSONB;
+
 COMMIT;

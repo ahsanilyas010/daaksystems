@@ -7,6 +7,7 @@ const navItems = [
   { to: "/shipments", label: "Shipments" },
   { to: "/exceptions", label: "Exceptions" },
   { to: "/ingestion", label: "Order Ingestion" },
+  { to: "/delivery-run", label: "Delivery Run" },
   { to: "/customers", label: "Customers" },
   { to: "/rate-cards", label: "Rate Cards" },
   { to: "/cod-ledger", label: "COD Ledger" },

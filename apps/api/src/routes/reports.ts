@@ -110,3 +110,96 @@ reportsRouter.get(
     });
   })
 );
+
+// Per-client delivery-run export (plan-order-ingestion.md section 7): the
+// city-segregated sheet ops currently builds by hand after a batch of
+// orders comes in — grouped by city zone, delivery charge subtracted to
+// get what's owed back to the client. "Amount to transfer" is null (the
+// UI renders it as "-") for anything that isn't going to complete
+// successfully, matching how the manually-built version already treats a
+// cancelled order.
+const NON_TRANSFERABLE_STATUSES = ["CANCELLED", "RETURNED", "RETURN_INITIATED", "LOST", "DAMAGED"];
+const STATUS_LABELS: Record<string, string> = {
+  DELIVERED: "Delivered",
+  CANCELLED: "Cancelled",
+  RETURNED: "Returned",
+  LOST: "Lost",
+  DAMAGED: "Damaged",
+};
+const RETURN_LABELS: Record<string, string> = {
+  RETURN_INITIATED: "Return requested",
+  RETURNED: "Returned",
+};
+
+reportsRouter.get(
+  "/delivery-run",
+  asyncHandler(async (req, res) => {
+    const { customer_id, from, to } = req.query;
+    if (typeof customer_id !== "string") {
+      res.status(400).json({ error: "customer_id is required" });
+      return;
+    }
+    const conditions = ["s.customer_id = $1"];
+    const values: unknown[] = [Number(customer_id)];
+    if (typeof from === "string") {
+      values.push(from);
+      conditions.push(`s.booked_at >= $${values.length}`);
+    }
+    if (typeof to === "string") {
+      values.push(to);
+      conditions.push(`s.booked_at <= $${values.length}`);
+    }
+
+    const { rows } = await pool.query(
+      `SELECT s.id, s.daak_tracking_no, s.customer_order_ref, s.booked_at, s.consignee_name,
+              s.consignee_phone, s.consignee_address, s.items, s.cod_amount, s.dc_amount,
+              s.status, s.carrier_tracking_no, car.name AS carrier_name,
+              COALESCE(ci.zone, ci.name, 'Unassigned') AS zone_label
+       FROM shipments s
+       LEFT JOIN cities ci ON ci.id = s.city_id
+       LEFT JOIN carriers car ON car.id = s.carrier_id
+       WHERE ${conditions.join(" AND ")}
+       ORDER BY zone_label, s.booked_at`,
+      values
+    );
+
+    const formatItems = (items: unknown) =>
+      Array.isArray(items) ? items.map((i: { name: string; qty: number }) => `${i.name} x${i.qty}`).join(" + ") : "";
+    const formatNotes = (trackingNo: string | null, carrierName: string | null) =>
+      trackingNo ? `Shipped via ${carrierName ?? "carrier"}, Tracking ${trackingNo}` : "";
+
+    const orderRows = rows.map((r) => {
+      const transferable = !NON_TRANSFERABLE_STATUSES.includes(r.status);
+      return {
+        id: r.id,
+        order_ref: r.customer_order_ref ?? r.daak_tracking_no,
+        date: r.booked_at,
+        customer_name: r.consignee_name,
+        phone: r.consignee_phone,
+        address: r.consignee_address,
+        items: formatItems(r.items),
+        order_total: Number(r.cod_amount),
+        delivery_charge: Number(r.dc_amount),
+        amount_to_transfer: transferable ? Number(r.cod_amount) - Number(r.dc_amount) : null,
+        delivery_status: STATUS_LABELS[r.status] ?? "Pending",
+        return_status: RETURN_LABELS[r.status] ?? "",
+        confirmed_call: "", // Phase 0.5f (stakeholder dashboard) territory — not tracked yet
+        notes: formatNotes(r.carrier_tracking_no, r.carrier_name),
+        zone: r.zone_label,
+      };
+    });
+
+    const zones = new Map<string, { orders: number; total_collected: number; delivery_charges: number; amount_to_transfer: number }>();
+    for (const row of orderRows) {
+      const z = zones.get(row.zone) ?? { orders: 0, total_collected: 0, delivery_charges: 0, amount_to_transfer: 0 };
+      z.orders += 1;
+      z.total_collected += row.order_total;
+      z.delivery_charges += row.delivery_charge;
+      z.amount_to_transfer += row.amount_to_transfer ?? 0;
+      zones.set(row.zone, z);
+    }
+    const summary = [...zones.entries()].map(([zone, totals]) => ({ zone, ...totals }));
+
+    res.json({ summary, rows: orderRows });
+  })
+);
