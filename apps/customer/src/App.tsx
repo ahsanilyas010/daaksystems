@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from "./lib/auth";
 import { BulkUpload } from "./pages/BulkUpload";
 import { Login } from "./pages/Login";
 import { NewShipment } from "./pages/NewShipment";
+import { OrderUpload } from "./pages/OrderUpload";
 import { RateCalculator } from "./pages/RateCalculator";
 import { Returns } from "./pages/Returns";
 import { Shipments } from "./pages/Shipments";
@@ -24,6 +25,7 @@ function AppRoutes() {
         <Route path="/shipments" element={<Shipments />} />
         <Route path="/new" element={<NewShipment />} />
         <Route path="/bulk" element={<BulkUpload />} />
+        <Route path="/orders/upload" element={<OrderUpload />} />
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/returns" element={<Returns />} />
         <Route path="/rate-calculator" element={<RateCalculator />} />

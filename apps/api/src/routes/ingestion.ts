@@ -26,7 +26,7 @@ ingestionRouter.use(requireAuth);
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
 
-interface SourceChunk {
+export interface SourceChunk {
   sourceOrderRef: string;
   text: string;
   extract: () => Promise<ExtractedOrder[]>;
@@ -35,7 +35,7 @@ interface SourceChunk {
 // Shared core for every ingestion source (PDF/text/screenshot): run each
 // chunk's extraction, duplicate-check every returned order, and stage it
 // as an ingestion_item. Nothing here touches `shipments` — that's /commit.
-async function processChunks(batchId: number, customerId: number | null, chunks: SourceChunk[]): Promise<number> {
+export async function processChunks(batchId: number, customerId: number | null, chunks: SourceChunk[]): Promise<number> {
   let errorCount = 0;
   const client = await pool.connect();
   try {
@@ -79,7 +79,7 @@ async function processChunks(batchId: number, customerId: number | null, chunks:
   return errorCount;
 }
 
-async function finalizeBatch(batchId: number, errorCount: number) {
+export async function finalizeBatch(batchId: number, errorCount: number) {
   const itemCount = await pool.query(`SELECT count(*) FROM ingestion_items WHERE batch_id = $1`, [batchId]);
   await pool.query(
     `UPDATE ingestion_batches SET status = 'needs_review', item_count = $2, error_count = $3 WHERE id = $1`,

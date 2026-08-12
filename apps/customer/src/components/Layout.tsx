@@ -5,6 +5,7 @@ const navItems = [
   { to: "/shipments", label: "My Shipments" },
   { to: "/new", label: "Book a Shipment" },
   { to: "/bulk", label: "Bulk Upload" },
+  { to: "/orders/upload", label: "Upload Orders" },
   { to: "/wallet", label: "COD Wallet" },
   { to: "/returns", label: "Returns" },
   { to: "/rate-calculator", label: "Rate Calculator" },

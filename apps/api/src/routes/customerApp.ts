@@ -1,9 +1,13 @@
 import { Router } from "express";
+import multer from "multer";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 import { requireCustomerAuth } from "../middleware/customerAuth.js";
 import { notifyStatusChange } from "../notifications/service.js";
+import { extractPdfPages, detectPdfKind, splitShopifyInvoices, airwayBillChunk } from "../ingestion/pdfExtract.js";
+import { extractOrders, extractOrdersFromText } from "../ingestion/extract.js";
+import { processChunks, finalizeBatch } from "./ingestion.js";
 
 // Customer Portal API surface (plan.md App 3), everything scoped to
 // req.customer.id — a sender only ever sees their own shipments and wallet.
@@ -250,5 +254,117 @@ customerAppRouter.get(
       cod_fee: codFee,
       estimated_total: base + fuelSurcharge + codFee,
     });
+  })
+);
+
+// Self-serve order upload (plan-order-ingestion.md section 10: a sender
+// can upload a PDF or paste order text and see it land in review — same
+// extraction pipeline the ops desk uses in ingestion.ts, just always
+// scoped to req.customer.id and with no edit/commit/merge surface. A
+// client only ever gets to stage orders; ops still reviews and books them.
+const ingestionUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
+
+customerAppRouter.post(
+  "/ingestion/batches",
+  ingestionUpload.single("file"),
+  asyncHandler(async (req, res) => {
+    if (!req.file) {
+      res.status(400).json({ error: "file is required (multipart field 'file')" });
+      return;
+    }
+    const customerId = req.customer!.id;
+
+    const batchInsert = await pool.query(
+      `INSERT INTO ingestion_batches (customer_id, source, source_ref, status)
+       VALUES ($1, 'pdf_upload', $2, 'processing') RETURNING id`,
+      [customerId, req.file.originalname]
+    );
+    const batchId = batchInsert.rows[0].id;
+
+    try {
+      const pages = await extractPdfPages(req.file.buffer);
+      const kind = detectPdfKind(pages);
+      const chunks = kind === "shopify_bundle" ? splitShopifyInvoices(pages) : airwayBillChunk(pages);
+
+      if (chunks.length === 0) {
+        await pool.query(
+          `UPDATE ingestion_batches SET status = 'failed', error_count = 1 WHERE id = $1`,
+          [batchId]
+        );
+        res.status(422).json({ error: "no orders found in this PDF", batch_id: batchId });
+        return;
+      }
+
+      const errorCount = await processChunks(
+        batchId,
+        customerId,
+        chunks.map((c) => ({ sourceOrderRef: c.sourceOrderRef, text: c.text, extract: () => extractOrders(c.text) }))
+      );
+      await finalizeBatch(batchId, errorCount);
+
+      const { rows } = await pool.query(`SELECT * FROM ingestion_batches WHERE id = $1`, [batchId]);
+      res.status(201).json(rows[0]);
+    } catch (err) {
+      await pool.query(`UPDATE ingestion_batches SET status = 'failed' WHERE id = $1`, [batchId]);
+      throw err;
+    }
+  })
+);
+
+const textBatchSchema = z.object({ text: z.string().min(1) });
+
+customerAppRouter.post(
+  "/ingestion/batches/text",
+  asyncHandler(async (req, res) => {
+    const body = textBatchSchema.parse(req.body);
+    const customerId = req.customer!.id;
+
+    const batchInsert = await pool.query(
+      `INSERT INTO ingestion_batches (customer_id, source, source_ref, status)
+       VALUES ($1, 'whatsapp', 'pasted text', 'processing') RETURNING id`,
+      [customerId]
+    );
+    const batchId = batchInsert.rows[0].id;
+
+    try {
+      const errorCount = await processChunks(batchId, customerId, [
+        { sourceOrderRef: "", text: body.text, extract: () => extractOrdersFromText(body.text) },
+      ]);
+      await finalizeBatch(batchId, errorCount);
+      const { rows } = await pool.query(`SELECT * FROM ingestion_batches WHERE id = $1`, [batchId]);
+      res.status(201).json(rows[0]);
+    } catch (err) {
+      await pool.query(`UPDATE ingestion_batches SET status = 'failed' WHERE id = $1`, [batchId]);
+      throw err;
+    }
+  })
+);
+
+customerAppRouter.get(
+  "/ingestion/batches",
+  asyncHandler(async (req, res) => {
+    const { rows } = await pool.query(
+      `SELECT * FROM ingestion_batches WHERE customer_id = $1 ORDER BY uploaded_at DESC`,
+      [req.customer!.id]
+    );
+    res.json(rows);
+  })
+);
+
+// Read-only detail — no parsed_json editing surface for the client, and
+// items only ever show which of their own orders matched/committed.
+customerAppRouter.get(
+  "/ingestion/batches/:id",
+  asyncHandler(async (req, res) => {
+    const batch = await pool.query(
+      `SELECT * FROM ingestion_batches WHERE id = $1 AND customer_id = $2`,
+      [req.params.id, req.customer!.id]
+    );
+    if (!batch.rows[0]) {
+      res.status(404).json({ error: "batch not found" });
+      return;
+    }
+    const items = await pool.query(`SELECT * FROM ingestion_items WHERE batch_id = $1 ORDER BY id`, [req.params.id]);
+    res.json({ ...batch.rows[0], items: items.rows });
   })
 );
