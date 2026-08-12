@@ -300,3 +300,36 @@ export interface Claim {
   created_at: string;
   resolved_at: string | null;
 }
+
+export type HandoverStep = "rider_to_dispatcher" | "dispatcher_to_company" | "company_to_client";
+export type HandoverStatus = "pending" | "confirmed" | "disputed";
+
+export interface CashHandover {
+  id: number;
+  step: HandoverStep;
+  status: HandoverStatus;
+  amount: string;
+  rider_id: number | null;
+  dispatcher_id: number | null;
+  customer_id: number | null;
+  received_by: number | null;
+  notes: string | null;
+  created_by: number | null;
+  created_at: string;
+  confirmed_at: string | null;
+  rider_name: string | null;
+  dispatcher_name: string | null;
+  customer_name: string | null;
+  received_by_name: string | null;
+  shipment_count: number;
+}
+
+export interface CashHandoverDetail extends CashHandover {
+  shipments: {
+    shipment_id: number;
+    cod_amount: string;
+    daak_tracking_no: string;
+    consignee_name: string;
+    status: string;
+  }[];
+}

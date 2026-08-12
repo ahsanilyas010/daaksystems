@@ -329,3 +329,50 @@ ALTER TYPE user_role ADD VALUE IF NOT EXISTS 'dispatcher';
 BEGIN;
 ALTER TABLE users ADD COLUMN city_id INTEGER REFERENCES cities(id) ON DELETE SET NULL;
 COMMIT;
+
+-- Cash reconciliation chain (rider → dispatcher → company → client).
+-- Each handover represents physical cash being passed between parties.
+-- Shipments are linked many-to-many so one handover can cover a batch.
+BEGIN;
+
+CREATE TYPE handover_step AS ENUM (
+  'rider_to_dispatcher',
+  'dispatcher_to_company',
+  'company_to_client'
+);
+
+CREATE TYPE handover_status AS ENUM (
+  'pending',
+  'confirmed',
+  'disputed'
+);
+
+CREATE TABLE cash_handovers (
+  id            BIGSERIAL PRIMARY KEY,
+  step          handover_step   NOT NULL,
+  status        handover_status NOT NULL DEFAULT 'pending',
+  amount        NUMERIC(12,2)   NOT NULL,
+  -- Parties involved (nullable side depends on step)
+  rider_id      INTEGER REFERENCES riders(id) ON DELETE SET NULL,
+  dispatcher_id INTEGER REFERENCES users(id)  ON DELETE SET NULL, -- dispatcher or ops staff receiving
+  customer_id   INTEGER REFERENCES customers(id) ON DELETE SET NULL,
+  received_by   INTEGER REFERENCES users(id)  ON DELETE SET NULL, -- staff who confirmed receipt
+  notes         TEXT,
+  created_by    INTEGER REFERENCES users(id)  ON DELETE SET NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  confirmed_at  TIMESTAMPTZ
+);
+
+CREATE TABLE cash_handover_shipments (
+  handover_id  BIGINT NOT NULL REFERENCES cash_handovers(id) ON DELETE CASCADE,
+  shipment_id  BIGINT NOT NULL REFERENCES shipments(id)      ON DELETE CASCADE,
+  cod_amount   NUMERIC(12,2) NOT NULL,
+  PRIMARY KEY (handover_id, shipment_id)
+);
+
+CREATE INDEX idx_cash_handovers_step   ON cash_handovers (step);
+CREATE INDEX idx_cash_handovers_status ON cash_handovers (status);
+CREATE INDEX idx_cash_handovers_rider  ON cash_handovers (rider_id);
+CREATE INDEX idx_cash_handovers_customer ON cash_handovers (customer_id);
+
+COMMIT;

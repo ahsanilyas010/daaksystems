@@ -348,19 +348,25 @@ async function commitNewShipment(
   );
   if (rateCard.rows[0]) dcAmount = Number(rateCard.rows[0].base_rate);
 
+  // Tracking number: when the carrier's own tracking number is available, use
+  // it with a "1" suffix appended (requested format). Fall back to the DAAK
+  // sequential format only when no carrier tracking number is present.
+  const carrierTno = order.carrier_tracking_no ?? null;
   const inserted = await client.query(
     `INSERT INTO shipments (
        id, daak_tracking_no, customer_id, customer_order_ref, consignee_name, consignee_phone,
        consignee_address, city_id, cod_amount, dc_amount, carrier_tracking_no, carrier_id, items, booked_by
      )
      SELECT nextval(pg_get_serial_sequence('shipments','id')),
-            'DAAK-' || to_char(now(), 'YYMMDD') || '-' || lpad(currval(pg_get_serial_sequence('shipments','id'))::text, 5, '0'),
+            CASE WHEN $9::text IS NOT NULL THEN $9::text || '1'
+                 ELSE 'DAAK-' || to_char(now(), 'YYMMDD') || '-' || lpad(currval(pg_get_serial_sequence('shipments','id'))::text, 5, '0')
+            END,
             $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12
      RETURNING id`,
     [
       item.customer_id, order.source_order_ref ?? null, order.consignee_name,
       order.consignee_phone ?? null, order.consignee_address ?? null, cityId,
-      order.cod_amount ?? 0, dcAmount, order.carrier_tracking_no ?? null, carrierId,
+      order.cod_amount ?? 0, dcAmount, carrierTno, carrierId,
       order.items?.length ? JSON.stringify(order.items) : null, actorId,
     ]
   );

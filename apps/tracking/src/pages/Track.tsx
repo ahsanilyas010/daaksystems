@@ -117,6 +117,18 @@ export function Track() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-4 border-t border-gray-100 pt-4">
+              <a
+                href="tel:03218526405"
+                className="flex w-full items-center justify-center gap-2 rounded bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.28 21 3 13.72 3 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+                </svg>
+                Call DAAK Support — 0321 852 6405
+              </a>
+            </div>
           </div>
         )}
       </div>

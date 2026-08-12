@@ -15,6 +15,7 @@ const navItems = [
   { to: "/reports", label: "Reports" },
   { to: "/carrier-ops", label: "Carrier Ops" },
   { to: "/claims", label: "Claims" },
+  { to: "/cash-reconciliation", label: "Cash Reconciliation" },
   { to: "/sops", label: "SOPs" },
 ];
 
