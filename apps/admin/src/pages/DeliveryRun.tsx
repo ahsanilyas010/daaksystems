@@ -4,12 +4,13 @@ import { downloadCsv, toCsv } from "../lib/csv";
 import { api } from "../lib/api";
 import type { Customer, DeliveryRunReport, DeliveryRunRow } from "../lib/types";
 
-// City-segregated per-client delivery-run export (plan-order-ingestion.md
-// section 7) — the report ops used to build by hand in a spreadsheet after
-// each batch of orders. Grouped by city zone (cities.zone, e.g. "Islamabad/
-// Rawalpindi" vs "Lahore"), delivery charge subtracted to get what's owed
-// back to the client. "-" for amount to transfer means the order was
-// cancelled/returned/lost and isn't getting paid out.
+// Per-client delivery-run export (plan-order-ingestion.md section 7) — the
+// report ops used to build by hand in a spreadsheet after each batch of
+// orders. Grouped by city (every city kept separate — a dispatcher only
+// works their own city, so merging cities into a combined zone here would
+// just make the report harder to hand off). Delivery charge subtracted to
+// get what's owed back to the client. "-" for amount to transfer means the
+// order was cancelled/returned/lost and isn't getting paid out.
 export function DeliveryRun() {
   const [customer, setCustomer] = useState<SearchSelectOption | null>(null);
   const [from, setFrom] = useState("");
@@ -41,22 +42,22 @@ export function DeliveryRun() {
     const headers = [
       "Order #", "Date", "Customer Name", "Phone", "Address", "Item(s)", "Order Total (Rs.)",
       "Delivery Charge (Rs.)", "Amount to Transfer (Rs.)", "Delivery Status", "Return Status",
-      "Confirmed Call", "Notes", "Zone",
+      "Confirmed Call", "Notes", "City",
     ];
     const rows = report.rows.map((r) => [
       r.order_ref, new Date(r.date).toLocaleDateString(), r.customer_name, r.phone, r.address,
       r.items, r.order_total, r.delivery_charge, r.amount_to_transfer ?? "-", r.delivery_status,
-      r.return_status, r.confirmed_call, r.notes, r.zone,
+      r.return_status, r.confirmed_call, r.notes, r.city,
     ]);
     downloadCsv(`delivery-run-${customer?.label ?? "export"}.csv`, toCsv(headers, rows));
   }
 
-  const rowsByZone = new Map<string, DeliveryRunRow[]>();
+  const rowsByCity = new Map<string, DeliveryRunRow[]>();
   if (report) {
     for (const row of report.rows) {
-      const list = rowsByZone.get(row.zone) ?? [];
+      const list = rowsByCity.get(row.city) ?? [];
       list.push(row);
-      rowsByZone.set(row.zone, list);
+      rowsByCity.set(row.city, list);
     }
   }
 
@@ -64,8 +65,8 @@ export function DeliveryRun() {
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">Delivery Run Export</h1>
       <p className="text-sm text-gray-600">
-        City-segregated delivery run for a client — orders, delivery charges, and the balance owed
-        back to them. Replaces the manually-built spreadsheet with something generated on demand.
+        Per-city delivery run for a client — orders, delivery charges, and the balance owed back to
+        them. Replaces the manually-built spreadsheet with something generated on demand.
       </p>
 
       <div className="flex flex-wrap items-end gap-4 rounded border bg-white p-4">
@@ -103,7 +104,7 @@ export function DeliveryRun() {
             <table className="w-full border-collapse text-sm [&_td]:pr-4 [&_th]:pr-4">
               <thead>
                 <tr className="border-b text-left text-gray-500">
-                  <th className="py-2">City / Group</th>
+                  <th className="py-2">City</th>
                   <th>Orders</th>
                   <th>Total Collected (Rs.)</th>
                   <th>Delivery Charges (Rs.)</th>
@@ -111,29 +112,29 @@ export function DeliveryRun() {
                 </tr>
               </thead>
               <tbody>
-                {report.summary.map((z) => (
-                  <tr key={z.zone} className="border-b">
-                    <td className="py-2">{z.zone}</td>
-                    <td>{z.orders}</td>
-                    <td>{z.total_collected.toLocaleString()}</td>
-                    <td>{z.delivery_charges.toLocaleString()}</td>
-                    <td>{z.amount_to_transfer.toLocaleString()}</td>
+                {report.summary.map((c) => (
+                  <tr key={c.city} className="border-b">
+                    <td className="py-2">{c.city}</td>
+                    <td>{c.orders}</td>
+                    <td>{c.total_collected.toLocaleString()}</td>
+                    <td>{c.delivery_charges.toLocaleString()}</td>
+                    <td>{c.amount_to_transfer.toLocaleString()}</td>
                   </tr>
                 ))}
                 <tr className="font-semibold">
                   <td className="py-2">GRAND TOTAL</td>
-                  <td>{report.summary.reduce((s, z) => s + z.orders, 0)}</td>
-                  <td>{report.summary.reduce((s, z) => s + z.total_collected, 0).toLocaleString()}</td>
-                  <td>{report.summary.reduce((s, z) => s + z.delivery_charges, 0).toLocaleString()}</td>
-                  <td>{report.summary.reduce((s, z) => s + z.amount_to_transfer, 0).toLocaleString()}</td>
+                  <td>{report.summary.reduce((s, c) => s + c.orders, 0)}</td>
+                  <td>{report.summary.reduce((s, c) => s + c.total_collected, 0).toLocaleString()}</td>
+                  <td>{report.summary.reduce((s, c) => s + c.delivery_charges, 0).toLocaleString()}</td>
+                  <td>{report.summary.reduce((s, c) => s + c.amount_to_transfer, 0).toLocaleString()}</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          {[...rowsByZone.entries()].map(([zone, rows]) => (
-            <div key={zone}>
-              <h2 className="mb-2 text-lg font-medium">{zone}</h2>
+          {[...rowsByCity.entries()].map(([city, rows]) => (
+            <div key={city}>
+              <h2 className="mb-2 text-lg font-medium">{city}</h2>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-sm [&_td]:pr-4 [&_th]:pr-4">
                   <thead>

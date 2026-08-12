@@ -269,11 +269,11 @@ export interface DeliveryRunRow {
   return_status: string;
   confirmed_call: string;
   notes: string;
-  zone: string;
+  city: string;
 }
 
-export interface DeliveryRunZoneSummary {
-  zone: string;
+export interface DeliveryRunCitySummary {
+  city: string;
   orders: number;
   total_collected: number;
   delivery_charges: number;
@@ -281,7 +281,7 @@ export interface DeliveryRunZoneSummary {
 }
 
 export interface DeliveryRunReport {
-  summary: DeliveryRunZoneSummary[];
+  summary: DeliveryRunCitySummary[];
   rows: DeliveryRunRow[];
 }
 

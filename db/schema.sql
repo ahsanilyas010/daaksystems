@@ -317,3 +317,15 @@ CREATE INDEX idx_ingestion_items_match_status ON ingestion_items (match_status);
 ALTER TABLE shipments ADD COLUMN items JSONB;
 
 COMMIT;
+
+-- Dispatcher role, scoped to exactly one city (plan-order-ingestion.md
+-- section 10's role list, refined: dispatch work is per-city, not one
+-- shift covering everywhere at once). NULL city_id for the other roles
+-- means "not city-scoped" — admin/ops/finance/cs still see everything.
+-- ALTER TYPE ... ADD VALUE can't run inside the same transaction as the
+-- schema above on older Postgres, so this is its own statement.
+ALTER TYPE user_role ADD VALUE IF NOT EXISTS 'dispatcher';
+
+BEGIN;
+ALTER TABLE users ADD COLUMN city_id INTEGER REFERENCES cities(id) ON DELETE SET NULL;
+COMMIT;

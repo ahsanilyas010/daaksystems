@@ -154,12 +154,12 @@ reportsRouter.get(
       `SELECT s.id, s.daak_tracking_no, s.customer_order_ref, s.booked_at, s.consignee_name,
               s.consignee_phone, s.consignee_address, s.items, s.cod_amount, s.dc_amount,
               s.status, s.carrier_tracking_no, car.name AS carrier_name,
-              COALESCE(ci.zone, ci.name, 'Unassigned') AS zone_label
+              COALESCE(ci.name, 'Unassigned') AS city_label
        FROM shipments s
        LEFT JOIN cities ci ON ci.id = s.city_id
        LEFT JOIN carriers car ON car.id = s.carrier_id
        WHERE ${conditions.join(" AND ")}
-       ORDER BY zone_label, s.booked_at`,
+       ORDER BY city_label, s.booked_at`,
       values
     );
 
@@ -185,20 +185,20 @@ reportsRouter.get(
         return_status: RETURN_LABELS[r.status] ?? "",
         confirmed_call: "", // Phase 0.5f (stakeholder dashboard) territory — not tracked yet
         notes: formatNotes(r.carrier_tracking_no, r.carrier_name),
-        zone: r.zone_label,
+        city: r.city_label,
       };
     });
 
-    const zones = new Map<string, { orders: number; total_collected: number; delivery_charges: number; amount_to_transfer: number }>();
+    const cities = new Map<string, { orders: number; total_collected: number; delivery_charges: number; amount_to_transfer: number }>();
     for (const row of orderRows) {
-      const z = zones.get(row.zone) ?? { orders: 0, total_collected: 0, delivery_charges: 0, amount_to_transfer: 0 };
+      const z = cities.get(row.city) ?? { orders: 0, total_collected: 0, delivery_charges: 0, amount_to_transfer: 0 };
       z.orders += 1;
       z.total_collected += row.order_total;
       z.delivery_charges += row.delivery_charge;
       z.amount_to_transfer += row.amount_to_transfer ?? 0;
-      zones.set(row.zone, z);
+      cities.set(row.city, z);
     }
-    const summary = [...zones.entries()].map(([zone, totals]) => ({ zone, ...totals }));
+    const summary = [...cities.entries()].map(([city, totals]) => ({ city, ...totals }));
 
     res.json({ summary, rows: orderRows });
   })
