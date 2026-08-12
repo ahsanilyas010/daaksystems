@@ -100,7 +100,7 @@ export function DeliveryRun() {
         <>
           <div>
             <h2 className="mb-2 text-lg font-medium">Summary</h2>
-            <table className="w-full border-collapse text-sm">
+            <table className="w-full border-collapse text-sm [&_td]:pr-4 [&_th]:pr-4">
               <thead>
                 <tr className="border-b text-left text-gray-500">
                   <th className="py-2">City / Group</th>
@@ -135,7 +135,7 @@ export function DeliveryRun() {
             <div key={zone}>
               <h2 className="mb-2 text-lg font-medium">{zone}</h2>
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
+                <table className="w-full border-collapse text-sm [&_td]:pr-4 [&_th]:pr-4">
                   <thead>
                     <tr className="border-b text-left text-gray-500">
                       <th className="py-2">Order #</th>
