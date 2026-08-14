@@ -22,7 +22,7 @@ export function signToken(user: AuthedUser): string {
 }
 
 // Auth disabled — all requests pass as admin.
-const BYPASS_USER: AuthedUser = { id: 1, email: "admin@daak.pk", name: "Admin", role: "admin" };
+const BYPASS_USER: AuthedUser = { id: 1, email: "admin@daak.pk", name: "Admin", role: "admin", cityId: null };
 
 export function requireAuth(req: Request, _res: Response, next: NextFunction) {
   req.user = BYPASS_USER;
