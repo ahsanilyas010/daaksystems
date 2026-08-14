@@ -6,6 +6,8 @@ const navItems = [
   { to: "/booking", label: "Booking Desk" },
   { to: "/shipments", label: "Shipments" },
   { to: "/exceptions", label: "Exceptions" },
+  { to: "/ingestion", label: "Order Ingestion" },
+  { to: "/delivery-run", label: "Delivery Run" },
   { to: "/customers", label: "Customers" },
   { to: "/rate-cards", label: "Rate Cards" },
   { to: "/cod-ledger", label: "COD Ledger" },
@@ -13,6 +15,7 @@ const navItems = [
   { to: "/reports", label: "Reports" },
   { to: "/carrier-ops", label: "Carrier Ops" },
   { to: "/claims", label: "Claims" },
+  { to: "/cash-reconciliation", label: "Cash Reconciliation" },
   { to: "/sops", label: "SOPs" },
 ];
 

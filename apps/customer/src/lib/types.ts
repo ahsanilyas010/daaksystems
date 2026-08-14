@@ -53,3 +53,40 @@ export interface RateEstimate {
   cod_fee: number;
   estimated_total: number;
 }
+
+export interface ExtractedOrder {
+  source_order_ref: string | null;
+  consignee_name: string | null;
+  consignee_phone: string | null;
+  consignee_address: string | null;
+  city: string | null;
+  items: { name: string; qty: number }[];
+  order_total: number | null;
+  cod_amount: number | null;
+  carrier_tracking_no: string | null;
+  carrier: string | null;
+  notes: string | null;
+}
+
+export interface IngestionBatch {
+  id: number;
+  source: "pdf_upload" | "whatsapp" | "email" | "shopify_webhook";
+  source_ref: string | null;
+  uploaded_at: string;
+  status: "processing" | "needs_review" | "committed" | "failed";
+  item_count: number;
+  error_count: number;
+}
+
+export interface IngestionItem {
+  id: number;
+  batch_id: number;
+  parsed_json: ExtractedOrder | null;
+  confidence_score: string | null;
+  match_status: "new" | "possible_duplicate" | "duplicate";
+  committed_shipment_id: number | null;
+}
+
+export interface IngestionBatchDetail extends IngestionBatch {
+  items: IngestionItem[];
+}

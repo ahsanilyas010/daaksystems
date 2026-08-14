@@ -1,3 +1,6 @@
+// DOMMatrix polyfill must be the first import — it must run before
+// pdfjs-dist (pulled in by pdf-parse) initialises at module level.
+import "../src/polyfill.js";
 // Vercel serverless entrypoint. vercel.json rewrites every request here;
 // the Express app in src/app.ts still does its own internal routing based
 // on the original req.url, exactly as it does under a traditional host.

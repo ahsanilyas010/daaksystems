@@ -257,4 +257,122 @@ CREATE TABLE claims (
 CREATE INDEX idx_claims_shipment_id ON claims (shipment_id);
 CREATE INDEX idx_claims_status ON claims (status);
 
+-- plan-order-ingestion.md Phase 0.5: auto-ingestion engine (PDF/WhatsApp/
+-- Shopify order intake -> shipments), staged ahead of the real tables so
+-- nothing commits without either ops review or a trusted deterministic
+-- source (Shopify webhook, once 0.5e exists).
+
+-- The order reference a *client* uses for their own order (Shopify order
+-- number, etc.) — distinct from daak_tracking_no, which Daak assigns.
+-- Needed for the ingestion duplicate check (plan-order-ingestion.md
+-- section 5): the same order arriving twice (invoice PDF + airway bill
+-- PDF, or a re-uploaded batch) must resolve to one shipment, not two.
+ALTER TABLE shipments ADD COLUMN customer_order_ref TEXT;
+CREATE UNIQUE INDEX uq_shipments_customer_order_ref
+    ON shipments (customer_id, customer_order_ref)
+    WHERE customer_order_ref IS NOT NULL;
+
+CREATE TYPE ingestion_source AS ENUM ('pdf_upload', 'whatsapp', 'email', 'shopify_webhook');
+CREATE TYPE ingestion_batch_status AS ENUM ('processing', 'needs_review', 'committed', 'failed');
+CREATE TYPE ingestion_match_status AS ENUM ('new', 'possible_duplicate', 'duplicate');
+
+CREATE TABLE ingestion_batches (
+    id            BIGSERIAL PRIMARY KEY,
+    customer_id   INTEGER REFERENCES customers(id) ON DELETE SET NULL, -- nullable until matched to a client
+    source        ingestion_source NOT NULL,
+    source_ref    TEXT, -- filename or WhatsApp message id
+    uploaded_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    uploaded_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    status        ingestion_batch_status NOT NULL DEFAULT 'processing',
+    raw_file_url  TEXT,
+    item_count    INTEGER NOT NULL DEFAULT 0,
+    error_count   INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX idx_ingestion_batches_customer_id ON ingestion_batches (customer_id);
+CREATE INDEX idx_ingestion_batches_status ON ingestion_batches (status);
+
+CREATE TABLE ingestion_items (
+    id                    BIGSERIAL PRIMARY KEY,
+    batch_id              BIGINT NOT NULL REFERENCES ingestion_batches(id) ON DELETE CASCADE,
+    raw_text              TEXT, -- the extracted source text for this one order — audit trail
+    parsed_json           JSONB, -- structured fields Claude returned (plan-order-ingestion.md section 3)
+    confidence_score      NUMERIC(3,2), -- 0.00-1.00
+    match_status          ingestion_match_status NOT NULL DEFAULT 'new',
+    matched_shipment_id   BIGINT REFERENCES shipments(id) ON DELETE SET NULL,
+    field_flags           JSONB NOT NULL DEFAULT '{}'::jsonb, -- which fields were low-confidence + why
+    reviewed_by           INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at           TIMESTAMPTZ,
+    committed_shipment_id BIGINT REFERENCES shipments(id) ON DELETE SET NULL,
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX idx_ingestion_items_batch_id ON ingestion_items (batch_id);
+CREATE INDEX idx_ingestion_items_match_status ON ingestion_items (match_status);
+
+-- Line items, carried over from ingestion_items.parsed_json.items at commit
+-- time (plan-order-ingestion.md section 7's per-client delivery-run export
+-- needs an "Item(s)" column, and shipments had nowhere to keep it before
+-- this). Null for shipments booked the old way (booking desk / historical
+-- migration) rather than through ingestion — the export just leaves that
+-- column blank for those, it was never captured for them either.
+ALTER TABLE shipments ADD COLUMN items JSONB;
+
+COMMIT;
+
+-- Dispatcher role, scoped to exactly one city (plan-order-ingestion.md
+-- section 10's role list, refined: dispatch work is per-city, not one
+-- shift covering everywhere at once). NULL city_id for the other roles
+-- means "not city-scoped" — admin/ops/finance/cs still see everything.
+-- ALTER TYPE ... ADD VALUE can't run inside the same transaction as the
+-- schema above on older Postgres, so this is its own statement.
+ALTER TYPE user_role ADD VALUE IF NOT EXISTS 'dispatcher';
+
+BEGIN;
+ALTER TABLE users ADD COLUMN city_id INTEGER REFERENCES cities(id) ON DELETE SET NULL;
+COMMIT;
+
+-- Cash reconciliation chain (rider → dispatcher → company → client).
+-- Each handover represents physical cash being passed between parties.
+-- Shipments are linked many-to-many so one handover can cover a batch.
+BEGIN;
+
+CREATE TYPE handover_step AS ENUM (
+  'rider_to_dispatcher',
+  'dispatcher_to_company',
+  'company_to_client'
+);
+
+CREATE TYPE handover_status AS ENUM (
+  'pending',
+  'confirmed',
+  'disputed'
+);
+
+CREATE TABLE cash_handovers (
+  id            BIGSERIAL PRIMARY KEY,
+  step          handover_step   NOT NULL,
+  status        handover_status NOT NULL DEFAULT 'pending',
+  amount        NUMERIC(12,2)   NOT NULL,
+  -- Parties involved (nullable side depends on step)
+  rider_id      INTEGER REFERENCES riders(id) ON DELETE SET NULL,
+  dispatcher_id INTEGER REFERENCES users(id)  ON DELETE SET NULL, -- dispatcher or ops staff receiving
+  customer_id   INTEGER REFERENCES customers(id) ON DELETE SET NULL,
+  received_by   INTEGER REFERENCES users(id)  ON DELETE SET NULL, -- staff who confirmed receipt
+  notes         TEXT,
+  created_by    INTEGER REFERENCES users(id)  ON DELETE SET NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  confirmed_at  TIMESTAMPTZ
+);
+
+CREATE TABLE cash_handover_shipments (
+  handover_id  BIGINT NOT NULL REFERENCES cash_handovers(id) ON DELETE CASCADE,
+  shipment_id  BIGINT NOT NULL REFERENCES shipments(id)      ON DELETE CASCADE,
+  cod_amount   NUMERIC(12,2) NOT NULL,
+  PRIMARY KEY (handover_id, shipment_id)
+);
+
+CREATE INDEX idx_cash_handovers_step   ON cash_handovers (step);
+CREATE INDEX idx_cash_handovers_status ON cash_handovers (status);
+CREATE INDEX idx_cash_handovers_rider  ON cash_handovers (rider_id);
+CREATE INDEX idx_cash_handovers_customer ON cash_handovers (customer_id);
+
 COMMIT;

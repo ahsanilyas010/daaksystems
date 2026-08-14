@@ -2,12 +2,16 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-d
 import { Layout } from "./components/Layout";
 import { AuthProvider, useAuth } from "./lib/auth";
 import { BookingDesk } from "./pages/BookingDesk";
+import { CashReconciliation } from "./pages/CashReconciliation";
 import { CarrierOps } from "./pages/CarrierOps";
 import { Claims } from "./pages/Claims";
 import { CodLedger } from "./pages/CodLedger";
 import { Customers } from "./pages/Customers";
 import { Dashboard } from "./pages/Dashboard";
 import { ExceptionQueue } from "./pages/ExceptionQueue";
+import { DeliveryRun } from "./pages/DeliveryRun";
+import { Ingestion } from "./pages/Ingestion";
+import { IngestionBatchDetail } from "./pages/IngestionBatchDetail";
 import { Login } from "./pages/Login";
 import { RateCards } from "./pages/RateCards";
 import { Reports } from "./pages/Reports";
@@ -33,6 +37,9 @@ function AppRoutes() {
         <Route path="/shipments" element={<ShipmentBoard />} />
         <Route path="/shipments/:id" element={<ShipmentDetail />} />
         <Route path="/exceptions" element={<ExceptionQueue />} />
+        <Route path="/ingestion" element={<Ingestion />} />
+        <Route path="/ingestion/:id" element={<IngestionBatchDetail />} />
+        <Route path="/delivery-run" element={<DeliveryRun />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/rate-cards" element={<RateCards />} />
         <Route path="/cod-ledger" element={<CodLedger />} />
@@ -40,6 +47,7 @@ function AppRoutes() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/carrier-ops" element={<CarrierOps />} />
         <Route path="/claims" element={<Claims />} />
+        <Route path="/cash-reconciliation" element={<CashReconciliation />} />
         <Route path="/sops" element={<Sops />} />
       </Route>
     </Routes>

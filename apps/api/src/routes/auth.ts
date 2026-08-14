@@ -18,7 +18,7 @@ authRouter.post(
     const { email, password } = loginSchema.parse(req.body);
 
     const { rows } = await pool.query(
-      "SELECT id, name, email, password_hash, role FROM users WHERE email = $1 AND active",
+      "SELECT id, name, email, password_hash, role, city_id FROM users WHERE email = $1 AND active",
       [email]
     );
     const row = rows[0];
@@ -27,7 +27,7 @@ authRouter.post(
       return;
     }
 
-    const user: AuthedUser = { id: row.id, name: row.name, email: row.email, role: row.role };
+    const user: AuthedUser = { id: row.id, name: row.name, email: row.email, role: row.role, cityId: row.city_id };
     res.json({ token: signToken(user), user });
   })
 );

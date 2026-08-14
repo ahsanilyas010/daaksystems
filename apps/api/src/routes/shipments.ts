@@ -2,7 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
-import { requireAuth, requireRole } from "../middleware/auth.js";
+import { checkOwnCity, isCityScoped, requireAuth, requireRole } from "../middleware/auth.js";
 import { notifyStatusChange } from "../notifications/service.js";
 
 export const shipmentsRouter = Router();
@@ -104,7 +104,13 @@ shipmentsRouter.get(
     if (typeof status === "string") addCond("s.status = ?", status);
     if (typeof carrier_id === "string") addCond("s.carrier_id = ?", Number(carrier_id));
     if (typeof customer_id === "string") addCond("s.customer_id = ?", Number(customer_id));
-    if (typeof city_id === "string") addCond("s.city_id = ?", Number(city_id));
+    // A dispatcher's city always wins over whatever city_id they passed —
+    // this is access control, not a convenience filter.
+    if (isCityScoped(req.user!)) {
+      addCond("s.city_id = ?", req.user!.cityId);
+    } else if (typeof city_id === "string") {
+      addCond("s.city_id = ?", Number(city_id));
+    }
     if (typeof from === "string") addCond("s.booked_at >= ?", from);
     if (typeof to === "string") addCond("s.booked_at <= ?", to);
     if (typeof search === "string" && search.trim()) {
@@ -136,6 +142,7 @@ shipmentsRouter.get(
       res.status(404).json({ error: "shipment not found" });
       return;
     }
+    if (!checkOwnCity(res, req.user!, rows[0].city_id)) return;
     const events = await pool.query(
       "SELECT * FROM shipment_events WHERE shipment_id = $1 ORDER BY created_at, id",
       [req.params.id]
@@ -156,10 +163,17 @@ const eventSchema = z.object({
 // the append-only audit trail in plan.md section 4.3.
 shipmentsRouter.post(
   "/:id/events",
-  requireRole("admin", "ops", "cs"),
+  requireRole("admin", "ops", "cs", "dispatcher"),
   asyncHandler(async (req, res) => {
     const body = eventSchema.parse(req.body);
     const shipmentId = Number(req.params.id);
+
+    const cityCheck = await pool.query("SELECT city_id FROM shipments WHERE id = $1", [shipmentId]);
+    if (!cityCheck.rows[0]) {
+      res.status(404).json({ error: "shipment not found" });
+      return;
+    }
+    if (!checkOwnCity(res, req.user!, cityCheck.rows[0].city_id)) return;
 
     const client = await pool.connect();
     try {
@@ -201,10 +215,18 @@ const assignRiderSchema = z.object({ rider_id: z.number().int() });
 // Rider PWA pickup list.
 shipmentsRouter.post(
   "/:id/assign-rider",
-  requireRole("admin", "ops"),
+  requireRole("admin", "ops", "dispatcher"),
   asyncHandler(async (req, res) => {
     const body = assignRiderSchema.parse(req.body);
     const shipmentId = Number(req.params.id);
+
+    const cityCheck = await pool.query("SELECT city_id FROM shipments WHERE id = $1", [shipmentId]);
+    if (!cityCheck.rows[0]) {
+      res.status(404).json({ error: "shipment not found" });
+      return;
+    }
+    if (!checkOwnCity(res, req.user!, cityCheck.rows[0].city_id)) return;
+
     const client = await pool.connect();
     try {
       await client.query("BEGIN");

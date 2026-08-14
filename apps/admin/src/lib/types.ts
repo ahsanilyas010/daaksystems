@@ -207,6 +207,84 @@ export interface Kpis {
   };
 }
 
+export interface ExtractedOrder {
+  source_order_ref: string | null;
+  order_date: string | null;
+  consignee_name: string | null;
+  consignee_phone: string | null;
+  consignee_address: string | null;
+  city: string | null;
+  items: { name: string; qty: number }[];
+  order_total: number | null;
+  cod_amount: number | null;
+  carrier_tracking_no: string | null;
+  carrier: string | null;
+  notes: string | null;
+  field_flags: Record<string, string>;
+}
+
+export interface IngestionBatch {
+  id: number;
+  customer_id: number | null;
+  customer_name: string | null;
+  source: "pdf_upload" | "whatsapp" | "email" | "shopify_webhook";
+  source_ref: string | null;
+  uploaded_at: string;
+  status: "processing" | "needs_review" | "committed" | "failed";
+  item_count: number;
+  error_count: number;
+}
+
+export interface IngestionItem {
+  id: number;
+  batch_id: number;
+  raw_text: string | null;
+  parsed_json: ExtractedOrder | null;
+  confidence_score: string | null;
+  match_status: "new" | "possible_duplicate" | "duplicate";
+  matched_shipment_id: number | null;
+  field_flags: Record<string, string>;
+  reviewed_by: number | null;
+  reviewed_at: string | null;
+  committed_shipment_id: number | null;
+  created_at: string;
+}
+
+export interface IngestionBatchDetail extends IngestionBatch {
+  items: IngestionItem[];
+}
+
+export interface DeliveryRunRow {
+  id: number;
+  order_ref: string;
+  date: string;
+  customer_name: string;
+  phone: string | null;
+  address: string | null;
+  items: string;
+  order_total: number;
+  delivery_charge: number;
+  amount_to_transfer: number | null;
+  delivery_status: string;
+  return_status: string;
+  confirmed_call: string;
+  notes: string;
+  city: string;
+}
+
+export interface DeliveryRunCitySummary {
+  city: string;
+  orders: number;
+  total_collected: number;
+  delivery_charges: number;
+  amount_to_transfer: number;
+}
+
+export interface DeliveryRunReport {
+  summary: DeliveryRunCitySummary[];
+  rows: DeliveryRunRow[];
+}
+
 export interface Claim {
   id: number;
   shipment_id: number;
@@ -221,4 +299,37 @@ export interface Claim {
   resolution_note: string | null;
   created_at: string;
   resolved_at: string | null;
+}
+
+export type HandoverStep = "rider_to_dispatcher" | "dispatcher_to_company" | "company_to_client";
+export type HandoverStatus = "pending" | "confirmed" | "disputed";
+
+export interface CashHandover {
+  id: number;
+  step: HandoverStep;
+  status: HandoverStatus;
+  amount: string;
+  rider_id: number | null;
+  dispatcher_id: number | null;
+  customer_id: number | null;
+  received_by: number | null;
+  notes: string | null;
+  created_by: number | null;
+  created_at: string;
+  confirmed_at: string | null;
+  rider_name: string | null;
+  dispatcher_name: string | null;
+  customer_name: string | null;
+  received_by_name: string | null;
+  shipment_count: number;
+}
+
+export interface CashHandoverDetail extends CashHandover {
+  shipments: {
+    shipment_id: number;
+    cod_amount: string;
+    daak_tracking_no: string;
+    consignee_name: string;
+    status: string;
+  }[];
 }
