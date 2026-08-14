@@ -1,8 +1,4 @@
-// PDF text extraction, page-boundary-safe (plan-order-ingestion.md section 4:
-// a single order can split across a page break in the real Canezo files, so
-// we can't just split on page boundaries — we join full-document text and
-// split on the invoice marker instead).
-import { PDFParse } from "pdf-parse";
+import pdfParse from "pdf-parse";
 
 export interface PdfPage {
   pageNumber: number;
@@ -10,13 +6,10 @@ export interface PdfPage {
 }
 
 export async function extractPdfPages(buffer: Buffer): Promise<PdfPage[]> {
-  const parser = new PDFParse({ data: buffer });
-  try {
-    const result = await parser.getText();
-    return result.pages.map((p) => ({ pageNumber: p.num, text: p.text }));
-  } finally {
-    await parser.destroy();
-  }
+  const data = await pdfParse(buffer);
+  // pdf-parse joins all pages into data.text — downstream code joins pages
+  // anyway, so a single-element array is equivalent to per-page splitting.
+  return [{ pageNumber: 1, text: data.text }];
 }
 
 // Shopify Order Printer bundles repeat "Invoice Order #NNNN" per order and
