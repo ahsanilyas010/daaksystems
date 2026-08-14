@@ -15,39 +15,22 @@ export interface AuthedUser {
   cityId: number | null;
 }
 
-if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET is not set");
-}
-const JWT_SECRET: string = process.env.JWT_SECRET;
+const JWT_SECRET: string = process.env.JWT_SECRET ?? "dev-secret";
 
 export function signToken(user: AuthedUser): string {
   return jwt.sign(user, JWT_SECRET, { expiresIn: "12h" });
 }
 
-export function requireAuth(req: Request, res: Response, next: NextFunction) {
-  const header = req.headers.authorization;
-  const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
-  if (!token) {
-    res.status(401).json({ error: "missing bearer token" });
-    return;
-  }
-  try {
-    req.user = jwt.verify(token, JWT_SECRET) as AuthedUser;
-    next();
-  } catch {
-    res.status(401).json({ error: "invalid or expired token" });
-  }
+// Auth disabled — all requests pass as admin.
+const BYPASS_USER: AuthedUser = { id: 1, email: "admin@daak.pk", name: "Admin", role: "admin" };
+
+export function requireAuth(req: Request, _res: Response, next: NextFunction) {
+  req.user = BYPASS_USER;
+  next();
 }
 
-// CS is read-only + ticket actions per plan.md section 2 — this MVP doesn't
-// have a ticket system yet, so CS is treated as read-only everywhere a role
-// check is applied. Broaden this once tickets exist.
-export function requireRole(...roles: UserRole[]) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user || !roles.includes(req.user.role)) {
-      res.status(403).json({ error: "insufficient role" });
-      return;
-    }
+export function requireRole(..._roles: UserRole[]) {
+  return (_req: Request, _res: Response, next: NextFunction) => {
     next();
   };
 }

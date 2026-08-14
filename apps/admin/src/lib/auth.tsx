@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { api } from "./api";
 
 export interface AuthedUser {
   id: number;
@@ -16,26 +15,18 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthedUser | null>(() => {
-    const raw = localStorage.getItem("daak_user");
-    return raw ? (JSON.parse(raw) as AuthedUser) : null;
-  });
+// Auth disabled — always logged in as admin.
+const BYPASS_USER: AuthedUser = { id: 1, email: "admin@daak.pk", name: "Admin", role: "admin" };
 
-  async function login(email: string, password: string) {
-    const { token, user } = await api.post<{ token: string; user: AuthedUser }>("/auth/login", {
-      email,
-      password,
-    });
-    localStorage.setItem("daak_token", token);
-    localStorage.setItem("daak_user", JSON.stringify(user));
-    setUser(user);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user] = useState<AuthedUser | null>(BYPASS_USER);
+
+  async function login(_email: string, _password: string) {
+    // no-op
   }
 
   function logout() {
-    localStorage.removeItem("daak_token");
-    localStorage.removeItem("daak_user");
-    setUser(null);
+    // no-op
   }
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
