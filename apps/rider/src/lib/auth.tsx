@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { api } from "./api";
 import type { AuthedRider } from "./types";
 
 interface AuthContextValue {
@@ -10,26 +9,18 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [rider, setRider] = useState<AuthedRider | null>(() => {
-    const raw = localStorage.getItem("daak_rider");
-    return raw ? (JSON.parse(raw) as AuthedRider) : null;
-  });
+// Auth disabled — always logged in as WAL rider.
+const BYPASS_RIDER: AuthedRider = { id: 1, name: "WAL", code: "WAL" };
 
-  async function login(phone: string, password: string) {
-    const { token, rider } = await api.post<{ token: string; rider: AuthedRider }>("/rider-auth/login", {
-      phone,
-      password,
-    });
-    localStorage.setItem("daak_rider_token", token);
-    localStorage.setItem("daak_rider", JSON.stringify(rider));
-    setRider(rider);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [rider] = useState<AuthedRider | null>(BYPASS_RIDER);
+
+  async function login(_phone: string, _password: string) {
+    // no-op
   }
 
   function logout() {
-    localStorage.removeItem("daak_rider_token");
-    localStorage.removeItem("daak_rider");
-    setRider(null);
+    // no-op
   }
 
   return <AuthContext.Provider value={{ rider, login, logout }}>{children}</AuthContext.Provider>;

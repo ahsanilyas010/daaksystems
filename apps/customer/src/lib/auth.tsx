@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { api } from "./api";
 import type { AuthedCustomer } from "./types";
 
 interface AuthContextValue {
@@ -10,26 +9,18 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [customer, setCustomer] = useState<AuthedCustomer | null>(() => {
-    const raw = localStorage.getItem("daak_customer");
-    return raw ? (JSON.parse(raw) as AuthedCustomer) : null;
-  });
+// Auth disabled — always logged in as CANEZO.
+const BYPASS_CUSTOMER: AuthedCustomer = { id: 1, name: "CANEZO" };
 
-  async function login(email: string, password: string) {
-    const { token, customer } = await api.post<{ token: string; customer: AuthedCustomer }>(
-      "/customer-auth/login",
-      { email, password }
-    );
-    localStorage.setItem("daak_customer_token", token);
-    localStorage.setItem("daak_customer", JSON.stringify(customer));
-    setCustomer(customer);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [customer] = useState<AuthedCustomer | null>(BYPASS_CUSTOMER);
+
+  async function login(_email: string, _password: string) {
+    // no-op
   }
 
   function logout() {
-    localStorage.removeItem("daak_customer_token");
-    localStorage.removeItem("daak_customer");
-    setCustomer(null);
+    // no-op
   }
 
   return <AuthContext.Provider value={{ customer, login, logout }}>{children}</AuthContext.Provider>;
