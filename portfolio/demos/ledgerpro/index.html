@@ -5,304 +5,286 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LedgerPro — Multi-Entity Accounting ERP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080F1A;--surf:#0F1C2E;--card:#131F30;
-  --em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);
-  --border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;
+  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;--sidebar-hover:#2D3F55;--sidebar-active:#3B82F6;
+  --primary:#2563EB;--primary-h:#1D4ED8;--primary-soft:#EFF6FF;
+  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
 }
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
 
-/* DEMO BANNER */
-.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
-.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}
-.demo-creds b{color:var(--em-l)}
-.back-link{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;transition:color .2s}
-.back-link:hover{color:var(--em)}
+/* ===== LOGIN SCREEN ===== */
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen.hidden{display:none}
+.login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}
+.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
+.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E;display:flex;gap:8px;align-items:flex-start}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);transition:border-color .15s;outline:none}
+.form-input:focus{border-color:var(--primary)}
+.btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;margin-top:4px}
+.btn-login:hover{background:var(--primary-h)}
+.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
 
-/* LAYOUT */
-.shell{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
-.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
-.org-switcher{margin:0 12px 16px;background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.org-switcher .org-name{font-size:12px;font-weight:600}
-.org-switcher .arrow{font-size:10px;color:var(--muted)}
-nav{flex:1}
-.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-.nav-item:hover{background:var(--em-dim);color:var(--text)}
-.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
-.nav-item .icon{width:16px;text-align:center;font-size:14px}
-.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+/* ===== APP SHELL ===== */
+#app{display:none;flex-direction:column;min-height:100vh}
+#app.visible{display:flex}
+.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar-left{display:flex;align-items:center;gap:8px}
+.demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%}
+.demo-bar-creds{display:flex;gap:16px}
+.demo-bar-creds span{color:#64748B}
+.demo-bar-creds b{color:#94A3B8}
+.demo-bar-back{color:#64748B;transition:color .15s}
+.demo-bar-back:hover{color:#E2E8F0}
 
-/* MAIN */
-.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
-.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
-.header-actions{display:flex;gap:10px}
-.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
-.btn-primary{background:var(--em);color:#000}
-.btn-primary:hover{background:var(--em-l)}
-.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+.shell{display:flex;flex:1}
+.sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
+.sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-brand{display:flex;align-items:center;gap:10px}
+.sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}
+.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+.org-pill{margin:12px 12px 0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.org-pill-name{font-size:11px;font-weight:600;color:#CBD5E1}
+.org-pill-arrow{font-size:9px;color:#475569}
+nav{padding:8px 0;flex:1;overflow-y:auto}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent;white-space:nowrap}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
+.nav-link.active{background:rgba(59,130,246,.15);color:#93C5FD;border-left-color:#3B82F6;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--primary);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;font-weight:600;color:#CBD5E1}
+.user-role{font-size:10px;color:#475569}
+
+/* ===== MAIN ===== */
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:16px;font-weight:700}
+.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-h)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.content{padding:24px;display:flex;flex-direction:column;gap:20px}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
-.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
-.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
-.stat-delta.neg{color:#F87171}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.si-blue{background:#EFF6FF}
+.si-green{background:#F0FDF4}
+.si-amber{background:#FFFBEB}
+.si-red{background:#FFF1F2}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.stat-value{font-size:24px;font-weight:800;color:var(--text)}
+.stat-delta{font-size:11px;margin-top:4px;font-weight:600}
+.delta-up{color:var(--success)}
+.delta-dn{color:var(--danger)}
 
-/* CHART ROW */
-.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
-.bar-chart{display:flex;align-items:flex-end;gap:8px;height:100px}
-.bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.bar{width:100%;background:var(--em-dim);border-radius:4px 4px 0 0;position:relative;overflow:hidden;transition:all .3s}
-.bar-fill{position:absolute;bottom:0;width:100%;background:linear-gradient(180deg,var(--em-l),var(--em));border-radius:4px 4px 0 0}
-.bar-label{font-size:10px;color:var(--muted)}
+/* PANELS */
+.panel-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.panel-head{padding:16px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:13px;font-weight:700}
+.panel-body{padding:16px 20px 20px}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:110px;padding-top:8px}
+.bc-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bc-bar{width:100%;background:#EFF6FF;border-radius:4px 4px 0 0;position:relative;min-height:4px}
+.bc-fill{position:absolute;bottom:0;width:100%;background:linear-gradient(180deg,#60A5FA,#2563EB);border-radius:4px 4px 0 0}
+.bc-label{font-size:9px;color:var(--text-3)}
+
+/* ENTITY LIST */
+.entity-list{display:flex;flex-direction:column;gap:10px}
+.entity-item{display:flex;align-items:center;gap:10px}
+.entity-bar-bg{flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden}
+.entity-bar-fill{height:100%;border-radius:4px;background:var(--primary)}
+.entity-name{font-size:11px;color:var(--text-2);width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entity-pct{font-size:11px;font-weight:700;color:var(--text-2);width:32px;text-align:right}
 
 /* TABLE */
-.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.table-title{font-size:14px;font-weight:700}
-.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:13px;font-weight:700}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
+.search-box:focus{border-color:var(--primary)}
 table{width:100%;border-collapse:collapse}
-th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
-td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--faint)}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-paid{background:rgba(16,185,129,0.15);color:var(--em)}
-.badge-pending{background:rgba(251,191,36,0.15);color:#FBB F24}
-.badge-pending{background:rgba(251,191,36,0.12);color:#F59E0B}
-.badge-overdue{background:rgba(248,113,113,0.15);color:#F87171}
-.badge-draft{background:var(--faint);color:var(--muted)}
-.entity-tag{font-size:10px;color:var(--muted);margin-top:2px}
-.amount{font-variant-numeric:tabular-nums;font-weight:600}
+tr:hover td{background:#F8FAFC}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.badge-green{background:#F0FDF4;color:#166534}
+.badge-amber{background:#FFFBEB;color:#92400E}
+.badge-blue{background:#EFF6FF;color:#1E40AF}
+.badge-red{background:#FFF1F2;color:#991B1B}
+.badge-gray{background:#F1F5F9;color:#475569}
 
-@media(max-width:900px){
-  .sidebar{display:none}
-  .stats{grid-template-columns:1fr 1fr}
-  .chart-row{grid-template-columns:1fr}
-  .main{padding:20px 16px}
-}
-@media(max-width:600px){.stats{grid-template-columns:1fr}}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.panel-row{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<div class="demo-banner">
-  <span>🔒 Demo Mode — LedgerPro Multi-Entity Accounting ERP</span>
-  <div class="demo-creds">
-    <span>Login: <b>demo@ledgerpro.app</b></span>
-    <span>Password: <b>demo1234</b></span>
-  </div>
-  <a class="back-link" href="../../">← Back to Portfolio</a>
-</div>
-
-<div class="shell">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="name">LedgerPro</div>
-      <div class="tagline">Multi-Entity Accounting ERP</div>
-    </div>
-    <div class="org-switcher">
-      <span class="org-name">Contoso Holdings Ltd</span>
-      <span class="arrow">▾</span>
-    </div>
-    <nav>
-      <div class="nav-section">Finance</div>
-      <div class="nav-item active"><span class="icon">📊</span> Dashboard</div>
-      <div class="nav-item"><span class="icon">📄</span> Invoices <span class="nav-badge">12</span></div>
-      <div class="nav-item"><span class="icon">💰</span> Payments</div>
-      <div class="nav-item"><span class="icon">🏦</span> Bank Reconciliation</div>
-      <div class="nav-item"><span class="icon">📒</span> General Ledger</div>
-      <div class="nav-section">Reporting</div>
-      <div class="nav-item"><span class="icon">📈</span> P&amp;L Statement</div>
-      <div class="nav-item"><span class="icon">⚖️</span> Balance Sheet</div>
-      <div class="nav-item"><span class="icon">💹</span> Cash Flow</div>
-      <div class="nav-section">Management</div>
-      <div class="nav-item"><span class="icon">🏢</span> Entities</div>
-      <div class="nav-item"><span class="icon">👥</span> Users &amp; Roles</div>
-      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <div class="page-header">
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">📒</div>
       <div>
-        <div class="page-title">Financial Overview</div>
-        <div class="page-sub">Contoso Holdings Ltd · FY 2025–26 · Q2</div>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-ghost">Export PDF</button>
-        <button class="btn btn-primary">+ New Invoice</button>
+        <div class="login-logo-name">LedgerPro</div>
+        <div class="login-logo-tag">Multi-Entity Accounting ERP</div>
       </div>
     </div>
-
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-label">Total Revenue (YTD)</div>
-        <div class="stat-value">$4.2M</div>
-        <div class="stat-delta">↑ 18.4% vs last year</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Outstanding Receivables</div>
-        <div class="stat-value">$312K</div>
-        <div class="stat-delta neg">↑ 3 overdue invoices</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Monthly Expenses</div>
-        <div class="stat-value">$186K</div>
-        <div class="stat-delta">↓ 7.1% vs last month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Net Profit (Q2)</div>
-        <div class="stat-value">$94K</div>
-        <div class="stat-delta">↑ 22.6% margin</div>
-      </div>
+    <div class="login-heading">Welcome back</div>
+    <div class="login-sub">Sign in to your organization account</div>
+    <div class="demo-notice">⚠️ <span><b>Demo Mode</b> — Credentials are pre-filled. Click Sign In to explore.</span></div>
+    <div class="form-group">
+      <label class="form-label">Email address</label>
+      <input class="form-input" id="email-input" type="email" value="demo@ledgerpro.app">
     </div>
-
-    <div class="chart-row">
-      <div class="panel">
-        <div class="panel-title">Monthly Revenue by Entity</div>
-        <div class="bar-chart">
-          <div class="bar-group">
-            <div class="bar" style="height:60px"><div class="bar-fill" style="height:72%"></div></div>
-            <div class="bar-label">Apr</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar" style="height:75px"><div class="bar-fill" style="height:88%"></div></div>
-            <div class="bar-label">May</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar" style="height:55px"><div class="bar-fill" style="height:64%"></div></div>
-            <div class="bar-label">Jun</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar" style="height:80px"><div class="bar-fill" style="height:95%"></div></div>
-            <div class="bar-label">Jul</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar" style="height:70px"><div class="bar-fill" style="height:82%"></div></div>
-            <div class="bar-label">Aug</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar" style="height:90px"><div class="bar-fill" style="height:100%"></div></div>
-            <div class="bar-label">Sep</div>
-          </div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Entity Breakdown</div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-size:13px;font-weight:600">Contoso Trading LLC</div>
-              <div style="font-size:11px;color:var(--muted)">Operating Entity</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:13px;font-weight:700;color:var(--em)">$2.1M</div>
-              <div style="font-size:11px;color:var(--muted)">50% of group</div>
-            </div>
-          </div>
-          <div style="height:1px;background:var(--border)"></div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-size:13px;font-weight:600">Contoso Logistics</div>
-              <div style="font-size:11px;color:var(--muted)">Subsidiary</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:13px;font-weight:700;color:var(--em)">$1.3M</div>
-              <div style="font-size:11px;color:var(--muted)">31% of group</div>
-            </div>
-          </div>
-          <div style="height:1px;background:var(--border)"></div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-size:13px;font-weight:600">Contoso Properties</div>
-              <div style="font-size:11px;color:var(--muted)">Holding</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:13px;font-weight:700;color:var(--em)">$0.8M</div>
-              <div style="font-size:11px;color:var(--muted)">19% of group</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="pass-input" type="password" value="demo1234">
     </div>
-
-    <div class="table-panel">
-      <div class="table-header">
-        <span class="table-title">Recent Invoices</span>
-        <input class="search-box" placeholder="Search invoices…" value="">
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Invoice #</th>
-            <th>Client</th>
-            <th>Entity</th>
-            <th>Amount</th>
-            <th>Due Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>INV-2025-0089</b></td>
-            <td>Apex Industries Ltd</td>
-            <td><div class="entity-tag">Contoso Trading LLC</div></td>
-            <td class="amount">$48,200</td>
-            <td>15 Sep 2025</td>
-            <td><span class="status-badge badge-paid">✓ Paid</span></td>
-          </tr>
-          <tr>
-            <td><b>INV-2025-0090</b></td>
-            <td>Blue River Exports</td>
-            <td><div class="entity-tag">Contoso Logistics</div></td>
-            <td class="amount">$12,750</td>
-            <td>20 Sep 2025</td>
-            <td><span class="status-badge badge-pending">⏳ Pending</span></td>
-          </tr>
-          <tr>
-            <td><b>INV-2025-0091</b></td>
-            <td>Hartwell Group</td>
-            <td><div class="entity-tag">Contoso Trading LLC</div></td>
-            <td class="amount">$95,000</td>
-            <td>01 Sep 2025</td>
-            <td><span class="status-badge badge-overdue">⚠ Overdue</span></td>
-          </tr>
-          <tr>
-            <td><b>INV-2025-0092</b></td>
-            <td>Meridian Properties</td>
-            <td><div class="entity-tag">Contoso Properties</div></td>
-            <td class="amount">$6,400</td>
-            <td>30 Sep 2025</td>
-            <td><span class="status-badge badge-draft">Draft</span></td>
-          </tr>
-          <tr>
-            <td><b>INV-2025-0093</b></td>
-            <td>NovaTech Solutions</td>
-            <td><div class="entity-tag">Contoso Trading LLC</div></td>
-            <td class="amount">$31,500</td>
-            <td>10 Oct 2025</td>
-            <td><span class="status-badge badge-paid">✓ Paid</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-footer">LedgerPro v3.4 · Secure demo environment</div>
+  </div>
 </div>
 
+<!-- APP -->
+<div id="app">
+  <div class="demo-bar">
+    <div class="demo-bar-left"><div class="demo-bar-dot"></div><span>Demo Mode — LedgerPro Multi-Entity Accounting ERP</span></div>
+    <div class="demo-bar-creds">
+      <span>Login: <b>demo@ledgerpro.app</b></span>
+      <span>Password: <b>demo1234</b></span>
+    </div>
+    <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="sidebar-icon">📒</div>
+          <div><div class="sidebar-name">LedgerPro</div><div class="sidebar-tagline">Accounting ERP</div></div>
+        </div>
+        <div class="org-pill">
+          <span class="org-pill-name">Contoso Holdings Ltd</span>
+          <span class="org-pill-arrow">▾</span>
+        </div>
+      </div>
+      <nav>
+        <div class="nav-group-label">Finance</div>
+        <div class="nav-link active">📊 Dashboard</div>
+        <div class="nav-link">📄 Invoices <span class="nav-badge">12</span></div>
+        <div class="nav-link">💳 Payments</div>
+        <div class="nav-link">📈 Journal Entries</div>
+        <div class="nav-group-label">Reporting</div>
+        <div class="nav-link">📑 P&amp;L Statement</div>
+        <div class="nav-link">🏦 Balance Sheet</div>
+        <div class="nav-link">💰 Cash Flow</div>
+        <div class="nav-link">📦 Trial Balance</div>
+        <div class="nav-group-label">Management</div>
+        <div class="nav-link">🏢 Entities</div>
+        <div class="nav-link">👥 Chart of Accounts</div>
+        <div class="nav-link">⚙️ Settings</div>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar">DA</div>
+        <div><div class="user-name">Demo Admin</div><div class="user-role">Finance Controller</div></div>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <div><div class="topbar-title">Financial Dashboard</div><div class="topbar-sub">Fiscal Year 2024–25 · All Entities</div></div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline">Export PDF</button>
+          <button class="btn btn-primary">+ New Invoice</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">Total Revenue</div><div class="stat-value">$4.2M</div><div class="stat-delta delta-up">↑ 14.3% vs last quarter</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📬</div><div class="stat-label">Accounts Receivable</div><div class="stat-value">$312K</div><div class="stat-delta delta-dn">↑ 8.1% aging risk</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">📤</div><div class="stat-label">Total Expenses</div><div class="stat-value">$186K</div><div class="stat-delta delta-up">↓ 3.2% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">📈</div><div class="stat-label">Net Profit</div><div class="stat-value">$94K</div><div class="stat-delta delta-up">↑ 22.5% YoY</div></div>
+        </div>
+        <div class="panel-row">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Monthly Revenue</div><span style="font-size:11px;color:var(--text-3)">FY 2024–25</span></div>
+            <div class="panel-body">
+              <div class="bar-chart" id="rev-chart"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Revenue by Entity</div></div>
+            <div class="panel-body">
+              <div class="entity-list">
+                <div class="entity-item"><span class="entity-name">Contoso Holdings</span><div class="entity-bar-bg"><div class="entity-bar-fill" style="width:72%;background:#2563EB"></div></div><span class="entity-pct">72%</span></div>
+                <div class="entity-item"><span class="entity-name">Contoso Retail</span><div class="entity-bar-bg"><div class="entity-bar-fill" style="width:15%;background:#7C3AED"></div></div><span class="entity-pct">15%</span></div>
+                <div class="entity-item"><span class="entity-name">Contoso Logistics</span><div class="entity-bar-bg"><div class="entity-bar-fill" style="width:9%;background:#0891B2"></div></div><span class="entity-pct">9%</span></div>
+                <div class="entity-item"><span class="entity-name">Contoso RE</span><div class="entity-bar-bg"><div class="entity-bar-fill" style="width:4%;background:#D97706"></div></div><span class="entity-pct">4%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head">
+            <span class="table-title">Recent Invoices</span>
+            <input class="search-box" placeholder="Search invoices…" value="">
+          </div>
+          <table>
+            <thead><tr><th>Invoice #</th><th>Client</th><th>Entity</th><th>Amount</th><th>Due Date</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>INV-2024-0841</b></td><td>Northwind Traders</td><td>Contoso Holdings</td><td>$18,400</td><td>Jan 15, 2025</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>INV-2024-0840</b></td><td>Alpine Industries</td><td>Contoso Retail</td><td>$6,200</td><td>Jan 12, 2025</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td><b>INV-2024-0839</b></td><td>Fabrikam Corp</td><td>Contoso Holdings</td><td>$31,750</td><td>Jan 10, 2025</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td><b>INV-2024-0838</b></td><td>Trey Research</td><td>Contoso Logistics</td><td>$4,800</td><td>Jan 8, 2025</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>INV-2024-0837</b></td><td>Litware Inc</td><td>Contoso Holdings</td><td>$12,600</td><td>Jan 5, 2025</td><td><span class="badge badge-blue">Draft</span></td></tr>
+              <tr><td><b>INV-2024-0836</b></td><td>Proseware Ltd</td><td>Contoso RE</td><td>$9,100</td><td>Dec 30, 2024</td><td><span class="badge badge-green">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function doLogin(){
+  document.getElementById('login-screen').classList.add('hidden');
+  var app=document.getElementById('app');
+  app.classList.add('visible');
+}
+(function(){
+  var months=['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  var vals=[62,71,58,83,90,75,95,88,104];
+  var max=Math.max(...vals);
+  var html='';
+  months.forEach((m,i)=>{
+    var h=Math.round((vals[i]/max)*100);
+    html+=`<div class="bc-group"><div class="bc-bar" style="height:${h}px"><div class="bc-fill" style="height:${h}px"></div></div><div class="bc-label">${m}</div></div>`;
+  });
+  document.getElementById('rev-chart').innerHTML=html;
+})();
+</script>
 </body>
 </html>
