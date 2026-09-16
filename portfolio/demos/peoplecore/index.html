@@ -5,321 +5,216 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PeopleCore — HR Management System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#080F1A;--surf:#0F1C2E;--card:#131F30;--em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);--border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;--warn:#F59E0B;--danger:#F87171;--info:#60A5FA;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+:root{
+  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
+  --primary:#0F766E;--primary-h:#0D6B62;
+  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
-.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}.demo-creds b{color:var(--em-l)}
-.back-link{font-size:12px;color:var(--muted);transition:color .2s}.back-link:hover{color:var(--em)}
-.shell{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
-.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
-nav{flex:1}
-.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
-.nav-item:hover{background:var(--em-dim);color:var(--text)}
-.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
-.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
-.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
-.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.header-actions{display:flex;gap:10px}
-.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
-.btn-primary{background:var(--em);color:#000}.btn-primary:hover{background:var(--em-l)}
-.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen.hidden{display:none}
+.login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
+.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--primary)}
+.btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+#app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
+.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
+.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.shell{display:flex;flex:1}
+.sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
+.sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-brand{display:flex;align-items:center;gap:10px}
+.sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+nav{padding:8px 0;flex:1;overflow-y:auto}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
+.nav-link.active{background:rgba(15,118,110,.15);color:#5EEAD4;border-left-color:#0F766E;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--warning);color:#000;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.content{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
-.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
-.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
-.stat-delta.neg{color:var(--danger)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
-/* Attendance grid */
-.att-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.att-name{font-size:12px;font-weight:600;width:110px;flex-shrink:0}
-.att-bars{display:flex;gap:3px;flex:1}
-.att-day{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
-.att-present{background:var(--em-dim);border:1px solid var(--em);color:var(--em)}
-.att-absent{background:rgba(248,113,113,0.1);border:1px solid var(--danger);color:var(--danger)}
-.att-leave{background:rgba(245,158,11,0.1);border:1px solid var(--warn);color:var(--warn)}
-.att-weekend{background:var(--faint);color:var(--muted)}
-/* Leave requests */
-.leave-item{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.leave-emp{font-size:13px;font-weight:600}
-.leave-type{font-size:11px;color:var(--muted);margin-top:2px}
-.leave-dates{font-size:11px;color:var(--info);margin-top:2px}
-.leave-actions{display:flex;gap:6px}
-.la-btn{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;border:none;cursor:pointer}
-.la-approve{background:var(--em);color:#000}
-.la-reject{background:var(--faint);color:var(--danger);border:1px solid rgba(248,113,113,0.3)}
-/* Payroll */
-.pay-bar{margin-bottom:12px}
-.pay-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
-.pay-name{font-weight:600}
-.pay-amount{color:var(--em);font-weight:700}
-.pay-track{height:6px;background:var(--faint);border-radius:3px;overflow:hidden}
-.pay-fill{height:100%;background:linear-gradient(90deg,var(--em),var(--em-l));border-radius:3px}
-/* Employee table */
-.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.table-title{font-size:14px;font-weight:700}
-.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.si-teal{background:#F0FDFA}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.stat-value{font-size:24px;font-weight:800;color:var(--text)}
+.stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.panel-title{font-size:13px;font-weight:700}
+.att-scroll{overflow-x:auto}
+.att-table{width:max-content;min-width:100%}
+.att-table th{padding:6px 10px;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:center;border-bottom:1px solid var(--border)}
+.att-table td{padding:7px 10px;font-size:11px;border-bottom:1px solid var(--border);text-align:center}
+.att-table td:first-child{text-align:left;font-weight:600;color:var(--text);min-width:120px}
+.att-cell{display:inline-block;width:22px;height:22px;border-radius:4px;font-size:10px;font-weight:700;line-height:22px;text-align:center}
+.ac-p{background:#F0FDFA;color:#0F766E}
+.ac-a{background:#FFF1F2;color:#991B1B}
+.ac-h{background:#FFFBEB;color:#92400E}
+.ac-l{background:#EFF6FF;color:#1E40AF}
+.leave-list{display:flex;flex-direction:column}
+.leave-item{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.leave-item:last-child{border-bottom:none}
+.leave-name{font-size:12px;font-weight:600;color:var(--text)}
+.leave-type{font-size:11px;color:var(--text-3)}
+.leave-dates{font-size:11px;color:var(--text-2)}
+.leave-btns{display:flex;gap:6px}
+.lbtn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+.lbtn-approve{background:#F0FDF4;color:#166534}
+.lbtn-deny{background:#FFF1F2;color:#991B1B}
+.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:13px;font-weight:700}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
 table{width:100%;border-collapse:collapse}
-th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
-td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--faint)}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-active{background:rgba(16,185,129,0.15);color:var(--em)}
-.badge-leave{background:rgba(245,158,11,0.12);color:var(--warn)}
-.badge-probation{background:rgba(96,165,250,0.12);color:var(--info)}
-@media(max-width:900px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.main{padding:20px 16px}}
-@media(max-width:600px){.stats{grid-template-columns:1fr}}
+tr:hover td{background:#F8FAFC}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
+.badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{display:none}}
 </style>
 </head>
 <body>
-
-<div class="demo-banner">
-  <span>🔒 Demo Mode — PeopleCore HR Management System</span>
-  <div class="demo-creds">
-    <span>Login: <b>demo@peoplecore.app</b></span>
-    <span>Password: <b>demo1234</b></span>
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">👔</div>
+      <div><div class="login-logo-name">PeopleCore</div><div class="login-logo-tag">HR Management System</div></div>
+    </div>
+    <div class="login-heading">HR Admin Login</div>
+    <div class="login-sub">Sign in to manage your workforce</div>
+    <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
+    <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@peoplecore.app"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-footer">PeopleCore v2.7 · Secure demo environment</div>
   </div>
-  <a class="back-link" href="../../">← Back to Portfolio</a>
 </div>
-
-<div class="shell">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="name">PeopleCore</div>
-      <div class="tagline">HR Management System</div>
-    </div>
-    <nav>
-      <div class="nav-section">Workforce</div>
-      <div class="nav-item active"><span class="icon">📊</span> Dashboard</div>
-      <div class="nav-item"><span class="icon">👥</span> Employees</div>
-      <div class="nav-item"><span class="icon">📁</span> Departments</div>
-      <div class="nav-item"><span class="icon">🕐</span> Attendance</div>
-      <div class="nav-section">Leave & Payroll</div>
-      <div class="nav-item"><span class="icon">📅</span> Leave Requests <span class="nav-badge">4</span></div>
-      <div class="nav-item"><span class="icon">💰</span> Payroll</div>
-      <div class="nav-item"><span class="icon">📄</span> Payslips</div>
-      <div class="nav-section">Performance</div>
-      <div class="nav-item"><span class="icon">🎯</span> Appraisals</div>
-      <div class="nav-item"><span class="icon">🏆</span> Recognition</div>
-      <div class="nav-section">Recruitment</div>
-      <div class="nav-item"><span class="icon">📝</span> Job Openings</div>
-      <div class="nav-item"><span class="icon">🤝</span> Onboarding</div>
-      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <div class="page-header">
-      <div>
-        <div class="page-title">HR Overview</div>
-        <div class="page-sub">September 2025 · All Departments</div>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-ghost">Run Payroll</button>
-        <button class="btn btn-primary">+ Add Employee</button>
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-label">Total Employees</div>
-        <div class="stat-value">87</div>
-        <div class="stat-delta">↑ 4 new hires this month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Present Today</div>
-        <div class="stat-value">74</div>
-        <div class="stat-delta">85.1% attendance</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Pending Leaves</div>
-        <div class="stat-value">4</div>
-        <div class="stat-delta neg">Requires approval</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Monthly Payroll</div>
-        <div class="stat-value">$142K</div>
-        <div class="stat-delta">↑ 3.2% vs last month</div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="panel">
-        <div class="panel-title">Attendance This Week (Mon–Fri)</div>
-        <div class="att-row">
-          <div class="att-name">Sana Mirza</div>
-          <div class="att-bars">
-            <div class="att-day att-present">M</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-present">W</div>
-            <div class="att-day att-leave">L</div>
-            <div class="att-day att-present">F</div>
-          </div>
-        </div>
-        <div class="att-row">
-          <div class="att-name">Usman Tariq</div>
-          <div class="att-bars">
-            <div class="att-day att-present">M</div>
-            <div class="att-day att-absent">A</div>
-            <div class="att-day att-present">W</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-present">F</div>
-          </div>
-        </div>
-        <div class="att-row">
-          <div class="att-name">Nadia Khan</div>
-          <div class="att-bars">
-            <div class="att-day att-present">M</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-present">W</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-present">F</div>
-          </div>
-        </div>
-        <div class="att-row">
-          <div class="att-name">Ahmed Raza</div>
-          <div class="att-bars">
-            <div class="att-day att-leave">L</div>
-            <div class="att-day att-leave">L</div>
-            <div class="att-day att-present">W</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-present">F</div>
-          </div>
-        </div>
-        <div class="att-row">
-          <div class="att-name">Sara Qureshi</div>
-          <div class="att-bars">
-            <div class="att-day att-present">M</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-absent">A</div>
-            <div class="att-day att-present">T</div>
-            <div class="att-day att-present">F</div>
-          </div>
+<div id="app">
+  <div class="demo-bar">
+    <div><span class="demo-bar-dot"></span>Demo Mode — PeopleCore HR Management System</div>
+    <div class="demo-bar-creds"><span>Login: <b>demo@peoplecore.app</b></span><span>Password: <b>demo1234</b></span></div>
+    <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="sidebar-icon">👔</div>
+          <div><div class="sidebar-name">PeopleCore</div><div class="sidebar-tagline">HR Management</div></div>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-title">Leave Requests</div>
-        <div class="leave-item">
-          <div>
-            <div class="leave-emp">Usman Tariq</div>
-            <div class="leave-type">Annual Leave</div>
-            <div class="leave-dates">Sep 22 – Sep 26 (5 days)</div>
+      <nav>
+        <div class="nav-group-label">People</div>
+        <div class="nav-link active">📊 Dashboard</div>
+        <div class="nav-link">👥 Employees</div>
+        <div class="nav-link">🗓 Attendance</div>
+        <div class="nav-link">🏖 Leave Requests <span class="nav-badge">4</span></div>
+        <div class="nav-group-label">Payroll</div>
+        <div class="nav-link">💰 Payroll</div>
+        <div class="nav-link">📊 Salary Structure</div>
+        <div class="nav-link">🎁 Benefits</div>
+        <div class="nav-group-label">Reports</div>
+        <div class="nav-link">📈 HR Analytics</div>
+        <div class="nav-link">📋 Compliance</div>
+        <div class="nav-link">⚙️ Settings</div>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar">DA</div>
+        <div><div class="user-name">Demo Admin</div><div class="user-role">HR Manager</div></div>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <div><div class="topbar-title">HR Dashboard</div><div class="topbar-sub">January 2025 · 48 Employees</div></div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline">Run Payroll</button>
+          <button class="btn btn-primary">+ Add Employee</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-teal">👥</div><div class="stat-label">Total Employees</div><div class="stat-value">48</div><div class="stat-delta delta-up">↑ 3 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Present Today</div><div class="stat-value">41</div><div class="stat-delta delta-up">85.4% attendance</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🏖</div><div class="stat-label">On Leave</div><div class="stat-value">4</div><div class="stat-delta">Within policy</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">💰</div><div class="stat-label">Payroll This Month</div><div class="stat-value">₨2.1M</div><div class="stat-delta delta-up">↑ 4.2% vs last</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Attendance — Jan 6–12</div><span style="font-size:10px;color:var(--text-3)">P=Present A=Absent H=Holiday L=Leave</span></div>
+            <div style="padding:0 0 16px;overflow-x:auto">
+              <table class="att-table">
+                <thead><tr><th style="text-align:left">Employee</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
+                <tbody>
+                  <tr><td>Zara Khan</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
+                  <tr><td>Kamran Ali</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-a">A</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
+                  <tr><td>Nadia Hussain</td><td><span class="att-cell ac-l">L</span></td><td><span class="att-cell ac-l">L</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
+                  <tr><td>Hassan Raza</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-a">A</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
+                  <tr><td>Sara Malik</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="leave-actions">
-            <button class="la-btn la-approve">✓</button>
-            <button class="la-btn la-reject">✗</button>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Leave Requests</div><span style="font-size:11px;color:var(--warning)">4 pending</span></div>
+            <div class="leave-list">
+              <div class="leave-item"><div><div class="leave-name">Rania Tariq</div><div class="leave-type">Annual Leave</div><div class="leave-dates">Jan 18–20 (3 days)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
+              <div class="leave-item"><div><div class="leave-name">Bilal Saeed</div><div class="leave-type">Sick Leave</div><div class="leave-dates">Jan 17 (1 day)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
+              <div class="leave-item"><div><div class="leave-name">Ayesha Noor</div><div class="leave-type">Casual Leave</div><div class="leave-dates">Jan 22–23 (2 days)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
+              <div class="leave-item"><div><div class="leave-name">Imran Farooq</div><div class="leave-type">Annual Leave</div><div class="leave-dates">Jan 28–31 (4 days)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
+            </div>
           </div>
         </div>
-        <div class="leave-item">
-          <div>
-            <div class="leave-emp">Sara Qureshi</div>
-            <div class="leave-type">Medical Leave</div>
-            <div class="leave-dates">Sep 18 – Sep 19 (2 days)</div>
-          </div>
-          <div class="leave-actions">
-            <button class="la-btn la-approve">✓</button>
-            <button class="la-btn la-reject">✗</button>
-          </div>
-        </div>
-        <div style="margin-top:16px">
-          <div class="panel-title">Payroll by Department</div>
-          <div class="pay-bar">
-            <div class="pay-label"><span class="pay-name">Engineering</span><span class="pay-amount">$54K</span></div>
-            <div class="pay-track"><div class="pay-fill" style="width:80%"></div></div>
-          </div>
-          <div class="pay-bar">
-            <div class="pay-label"><span class="pay-name">Sales & BPO</span><span class="pay-amount">$42K</span></div>
-            <div class="pay-track"><div class="pay-fill" style="width:62%"></div></div>
-          </div>
-          <div class="pay-bar">
-            <div class="pay-label"><span class="pay-name">Operations</span><span class="pay-amount">$28K</span></div>
-            <div class="pay-track"><div class="pay-fill" style="width:40%"></div></div>
-          </div>
-          <div class="pay-bar">
-            <div class="pay-label"><span class="pay-name">HR & Admin</span><span class="pay-amount">$18K</span></div>
-            <div class="pay-track"><div class="pay-fill" style="width:26%"></div></div>
-          </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Employee Directory</span><input class="search-box" placeholder="Search employees…"></div>
+          <table>
+            <thead><tr><th>Name</th><th>Department</th><th>Position</th><th>Joined</th><th>Salary</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Zara Khan</b></td><td>Engineering</td><td>Senior Developer</td><td>Mar 2022</td><td>₨120K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Kamran Ali</b></td><td>Sales</td><td>Sales Executive</td><td>Aug 2023</td><td>₨65K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Nadia Hussain</b></td><td>Marketing</td><td>Brand Manager</td><td>Jan 2021</td><td>₨90K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Hassan Raza</b></td><td>Operations</td><td>Ops Coordinator</td><td>Nov 2023</td><td>₨55K/mo</td><td><span class="badge badge-amber">Probation</span></td></tr>
+              <tr><td><b>Sara Malik</b></td><td>Finance</td><td>Accounts Officer</td><td>Jun 2022</td><td>₨75K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-
-    <div class="table-panel">
-      <div class="table-header">
-        <span class="table-title">Employee Directory</span>
-        <input class="search-box" placeholder="Search employees…" value="">
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Department</th>
-            <th>Role</th>
-            <th>Join Date</th>
-            <th>Salary</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>Sana Mirza</b><div style="font-size:11px;color:var(--muted)">EMP-1041</div></td>
-            <td>Engineering</td>
-            <td>Senior Dev</td>
-            <td>Mar 2023</td>
-            <td>$3,400/mo</td>
-            <td><span class="status-badge badge-active">✓ Active</span></td>
-          </tr>
-          <tr>
-            <td><b>Usman Tariq</b><div style="font-size:11px;color:var(--muted)">EMP-1052</div></td>
-            <td>Sales</td>
-            <td>Account Mgr</td>
-            <td>Jun 2023</td>
-            <td>$2,200/mo</td>
-            <td><span class="status-badge badge-leave">📅 On Leave</span></td>
-          </tr>
-          <tr>
-            <td><b>Nadia Khan</b><div style="font-size:11px;color:var(--muted)">EMP-1038</div></td>
-            <td>Operations</td>
-            <td>Ops Manager</td>
-            <td>Jan 2022</td>
-            <td>$2,800/mo</td>
-            <td><span class="status-badge badge-active">✓ Active</span></td>
-          </tr>
-          <tr>
-            <td><b>Ahmed Raza</b><div style="font-size:11px;color:var(--muted)">EMP-1067</div></td>
-            <td>Engineering</td>
-            <td>Frontend Dev</td>
-            <td>Aug 2025</td>
-            <td>$1,800/mo</td>
-            <td><span class="status-badge badge-probation">🔵 Probation</span></td>
-          </tr>
-          <tr>
-            <td><b>Sara Qureshi</b><div style="font-size:11px;color:var(--muted)">EMP-1044</div></td>
-            <td>HR</td>
-            <td>HR Specialist</td>
-            <td>Nov 2022</td>
-            <td>$1,600/mo</td>
-            <td><span class="status-badge badge-active">✓ Active</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+  </div>
 </div>
-
+<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
 </body>
 </html>

@@ -5,301 +5,217 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DialDesk — Call Center CRM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080F1A;--surf:#0F1C2E;--card:#131F30;
-  --em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);
-  --border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;
-  --warn:#F59E0B;--danger:#F87171;--info:#60A5FA;
+  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
+  --primary:#7C3AED;--primary-h:#6D28D9;--primary-soft:#F5F3FF;
+  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
 }
-*{box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
-.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}
-.demo-creds b{color:var(--em-l)}
-.back-link{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;transition:color .2s}
-.back-link:hover{color:var(--em)}
-.shell{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
-.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
-nav{flex:1}
-.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
-.nav-item:hover{background:var(--em-dim);color:var(--text)}
-.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
-.nav-item .icon{width:16px;text-align:center;font-size:14px}
-.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
-.agent-status{margin:16px 12px 0;background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
-.agent-status .label{font-size:10px;color:var(--muted);margin-bottom:4px}
-.agent-dot{display:inline-block;width:7px;height:7px;background:var(--em);border-radius:50%;margin-right:5px}
-.agent-name{font-size:12px;font-weight:600}
-.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
-.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
-.header-actions{display:flex;gap:10px}
-.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
-.btn-primary{background:var(--em);color:#000}
-.btn-primary:hover{background:var(--em-l)}
-.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen.hidden{display:none}
+.login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}
+.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
+.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--primary)}
+.btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.btn-login:hover{background:var(--primary-h)}
+.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+#app{display:none;flex-direction:column;min-height:100vh}
+#app.visible{display:flex}
+.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
+.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.shell{display:flex;flex:1}
+.sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
+.sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-brand{display:flex;align-items:center;gap:10px}
+.sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}
+.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+nav{padding:8px 0;flex:1;overflow-y:auto}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
+.nav-link.active{background:rgba(124,58,237,.15);color:#C4B5FD;border-left-color:#7C3AED;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.content{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
-.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
-.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
-.stat-delta.neg{color:var(--danger)}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.si-purple{background:#F5F3FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.stat-value{font-size:24px;font-weight:800;color:var(--text)}
+.stat-delta{font-size:11px;margin-top:4px;font-weight:600}
+.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
-.call-queue{display:flex;flex-direction:column;gap:8px}
-.queue-item{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center}
-.queue-caller{font-size:13px;font-weight:600}
-.queue-wait{font-size:11px;color:var(--warn);margin-top:2px}
-.queue-actions{display:flex;gap:6px}
-.q-btn{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
-.q-pickup{background:var(--em);color:#000}
-.q-skip{background:var(--faint);color:var(--muted);border:1px solid var(--border)}
-.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.agent-card{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:10px}
-.a-name{font-size:12px;font-weight:600}
-.a-status{font-size:11px;margin-top:2px}
-.online{color:var(--em)}
-.busy{color:var(--warn)}
-.offline{color:var(--muted)}
-.a-calls{font-size:11px;color:var(--muted);margin-top:2px}
-.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.table-title{font-size:14px;font-weight:700}
-.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.panel-head{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.panel-title{font-size:13px;font-weight:700}
+.panel-body{padding:16px 20px}
+.agent-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.agent-card{border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.agent-dot{width:10px;height:10px;border-radius:50%;margin:0 auto 6px}
+.dot-online{background:#10B981}.dot-busy{background:#F59E0B}.dot-away{background:#94A3B8}
+.agent-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.agent-status{font-size:10px;color:var(--text-3)}
+.queue-list{display:flex;flex-direction:column;gap:8px}
+.queue-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#F8FAFC;border-radius:8px;border:1px solid var(--border)}
+.q-caller{font-size:12px;font-weight:600}
+.q-wait{font-size:11px;color:var(--danger);font-weight:600}
+.q-type{font-size:10px;color:var(--text-3)}
+.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:13px;font-weight:700}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
 table{width:100%;border-collapse:collapse}
-th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
-td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--faint)}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-won{background:rgba(16,185,129,0.15);color:var(--em)}
-.badge-open{background:rgba(96,165,250,0.12);color:var(--info)}
-.badge-lost{background:rgba(248,113,113,0.12);color:var(--danger)}
-.badge-follow{background:rgba(245,158,11,0.12);color:var(--warn)}
-@media(max-width:900px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.main{padding:20px 16px}}
-@media(max-width:600px){.stats{grid-template-columns:1fr}}
+tr:hover td{background:#F8FAFC}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
+.badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
+.badge-purple{background:#F5F3FF;color:#5B21B6}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{display:none}.agent-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-
-<div class="demo-banner">
-  <span>🔒 Demo Mode — DialDesk Call Center CRM Platform</span>
-  <div class="demo-creds">
-    <span>Login: <b>demo@dialdesk.app</b></span>
-    <span>Password: <b>demo1234</b></span>
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">📞</div>
+      <div><div class="login-logo-name">DialDesk</div><div class="login-logo-tag">Call Center CRM</div></div>
+    </div>
+    <div class="login-heading">Agent Login</div>
+    <div class="login-sub">Sign in to access your call center workspace</div>
+    <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
+    <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@dialdesk.app"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-footer">DialDesk v2.8 · Secure demo environment</div>
   </div>
-  <a class="back-link" href="../../">← Back to Portfolio</a>
 </div>
-
-<div class="shell">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="name">DialDesk</div>
-      <div class="tagline">Call Center CRM Platform</div>
-    </div>
-    <nav>
-      <div class="nav-section">Operations</div>
-      <div class="nav-item active"><span class="icon">📞</span> Live Dashboard</div>
-      <div class="nav-item"><span class="icon">📋</span> Call Queue <span class="nav-badge">7</span></div>
-      <div class="nav-item"><span class="icon">🎧</span> My Calls</div>
-      <div class="nav-item"><span class="icon">🗓️</span> Callbacks</div>
-      <div class="nav-section">CRM</div>
-      <div class="nav-item"><span class="icon">👥</span> Leads</div>
-      <div class="nav-item"><span class="icon">🏢</span> Accounts</div>
-      <div class="nav-item"><span class="icon">💼</span> Deals</div>
-      <div class="nav-item"><span class="icon">📊</span> Pipeline</div>
-      <div class="nav-section">Reporting</div>
-      <div class="nav-item"><span class="icon">📈</span> Performance</div>
-      <div class="nav-item"><span class="icon">📉</span> Call Analytics</div>
-      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
-    </nav>
-    <div class="agent-status">
-      <div class="label">LOGGED IN AS</div>
-      <div><span class="agent-dot"></span><span class="agent-name">Demo Agent</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:2px">Available · Ext. 1042</div>
-    </div>
-  </aside>
-
-  <main class="main">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Live Operations Dashboard</div>
-        <div class="page-sub">Today · September 16, 2025 · Real-time view</div>
+<div id="app">
+  <div class="demo-bar">
+    <div><span class="demo-bar-dot"></span>Demo Mode — DialDesk Call Center CRM</div>
+    <div class="demo-bar-creds"><span>Login: <b>demo@dialdesk.app</b></span><span>Password: <b>demo1234</b></span></div>
+    <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="sidebar-icon">📞</div>
+          <div><div class="sidebar-name">DialDesk</div><div class="sidebar-tagline">Call Center CRM</div></div>
+        </div>
       </div>
-      <div class="header-actions">
-        <button class="btn btn-ghost">📊 Reports</button>
-        <button class="btn btn-primary">+ New Lead</button>
+      <nav>
+        <div class="nav-group-label">Operations</div>
+        <div class="nav-link active">📊 Dashboard</div>
+        <div class="nav-link">📋 Call Queue <span class="nav-badge">8</span></div>
+        <div class="nav-link">📞 Active Calls</div>
+        <div class="nav-link">📅 Scheduled Callbacks</div>
+        <div class="nav-group-label">CRM</div>
+        <div class="nav-link">👤 Leads</div>
+        <div class="nav-link">🏢 Accounts</div>
+        <div class="nav-link">📁 Contacts</div>
+        <div class="nav-group-label">Reports</div>
+        <div class="nav-link">📈 Performance</div>
+        <div class="nav-link">⏱ Call Analytics</div>
+        <div class="nav-link">⚙️ Settings</div>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar">DA</div>
+        <div><div class="user-name">Demo Admin</div><div class="user-role">Supervisor</div></div>
       </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-label">Calls Today</div>
-        <div class="stat-value">347</div>
-        <div class="stat-delta">↑ 23% vs yesterday</div>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <div><div class="topbar-title">Operations Dashboard</div><div class="topbar-sub">Live view · Today, Jan 14 2025</div></div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline">Reports</button>
+          <button class="btn btn-primary">+ Add Lead</button>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Avg Handle Time</div>
-        <div class="stat-value">4m 12s</div>
-        <div class="stat-delta">↓ 18s improvement</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Conversion Rate</div>
-        <div class="stat-value">8.4%</div>
-        <div class="stat-delta">↑ 1.2% this week</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Queue Waiting</div>
-        <div class="stat-value">7</div>
-        <div class="stat-delta neg">Avg wait 3m 40s</div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="panel">
-        <div class="panel-title">Live Call Queue</div>
-        <div class="call-queue">
-          <div class="queue-item">
-            <div>
-              <div class="queue-caller">+1 (555) 812-4490</div>
-              <div class="queue-wait">⏱ Waiting 4m 22s · Returning customer</div>
-            </div>
-            <div class="queue-actions">
-              <button class="q-btn q-pickup">📞</button>
-              <button class="q-btn q-skip">→</button>
+      <div class="content">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">📞</div><div class="stat-label">Calls Today</div><div class="stat-value">347</div><div class="stat-delta delta-up">↑ 12% vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏱</div><div class="stat-label">Avg Handle Time</div><div class="stat-value">4m 12s</div><div class="stat-delta delta-up">↓ 18s improved</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Conversion Rate</div><div class="stat-value">8.4%</div><div class="stat-delta delta-up">↑ 1.2% this week</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">⚠️</div><div class="stat-label">Abandoned Calls</div><div class="stat-value">23</div><div class="stat-delta delta-dn">↑ 5 from target</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Agent Status (6 Agents)</div><span style="font-size:11px;color:var(--success)">● 4 Online</span></div>
+            <div class="panel-body">
+              <div class="agent-grid">
+                <div class="agent-card"><div class="agent-dot dot-online"></div><div class="agent-name">Sarah K.</div><div class="agent-status">On Call</div></div>
+                <div class="agent-card"><div class="agent-dot dot-online"></div><div class="agent-name">James R.</div><div class="agent-status">Available</div></div>
+                <div class="agent-card"><div class="agent-dot dot-busy"></div><div class="agent-name">Aisha M.</div><div class="agent-status">Wrap-up</div></div>
+                <div class="agent-card"><div class="agent-dot dot-online"></div><div class="agent-name">Tyler B.</div><div class="agent-status">On Call</div></div>
+                <div class="agent-card"><div class="agent-dot dot-online"></div><div class="agent-name">Priya S.</div><div class="agent-status">Available</div></div>
+                <div class="agent-card"><div class="agent-dot dot-away"></div><div class="agent-name">Marco D.</div><div class="agent-status">Break</div></div>
+              </div>
             </div>
           </div>
-          <div class="queue-item">
-            <div>
-              <div class="queue-caller">+1 (555) 300-7821</div>
-              <div class="queue-wait">⏱ Waiting 2m 08s · New inquiry</div>
-            </div>
-            <div class="queue-actions">
-              <button class="q-btn q-pickup">📞</button>
-              <button class="q-btn q-skip">→</button>
-            </div>
-          </div>
-          <div class="queue-item">
-            <div>
-              <div class="queue-caller">+1 (555) 445-1190</div>
-              <div class="queue-wait">⏱ Waiting 1m 51s · Callback request</div>
-            </div>
-            <div class="queue-actions">
-              <button class="q-btn q-pickup">📞</button>
-              <button class="q-btn q-skip">→</button>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Call Queue</div><span style="font-size:11px;color:var(--danger)">8 waiting</span></div>
+            <div class="panel-body">
+              <div class="queue-list">
+                <div class="queue-item"><div><div class="q-caller">+1 (202) 555-0184</div><div class="q-type">Sales Inquiry</div></div><div class="q-wait">3m 42s</div></div>
+                <div class="queue-item"><div><div class="q-caller">+1 (312) 555-0091</div><div class="q-type">Support</div></div><div class="q-wait">2m 18s</div></div>
+                <div class="queue-item"><div><div class="q-caller">+1 (415) 555-0237</div><div class="q-type">Callback</div></div><div class="q-wait">1m 05s</div></div>
+                <div class="queue-item"><div><div class="q-caller">+1 (713) 555-0163</div><div class="q-type">Sales Inquiry</div></div><div class="q-wait">0m 44s</div></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Agent Status</div>
-        <div class="agent-grid">
-          <div class="agent-card">
-            <div class="a-name">Sarah M.</div>
-            <div class="a-status online">● On call</div>
-            <div class="a-calls">62 calls · 91% sat.</div>
-          </div>
-          <div class="agent-card">
-            <div class="a-name">Marcus T.</div>
-            <div class="a-status online">● Available</div>
-            <div class="a-calls">55 calls · 88% sat.</div>
-          </div>
-          <div class="agent-card">
-            <div class="a-name">Priya K.</div>
-            <div class="a-status busy">● Wrap-up</div>
-            <div class="a-calls">71 calls · 94% sat.</div>
-          </div>
-          <div class="agent-card">
-            <div class="a-name">Jake R.</div>
-            <div class="a-status online">● On call</div>
-            <div class="a-calls">48 calls · 86% sat.</div>
-          </div>
-          <div class="agent-card">
-            <div class="a-name">Demo Agent</div>
-            <div class="a-status online">● Available</div>
-            <div class="a-calls">0 calls · — sat.</div>
-          </div>
-          <div class="agent-card">
-            <div class="a-name">Linda P.</div>
-            <div class="a-status offline">● Break</div>
-            <div class="a-calls">39 calls · 89% sat.</div>
-          </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Leads Pipeline</span><input class="search-box" placeholder="Search leads…"></div>
+          <table>
+            <thead><tr><th>Lead</th><th>Company</th><th>Phone</th><th>Last Called</th><th>Attempts</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Michael Torres</b></td><td>Apex Solutions</td><td>+1 (212) 555-0142</td><td>Today 11:22 AM</td><td>3</td><td><span class="badge badge-green">Interested</span></td></tr>
+              <tr><td><b>Jennifer Wu</b></td><td>Global Ventures</td><td>+1 (415) 555-0088</td><td>Today 10:45 AM</td><td>1</td><td><span class="badge badge-blue">New</span></td></tr>
+              <tr><td><b>David Okonkwo</b></td><td>Frontier Tech</td><td>+1 (312) 555-0213</td><td>Yesterday</td><td>5</td><td><span class="badge badge-amber">Follow-up</span></td></tr>
+              <tr><td><b>Lisa Petrov</b></td><td>Cascade Media</td><td>+1 (503) 555-0174</td><td>Jan 12</td><td>2</td><td><span class="badge badge-purple">Callback</span></td></tr>
+              <tr><td><b>Omar Hassan</b></td><td>BlueSky Corp</td><td>+1 (702) 555-0099</td><td>Jan 11</td><td>7</td><td><span class="badge badge-red">Not Interested</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-
-    <div class="table-panel">
-      <div class="table-header">
-        <span class="table-title">Recent Leads &amp; Deals</span>
-        <input class="search-box" placeholder="Search leads…" value="">
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Contact</th>
-            <th>Company</th>
-            <th>Source</th>
-            <th>Agent</th>
-            <th>Value</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>Robert Haines</b><div style="font-size:11px;color:var(--muted)">+1 555 812 4490</div></td>
-            <td>Haines &amp; Co.</td>
-            <td>Inbound</td>
-            <td>Sarah M.</td>
-            <td>$18,000</td>
-            <td><span class="status-badge badge-open">● Open</span></td>
-          </tr>
-          <tr>
-            <td><b>Diana Okafor</b><div style="font-size:11px;color:var(--muted)">+1 555 209 3312</div></td>
-            <td>Nova Retail</td>
-            <td>Outbound</td>
-            <td>Marcus T.</td>
-            <td>$6,400</td>
-            <td><span class="status-badge badge-won">✓ Won</span></td>
-          </tr>
-          <tr>
-            <td><b>Farrukh Nazarov</b><div style="font-size:11px;color:var(--muted)">+1 555 741 0022</div></td>
-            <td>ClearPath Ltd</td>
-            <td>Web Form</td>
-            <td>Priya K.</td>
-            <td>$42,000</td>
-            <td><span class="status-badge badge-follow">⏰ Follow-up</span></td>
-          </tr>
-          <tr>
-            <td><b>Lisa Chen</b><div style="font-size:11px;color:var(--muted)">+1 555 998 1203</div></td>
-            <td>Chen Distributors</td>
-            <td>Referral</td>
-            <td>Jake R.</td>
-            <td>$9,200</td>
-            <td><span class="status-badge badge-lost">✗ Lost</span></td>
-          </tr>
-          <tr>
-            <td><b>Tom Bradley</b><div style="font-size:11px;color:var(--muted)">+1 555 334 5870</div></td>
-            <td>Bradley Services</td>
-            <td>Outbound</td>
-            <td>Sarah M.</td>
-            <td>$27,500</td>
-            <td><span class="status-badge badge-open">● Open</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+  </div>
 </div>
-
+<script>
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+</script>
 </body>
 </html>

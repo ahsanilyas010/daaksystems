@@ -3,304 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HubSpace — Coworking Space Management ERP</title>
+<title>HubSpace — Coworking Space Management</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#080F1A;--surf:#0F1C2E;--card:#131F30;--em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);--border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;--warn:#F59E0B;--danger:#F87171;--info:#60A5FA;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+:root{
+  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
+  --primary:#7C3AED;--primary-h:#6D28D9;
+  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
-.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}.demo-creds b{color:var(--em-l)}
-.back-link{font-size:12px;color:var(--muted);transition:color .2s}.back-link:hover{color:var(--em)}
-.shell{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
-.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
-nav{flex:1}
-.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
-.nav-item:hover{background:var(--em-dim);color:var(--text)}
-.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
-.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
-.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
-.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.header-actions{display:flex;gap:10px}
-.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
-.btn-primary{background:var(--em);color:#000}.btn-primary:hover{background:var(--em-l)}
-.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen.hidden{display:none}
+.login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
+.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--primary)}
+.btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+#app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
+.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
+.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.shell{display:flex;flex:1}
+.sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
+.sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-brand{display:flex;align-items:center;gap:10px}
+.sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+nav{padding:8px 0;flex:1;overflow-y:auto}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
+.nav-link.active{background:rgba(124,58,237,.15);color:#C4B5FD;border-left-color:#7C3AED;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--warning);color:#000;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.content{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
-.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
-.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
-.stat-delta.neg{color:var(--danger)}
-.two-col{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
-/* Floor plan */
-.floor-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
-.desk{width:100%;aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;border:1px solid transparent;transition:all .15s}
-.desk-free{background:var(--em-dim);border-color:var(--em);color:var(--em)}
-.desk-occupied{background:var(--faint);border-color:var(--border);color:var(--muted)}
-.desk-reserved{background:rgba(245,158,11,0.1);border-color:var(--warn);color:var(--warn)}
-.desk-disabled{background:rgba(0,0,0,.2);border-color:var(--border);color:var(--faint)}
-.floor-legend{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
-.legend-dot{width:10px;height:10px;border-radius:3px}
-.ld-free{background:var(--em)}
-.ld-occ{background:var(--faint)}
-.ld-res{background:var(--warn)}
-/* Meeting rooms */
-.room-item{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
-.room-name{font-size:13px;font-weight:600}
-.room-cap{font-size:11px;color:var(--muted);margin-top:2px}
-.room-status{font-size:11px;font-weight:600;text-align:right}
-.rs-free{color:var(--em)}
-.rs-busy{color:var(--danger)}
-.rs-soon{color:var(--warn)}
-.room-time{font-size:11px;color:var(--muted);margin-top:2px}
-/* Member table */
-.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.table-title{font-size:14px;font-weight:700}
-.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.si-purple{background:#F5F3FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-blue{background:#EFF6FF}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.stat-value{font-size:24px;font-weight:800;color:var(--text)}
+.stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
+.two-col{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.panel-title{font-size:13px;font-weight:700}
+.floor-legend{display:flex;gap:12px;font-size:10px;padding:10px 20px;border-bottom:1px solid var(--border)}
+.leg-item{display:flex;align-items:center;gap:4px;color:var(--text-2)}
+.leg-dot{width:10px;height:10px;border-radius:2px}
+.floor-grid{padding:16px 20px;display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.desk{width:100%;aspect-ratio:1;border-radius:4px;cursor:pointer;transition:opacity .15s}
+.desk:hover{opacity:.8}
+.desk-occ{background:#7C3AED}
+.desk-free{background:#E2E8F0}
+.desk-reserved{background:#F59E0B}
+.desk-maintenance{background:#EF4444}
+.room-list{display:flex;flex-direction:column}
+.room-item{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.room-item:last-child{border-bottom:none}
+.room-name{font-size:12px;font-weight:600;color:var(--text)}
+.room-cap{font-size:11px;color:var(--text-3)}
+.room-slots{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.slot{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
+.slot-free{background:#F0FDF4;color:#166534}
+.slot-busy{background:#FFF1F2;color:#991B1B}
+.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:13px;font-weight:700}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
 table{width:100%;border-collapse:collapse}
-th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
-td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--faint)}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-active{background:rgba(16,185,129,0.15);color:var(--em)}
-.badge-pending{background:rgba(245,158,11,0.12);color:var(--warn)}
-.badge-expired{background:rgba(248,113,113,0.12);color:var(--danger)}
-@media(max-width:900px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.main{padding:20px 16px}}
-@media(max-width:600px){.stats{grid-template-columns:1fr}}
+tr:hover td{background:#F8FAFC}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
+.badge-blue{background:#EFF6FF;color:#1E40AF}.badge-purple{background:#F5F3FF;color:#5B21B6}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{display:none}}
 </style>
 </head>
 <body>
-
-<div class="demo-banner">
-  <span>🔒 Demo Mode — HubSpace Coworking Space Management ERP</span>
-  <div class="demo-creds">
-    <span>Login: <b>demo@hubspace.app</b></span>
-    <span>Password: <b>demo1234</b></span>
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">🏢</div>
+      <div><div class="login-logo-name">HubSpace</div><div class="login-logo-tag">Coworking Space Management</div></div>
+    </div>
+    <div class="login-heading">Space Admin Login</div>
+    <div class="login-sub">Sign in to manage your coworking space</div>
+    <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
+    <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@hubspace.app"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-footer">HubSpace v2.3 · Secure demo environment</div>
   </div>
-  <a class="back-link" href="../../">← Back to Portfolio</a>
 </div>
-
-<div class="shell">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="name">HubSpace</div>
-      <div class="tagline">Coworking Space ERP</div>
-    </div>
-    <nav>
-      <div class="nav-section">Space</div>
-      <div class="nav-item active"><span class="icon">🏢</span> Dashboard</div>
-      <div class="nav-item"><span class="icon">🗺️</span> Floor Plan</div>
-      <div class="nav-item"><span class="icon">📅</span> Bookings <span class="nav-badge">6</span></div>
-      <div class="nav-item"><span class="icon">🔑</span> Meeting Rooms</div>
-      <div class="nav-section">Members</div>
-      <div class="nav-item"><span class="icon">👥</span> Members</div>
-      <div class="nav-item"><span class="icon">📋</span> Plans & Pricing</div>
-      <div class="nav-item"><span class="icon">🎟️</span> Day Passes</div>
-      <div class="nav-section">Finance</div>
-      <div class="nav-item"><span class="icon">💳</span> Billing</div>
-      <div class="nav-item"><span class="icon">📊</span> Revenue</div>
-      <div class="nav-item"><span class="icon">📣</span> Announcements</div>
-      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Space Overview</div>
-        <div class="page-sub">Tuesday, September 16, 2025 · Main Floor</div>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-ghost">+ Walk-in</button>
-        <button class="btn btn-primary">+ Book Desk</button>
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-label">Occupancy Today</div>
-        <div class="stat-value">74%</div>
-        <div class="stat-delta">↑ 8% vs last week</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Active Members</div>
-        <div class="stat-value">142</div>
-        <div class="stat-delta">↑ 12 new this month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Revenue (Sep)</div>
-        <div class="stat-value">$28K</div>
-        <div class="stat-delta">↑ 91% of target</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Desks Available</div>
-        <div class="stat-value">22</div>
-        <div class="stat-delta neg">6 reserved today</div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="panel">
-        <div class="panel-title">Live Floor Plan — Main Floor (60 desks)</div>
-        <div class="floor-grid">
-          <div class="desk desk-occupied">A1</div>
-          <div class="desk desk-occupied">A2</div>
-          <div class="desk desk-free">A3</div>
-          <div class="desk desk-occupied">A4</div>
-          <div class="desk desk-free">A5</div>
-          <div class="desk desk-free">A6</div>
-          <div class="desk desk-free">B1</div>
-          <div class="desk desk-occupied">B2</div>
-          <div class="desk desk-occupied">B3</div>
-          <div class="desk desk-free">B4</div>
-          <div class="desk desk-occupied">B5</div>
-          <div class="desk desk-reserved">B6</div>
-          <div class="desk desk-occupied">C1</div>
-          <div class="desk desk-occupied">C2</div>
-          <div class="desk desk-occupied">C3</div>
-          <div class="desk desk-reserved">C4</div>
-          <div class="desk desk-free">C5</div>
-          <div class="desk desk-occupied">C6</div>
-          <div class="desk desk-free">D1</div>
-          <div class="desk desk-occupied">D2</div>
-          <div class="desk desk-free">D3</div>
-          <div class="desk desk-occupied">D4</div>
-          <div class="desk desk-occupied">D5</div>
-          <div class="desk desk-free">D6</div>
-          <div class="desk desk-reserved">E1</div>
-          <div class="desk desk-free">E2</div>
-          <div class="desk desk-occupied">E3</div>
-          <div class="desk desk-occupied">E4</div>
-          <div class="desk desk-free">E5</div>
-          <div class="desk desk-occupied">E6</div>
-        </div>
-        <div class="floor-legend">
-          <div class="legend-item"><div class="legend-dot ld-free"></div>Available</div>
-          <div class="legend-item"><div class="legend-dot ld-occ"></div>Occupied</div>
-          <div class="legend-item"><div class="legend-dot ld-res"></div>Reserved</div>
+<div id="app">
+  <div class="demo-bar">
+    <div><span class="demo-bar-dot"></span>Demo Mode — HubSpace Coworking Space Management</div>
+    <div class="demo-bar-creds"><span>Login: <b>demo@hubspace.app</b></span><span>Password: <b>demo1234</b></span></div>
+    <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="sidebar-icon">🏢</div>
+          <div><div class="sidebar-name">HubSpace</div><div class="sidebar-tagline">Coworking Management</div></div>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-title">Meeting Rooms</div>
-        <div class="room-item">
-          <div>
-            <div class="room-name">Boardroom Alpha</div>
-            <div class="room-cap">10 seats · A/V enabled</div>
+      <nav>
+        <div class="nav-group-label">Space</div>
+        <div class="nav-link active">📊 Dashboard</div>
+        <div class="nav-link">🗓 Floor Plan</div>
+        <div class="nav-link">📅 Room Bookings <span class="nav-badge">3</span></div>
+        <div class="nav-link">🖥 Hot Desks</div>
+        <div class="nav-group-label">Members</div>
+        <div class="nav-link">👥 Members</div>
+        <div class="nav-link">💳 Memberships</div>
+        <div class="nav-link">💰 Billing</div>
+        <div class="nav-group-label">Admin</div>
+        <div class="nav-link">📈 Analytics</div>
+        <div class="nav-link">🔔 Announcements</div>
+        <div class="nav-link">⚙️ Settings</div>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar">DA</div>
+        <div><div class="user-name">Demo Admin</div><div class="user-role">Space Manager</div></div>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <div><div class="topbar-title">Space Dashboard</div><div class="topbar-sub">HubSpace D-12 · Today, Jan 14 2025</div></div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline">Add Member</button>
+          <button class="btn btn-primary">+ Book Room</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">💺</div><div class="stat-label">Desks Occupied</div><div class="stat-value">21/30</div><div class="stat-delta delta-up">70% occupancy</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">👥</div><div class="stat-label">Active Members</div><div class="stat-value">48</div><div class="stat-delta delta-up">↑ 5 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">MRR</div><div class="stat-value">₨284K</div><div class="stat-delta delta-up">↑ 12.4%</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📅</div><div class="stat-label">Room Bookings</div><div class="stat-value">14</div><div class="stat-delta delta-up">Today's total</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Live Floor Plan</div><span style="font-size:11px;color:var(--text-3)">30 desks</span></div>
+            <div class="floor-legend">
+              <div class="leg-item"><div class="leg-dot" style="background:#7C3AED"></div>Occupied</div>
+              <div class="leg-item"><div class="leg-dot" style="background:#E2E8F0"></div>Available</div>
+              <div class="leg-item"><div class="leg-dot" style="background:#F59E0B"></div>Reserved</div>
+              <div class="leg-item"><div class="leg-dot" style="background:#EF4444"></div>Maintenance</div>
+            </div>
+            <div class="floor-grid" id="floor-grid"></div>
           </div>
-          <div>
-            <div class="room-status rs-free">● Available</div>
-            <div class="room-time">Next: 3:00 PM</div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Meeting Rooms</div></div>
+            <div class="room-list">
+              <div class="room-item"><div><div class="room-name">Falcon Room</div><div class="room-cap">8 seats · Projector</div></div><div class="room-slots"><span class="slot slot-busy">9–11 AM</span><span class="slot slot-free">11 AM–1 PM</span><span class="slot slot-busy">2–4 PM</span></div></div>
+              <div class="room-item"><div><div class="room-name">Eagle Suite</div><div class="room-cap">4 seats · TV Screen</div></div><div class="room-slots"><span class="slot slot-free">All day free</span></div></div>
+              <div class="room-item"><div><div class="room-name">Phoenix Pod</div><div class="room-cap">2 seats · Phone Booth</div></div><div class="room-slots"><span class="slot slot-busy">10–11 AM</span><span class="slot slot-free">11 AM+</span></div></div>
+              <div class="room-item"><div><div class="room-name">Spark Lounge</div><div class="room-cap">12 seats · Events</div></div><div class="room-slots"><span class="slot slot-free">Available</span></div></div>
+            </div>
           </div>
         </div>
-        <div class="room-item">
-          <div>
-            <div class="room-name">Focus Room 1</div>
-            <div class="room-cap">4 seats · Whiteboard</div>
-          </div>
-          <div>
-            <div class="room-status rs-busy">● In Use</div>
-            <div class="room-time">Until 2:30 PM</div>
-          </div>
-        </div>
-        <div class="room-item">
-          <div>
-            <div class="room-name">Focus Room 2</div>
-            <div class="room-cap">4 seats · Whiteboard</div>
-          </div>
-          <div>
-            <div class="room-status rs-free">● Available</div>
-            <div class="room-time">Open all day</div>
-          </div>
-        </div>
-        <div class="room-item">
-          <div>
-            <div class="room-name">Podcast Studio</div>
-            <div class="room-cap">2 seats · Soundproofed</div>
-          </div>
-          <div>
-            <div class="room-status rs-soon">● Booked soon</div>
-            <div class="room-time">Starts 2:00 PM</div>
-          </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Active Members</span><input class="search-box" placeholder="Search members…"></div>
+          <table>
+            <thead><tr><th>Member</th><th>Company</th><th>Plan</th><th>Desk</th><th>Renewal</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Sana Mirza</b></td><td>FreelanceX Design</td><td>Hot Desk — Monthly</td><td>#07</td><td>Feb 1</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Usman Baig</b></td><td>CodeCraft Studio</td><td>Dedicated — Annual</td><td>#12</td><td>Oct 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Fatima Sheikh</b></td><td>Bloom Marketing</td><td>Team Suite 4</td><td>#19–22</td><td>Mar 1</td><td><span class="badge badge-purple">Team</span></td></tr>
+              <tr><td><b>Asad Qayyum</b></td><td>Indie Dev</td><td>Hot Desk — Monthly</td><td>Flexible</td><td>Jan 31</td><td><span class="badge badge-amber">Renewal Due</span></td></tr>
+              <tr><td><b>Hira Noor</b></td><td>Noor Consulting</td><td>Dedicated — Annual</td><td>#05</td><td>Aug 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-
-    <div class="table-panel">
-      <div class="table-header">
-        <span class="table-title">Active Members</span>
-        <input class="search-box" placeholder="Search members…" value="">
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Member</th>
-            <th>Plan</th>
-            <th>Check-In</th>
-            <th>Desk</th>
-            <th>Billing</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>Sana Mirza</b><div style="font-size:11px;color:var(--muted)">Freelance Designer</div></td>
-            <td>Dedicated Desk</td>
-            <td>8:42 AM</td>
-            <td>B2</td>
-            <td>$320/mo</td>
-            <td><span class="status-badge badge-active">✓ Active</span></td>
-          </tr>
-          <tr>
-            <td><b>Usman Tariq</b><div style="font-size:11px;color:var(--muted)">Startup Founder</div></td>
-            <td>Hot Desk</td>
-            <td>9:15 AM</td>
-            <td>C1</td>
-            <td>$150/mo</td>
-            <td><span class="status-badge badge-active">✓ Active</span></td>
-          </tr>
-          <tr>
-            <td><b>Nadia Khan</b><div style="font-size:11px;color:var(--muted)">Consultant</div></td>
-            <td>Private Office</td>
-            <td>10:00 AM</td>
-            <td>Office 3</td>
-            <td>$850/mo</td>
-            <td><span class="status-badge badge-pending">⏳ Renewing</span></td>
-          </tr>
-          <tr>
-            <td><b>Ahmed Raza</b><div style="font-size:11px;color:var(--muted)">Developer</div></td>
-            <td>Hot Desk</td>
-            <td>Not checked in</td>
-            <td>—</td>
-            <td>$150/mo</td>
-            <td><span class="status-badge badge-expired">✗ Expired</span></td>
-          </tr>
-          <tr>
-            <td><b>Sara Qureshi</b><div style="font-size:11px;color:var(--muted)">Content Creator</div></td>
-            <td>Day Pass</td>
-            <td>11:30 AM</td>
-            <td>D3</td>
-            <td>$15/day</td>
-            <td><span class="status-badge badge-active">✓ Active</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+  </div>
 </div>
-
+<script>
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+(function(){
+  var statuses=['occ','occ','occ','occ','free','occ','occ','reserved','occ','occ','occ','free','occ','occ','occ','free','occ','occ','free','occ','occ','occ','occ','free','maintenance','occ','free','occ','occ','occ'];
+  var html='';
+  statuses.forEach(function(s){html+='<div class="desk desk-'+s+'" title="'+s+'"></div>'});
+  document.getElementById('floor-grid').innerHTML=html;
+})();
+</script>
 </body>
 </html>

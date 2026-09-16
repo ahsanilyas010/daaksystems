@@ -5,309 +5,224 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CourierOS — Courier & Logistics ERP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#080F1A;--surf:#0F1C2E;--card:#131F30;--em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);--border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;--warn:#F59E0B;--danger:#F87171;--info:#60A5FA;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+:root{
+  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
+  --primary:#2563EB;--primary-h:#1D4ED8;
+  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
-.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}.demo-creds b{color:var(--em-l)}
-.back-link{font-size:12px;color:var(--muted);transition:color .2s}.back-link:hover{color:var(--em)}
-.shell{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
-.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
-nav{flex:1}
-.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
-.nav-item:hover{background:var(--em-dim);color:var(--text)}
-.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
-.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
-.nav-badge.warn{background:var(--warn)}
-.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
-.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.header-actions{display:flex;gap:10px}
-.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
-.btn-primary{background:var(--em);color:#000}.btn-primary:hover{background:var(--em-l)}
-.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen.hidden{display:none}
+.login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
+.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--primary)}
+.btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+#app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
+.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
+.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.shell{display:flex;flex:1}
+.sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
+.sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-brand{display:flex;align-items:center;gap:10px}
+.sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+nav{padding:8px 0;flex:1;overflow-y:auto}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
+.nav-link.active{background:rgba(37,99,235,.15);color:#93C5FD;border-left-color:#2563EB;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.content{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
-.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
-.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
-.stat-delta.neg{color:var(--danger)}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.si-blue{background:#EFF6FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.stat-value{font-size:24px;font-weight:800;color:var(--text)}
+.stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
-.hub-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--faint);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
-.hub-name{font-size:13px;font-weight:600}
-.hub-city{font-size:11px;color:var(--muted);margin-top:2px}
-.hub-count{font-size:20px;font-weight:800;color:var(--em)}
-.hub-sub{font-size:10px;color:var(--muted)}
-.fleet-item{display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--faint);border:1px solid var(--border);border-radius:8px;margin-bottom:6px}
-.fleet-vehicle{font-size:12px;font-weight:600}
-.fleet-plate{font-size:11px;color:var(--muted)}
-.fleet-status{font-size:11px;font-weight:600}
-.fs-available{color:var(--em)}
-.fs-route{color:var(--info)}
-.fs-maintenance{color:var(--warn)}
-.exception-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--faint);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
-.exc-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.exc-title{font-size:12px;font-weight:600}
-.exc-detail{font-size:11px;color:var(--muted);margin-top:2px}
-.exc-time{font-size:11px;color:var(--muted)}
-.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.table-title{font-size:14px;font-weight:700}
-.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.panel-title{font-size:13px;font-weight:700}
+.panel-body{padding:14px 20px}
+.hub-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.hub-item:last-child{border-bottom:none}
+.hub-name{font-size:12px;font-weight:700;color:var(--text)}
+.hub-city{font-size:10px;color:var(--text-3)}
+.hub-metric{text-align:right}
+.hub-val{font-size:12px;font-weight:700;color:var(--text)}
+.hub-sub{font-size:10px;color:var(--text-3)}
+.hub-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:8px}
+.dot-online{background:#10B981}.dot-busy{background:#F59E0B}.dot-offline{background:#EF4444}
+.fleet-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.fleet-item:last-child{border-bottom:none}
+.fleet-type{font-size:20px;width:28px;text-align:center}
+.fleet-name{font-size:12px;font-weight:600;color:var(--text)}
+.fleet-count{font-size:11px;color:var(--text-3)}
+.fleet-bar-bg{flex:1;height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
+.fleet-bar-fill{height:100%;border-radius:3px;background:var(--primary)}
+.exc-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.exc-item:last-child{border-bottom:none}
+.exc-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.exc-title{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.exc-desc{font-size:10px;color:var(--text-3)}
+.exc-time{font-size:10px;color:var(--text-3);white-space:nowrap;margin-left:auto}
+.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:13px;font-weight:700}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px}
 table{width:100%;border-collapse:collapse}
-th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
-td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--faint)}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-delivered{background:rgba(16,185,129,0.15);color:var(--em)}
-.badge-transit{background:rgba(96,165,250,0.12);color:var(--info)}
-.badge-hub{background:rgba(245,158,11,0.12);color:var(--warn)}
-.badge-failed{background:rgba(248,113,113,0.12);color:var(--danger)}
-@media(max-width:1000px){.three-col{grid-template-columns:1fr 1fr}}
-@media(max-width:900px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.three-col{grid-template-columns:1fr}.main{padding:20px 16px}}
-@media(max-width:600px){.stats{grid-template-columns:1fr}}
+tr:hover td{background:#F8FAFC}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
+.badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
+@media(max-width:1100px){.three-col{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.sidebar{display:none}.three-col{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="demo-banner">
-  <span>🔒 Demo Mode — CourierOS Courier &amp; Logistics ERP</span>
-  <div class="demo-creds">
-    <span>Login: <b>demo@courieros.app</b></span>
-    <span>Password: <b>demo1234</b></span>
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">✈️</div>
+      <div><div class="login-logo-name">CourierOS</div><div class="login-logo-tag">Courier & Logistics ERP</div></div>
+    </div>
+    <div class="login-heading">Ops Center Login</div>
+    <div class="login-sub">Sign in to the logistics network operations center</div>
+    <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
+    <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@courieros.app"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-footer">CourierOS v4.1 · Secure demo environment</div>
   </div>
-  <a class="back-link" href="../../">← Back to Portfolio</a>
 </div>
-
-<div class="shell">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="name">CourierOS</div>
-      <div class="tagline">Courier &amp; Logistics ERP</div>
-    </div>
-    <nav>
-      <div class="nav-section">Operations</div>
-      <div class="nav-item active"><span class="icon">📊</span> Dashboard</div>
-      <div class="nav-item"><span class="icon">📦</span> Shipments</div>
-      <div class="nav-item"><span class="icon">🛣️</span> Routes</div>
-      <div class="nav-item"><span class="icon">⚠️</span> Exceptions <span class="nav-badge warn">5</span></div>
-      <div class="nav-section">Network</div>
-      <div class="nav-item"><span class="icon">🏭</span> Hubs</div>
-      <div class="nav-item"><span class="icon">🚚</span> Fleet</div>
-      <div class="nav-item"><span class="icon">👤</span> Couriers</div>
-      <div class="nav-section">Clients</div>
-      <div class="nav-item"><span class="icon">🏢</span> Business Clients</div>
-      <div class="nav-item"><span class="icon">💳</span> Billing</div>
-      <div class="nav-section">Reports</div>
-      <div class="nav-item"><span class="icon">📈</span> Analytics</div>
-      <div class="nav-item"><span class="icon">📋</span> SLA Reports</div>
-      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Network Operations Center</div>
-        <div class="page-sub">September 16, 2025 · All Hubs Active</div>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-ghost">🖨 Print Manifest</button>
-        <button class="btn btn-primary">+ New Shipment</button>
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-label">Parcels In Transit</div>
-        <div class="stat-value">4,812</div>
-        <div class="stat-delta">↑ 12% vs last week</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Delivered Today</div>
-        <div class="stat-value">2,291</div>
-        <div class="stat-delta">↑ 98.1% success rate</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Exceptions</div>
-        <div class="stat-value">5</div>
-        <div class="stat-delta neg">Requires attention</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Active Vehicles</div>
-        <div class="stat-value">38</div>
-        <div class="stat-delta">2 in maintenance</div>
-      </div>
-    </div>
-
-    <div class="three-col">
-      <div class="panel">
-        <div class="panel-title">Hub Status</div>
-        <div class="hub-item">
-          <div>
-            <div class="hub-name">ISB Central Hub</div>
-            <div class="hub-city">Islamabad</div>
-          </div>
-          <div style="text-align:right">
-            <div class="hub-count">1,842</div>
-            <div class="hub-sub">parcels today</div>
-          </div>
-        </div>
-        <div class="hub-item">
-          <div>
-            <div class="hub-name">LHR Hub</div>
-            <div class="hub-city">Lahore</div>
-          </div>
-          <div style="text-align:right">
-            <div class="hub-count">2,104</div>
-            <div class="hub-sub">parcels today</div>
-          </div>
-        </div>
-        <div class="hub-item">
-          <div>
-            <div class="hub-name">KHI Hub</div>
-            <div class="hub-city">Karachi</div>
-          </div>
-          <div style="text-align:right">
-            <div class="hub-count">1,540</div>
-            <div class="hub-sub">parcels today</div>
-          </div>
+<div id="app">
+  <div class="demo-bar">
+    <div><span class="demo-bar-dot"></span>Demo Mode — CourierOS Courier & Logistics ERP</div>
+    <div class="demo-bar-creds"><span>Login: <b>demo@courieros.app</b></span><span>Password: <b>demo1234</b></span></div>
+    <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="sidebar-icon">✈️</div>
+          <div><div class="sidebar-name">CourierOS</div><div class="sidebar-tagline">Logistics ERP</div></div>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-title">Fleet Overview</div>
-        <div class="fleet-item">
-          <div>
-            <div class="fleet-vehicle">🚚 Transit Van</div>
-            <div class="fleet-plate">ISB-1200</div>
-          </div>
-          <div class="fleet-status fs-route">On Route</div>
-        </div>
-        <div class="fleet-item">
-          <div>
-            <div class="fleet-vehicle">🛵 Motorbike</div>
-            <div class="fleet-plate">ISB-4401</div>
-          </div>
-          <div class="fleet-status fs-available">Available</div>
-        </div>
-        <div class="fleet-item">
-          <div>
-            <div class="fleet-vehicle">🚚 Transit Van</div>
-            <div class="fleet-plate">LHR-0088</div>
-          </div>
-          <div class="fleet-status fs-route">On Route</div>
-        </div>
-        <div class="fleet-item">
-          <div>
-            <div class="fleet-vehicle">🚗 Sedan</div>
-            <div class="fleet-plate">ISB-2290</div>
-          </div>
-          <div class="fleet-status fs-maintenance">Maintenance</div>
+      <nav>
+        <div class="nav-group-label">Operations</div>
+        <div class="nav-link active">📊 NOC Dashboard</div>
+        <div class="nav-link">📦 Shipments <span class="nav-badge">5</span></div>
+        <div class="nav-link">🏭 Hub Management</div>
+        <div class="nav-link">🚛 Fleet</div>
+        <div class="nav-group-label">Logistics</div>
+        <div class="nav-link">🗺 Route Planner</div>
+        <div class="nav-link">🔔 Exceptions</div>
+        <div class="nav-link">📋 Manifests</div>
+        <div class="nav-group-label">Finance</div>
+        <div class="nav-link">💰 COD Management</div>
+        <div class="nav-link">📈 Revenue</div>
+        <div class="nav-link">⚙️ Settings</div>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar">DA</div>
+        <div><div class="user-name">Demo Admin</div><div class="user-role">NOC Manager</div></div>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <div><div class="topbar-title">Network Operations Center</div><div class="topbar-sub">Pakistan Network · Live · Jan 14, 2025</div></div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline">Print Manifest</button>
+          <button class="btn btn-primary">+ Book Shipment</button>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-title">Exception Alerts</div>
-        <div class="exception-item">
-          <div class="exc-icon">📍</div>
-          <div>
-            <div class="exc-title">Address Not Found</div>
-            <div class="exc-detail">AWB 8820044 · Karachi</div>
-            <div class="exc-time">2h ago</div>
+      <div class="content">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">📦</div><div class="stat-label">Shipments Today</div><div class="stat-value">1,284</div><div class="stat-delta delta-up">↑ 8.3% vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Delivered</div><div class="stat-value">1,091</div><div class="stat-delta delta-up">85% success rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⚠️</div><div class="stat-label">Exceptions</div><div class="stat-value">47</div><div class="stat-delta delta-dn">↑ 12 new exceptions</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🔄</div><div class="stat-label">RTO Pending</div><div class="stat-value">146</div><div class="stat-delta delta-dn">↑ 9 in last hour</div></div>
+        </div>
+        <div class="three-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Hub Status</div><span style="font-size:11px;color:var(--success)">3 Active</span></div>
+            <div class="panel-body">
+              <div class="hub-item"><div class="hub-dot dot-online"></div><div><div class="hub-name">ISB Hub</div><div class="hub-city">Islamabad</div></div><div class="hub-metric"><div class="hub-val">342 pkgs</div><div class="hub-sub">Capacity 78%</div></div></div>
+              <div class="hub-item"><div class="hub-dot dot-busy"></div><div><div class="hub-name">LHR Hub</div><div class="hub-city">Lahore</div></div><div class="hub-metric"><div class="hub-val">581 pkgs</div><div class="hub-sub">Capacity 91%</div></div></div>
+              <div class="hub-item"><div class="hub-dot dot-online"></div><div><div class="hub-name">KHI Hub</div><div class="hub-city">Karachi</div></div><div class="hub-metric"><div class="hub-val">461 pkgs</div><div class="hub-sub">Capacity 64%</div></div></div>
+              <div class="hub-item"><div class="hub-dot dot-online"></div><div><div class="hub-name">PES Hub</div><div class="hub-city">Peshawar</div></div><div class="hub-metric"><div class="hub-val">98 pkgs</div><div class="hub-sub">Capacity 42%</div></div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Fleet Overview</div></div>
+            <div class="panel-body">
+              <div class="fleet-item"><div class="fleet-type">🚛</div><div><div class="fleet-name">Heavy Trucks</div><div class="fleet-count">14 / 18 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:78%"></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🚐</div><div><div class="fleet-name">Vans</div><div class="fleet-count">31 / 40 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:78%"></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🛵</div><div><div class="fleet-name">Bikes</div><div class="fleet-count">68 / 80 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:85%"></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🏍️</div><div><div class="fleet-name">Motorcycles</div><div class="fleet-count">24 / 35 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:69%"></div></div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Exceptions</div><span style="font-size:11px;color:var(--danger)">47 open</span></div>
+            <div class="panel-body">
+              <div class="exc-item"><span class="exc-icon">🚫</span><div><div class="exc-title">Address Not Found</div><div class="exc-desc">AWB 291847 · ISB Hub</div></div><span class="exc-time">12 min ago</span></div>
+              <div class="exc-item"><span class="exc-icon">📵</span><div><div class="exc-title">Phone Unreachable</div><div class="exc-desc">AWB 291833 · LHR Hub</div></div><span class="exc-time">28 min ago</span></div>
+              <div class="exc-item"><span class="exc-icon">🔄</span><div><div class="exc-title">RTO Initiated</div><div class="exc-desc">AWB 291799 · KHI Hub</div></div><span class="exc-time">1h ago</span></div>
+              <div class="exc-item"><span class="exc-icon">⏰</span><div><div class="exc-title">Delivery Delayed</div><div class="exc-desc">AWB 291755 · ISB Hub</div></div><span class="exc-time">2h ago</span></div>
+            </div>
           </div>
         </div>
-        <div class="exception-item">
-          <div class="exc-icon">🔄</div>
-          <div>
-            <div class="exc-title">RTO Initiated</div>
-            <div class="exc-detail">AWB 8819910 · Customer refused</div>
-            <div class="exc-time">3h ago</div>
-          </div>
-        </div>
-        <div class="exception-item">
-          <div class="exc-icon">⏰</div>
-          <div>
-            <div class="exc-title">SLA Breach Risk</div>
-            <div class="exc-detail">AWB 8820112 · Delayed at hub</div>
-            <div class="exc-time">1h ago</div>
-          </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Shipment Tracker</span><input class="search-box" placeholder="Search AWB or consignee…"></div>
+          <table>
+            <thead><tr><th>AWB</th><th>Consignee</th><th>Origin → Dest</th><th>Weight</th><th>COD</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>PKT-291847</b></td><td>Khurram Enterprises</td><td>KHI → ISB</td><td>2.4 kg</td><td>₨4,500</td><td><span class="badge badge-amber">Exception</span></td></tr>
+              <tr><td><b>PKT-291844</b></td><td>Sana Textiles</td><td>LHR → KHI</td><td>8.1 kg</td><td>—</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+              <tr><td><b>PKT-291841</b></td><td>Apex Electronics</td><td>ISB → LHR</td><td>1.2 kg</td><td>₨12,000</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>PKT-291839</b></td><td>Maryam Boutique</td><td>KHI → LHR</td><td>0.8 kg</td><td>₨3,200</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>PKT-291835</b></td><td>TechZone ISB</td><td>LHR → ISB</td><td>5.6 kg</td><td>₨28,000</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+              <tr><td><b>PKT-291829</b></td><td>Rehman Traders</td><td>ISB → KHI</td><td>12.3 kg</td><td>—</td><td><span class="badge badge-red">RTO</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-
-    <div class="table-panel">
-      <div class="table-header">
-        <span class="table-title">Recent Shipments</span>
-        <input class="search-box" placeholder="Search AWB, client…" value="">
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>AWB</th>
-            <th>Client</th>
-            <th>Origin → Dest</th>
-            <th>Weight</th>
-            <th>Service</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>8820101</b></td>
-            <td>Apex Retail</td>
-            <td>ISB → KHI</td>
-            <td>2.4 kg</td>
-            <td>Next Day</td>
-            <td><span class="status-badge badge-transit">🚚 In Transit</span></td>
-          </tr>
-          <tr>
-            <td><b>8820088</b></td>
-            <td>MedPlus</td>
-            <td>LHR → ISB</td>
-            <td>0.8 kg</td>
-            <td>Same Day</td>
-            <td><span class="status-badge badge-delivered">✓ Delivered</span></td>
-          </tr>
-          <tr>
-            <td><b>8820077</b></td>
-            <td>TechZone</td>
-            <td>KHI → LHR</td>
-            <td>5.1 kg</td>
-            <td>Standard</td>
-            <td><span class="status-badge badge-hub">At Hub</span></td>
-          </tr>
-          <tr>
-            <td><b>8820044</b></td>
-            <td>GreenMart</td>
-            <td>ISB → KHI</td>
-            <td>1.2 kg</td>
-            <td>Next Day</td>
-            <td><span class="status-badge badge-failed">⚠ Exception</span></td>
-          </tr>
-          <tr>
-            <td><b>8819990</b></td>
-            <td>HomeStyle</td>
-            <td>LHR → ISB</td>
-            <td>3.7 kg</td>
-            <td>Standard</td>
-            <td><span class="status-badge badge-delivered">✓ Delivered</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+  </div>
 </div>
-
+<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
 </body>
 </html>
