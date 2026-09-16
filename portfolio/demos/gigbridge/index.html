@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GigBridge — Freelance & Gig Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080F1A;--surf:#0F1C2E;--card:#131F30;--em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);--border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;--warn:#F59E0B;--danger:#F87171;--info:#60A5FA;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
+.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}.demo-creds b{color:var(--em-l)}
+.back-link{font-size:12px;color:var(--muted);transition:color .2s}.back-link:hover{color:var(--em)}
+.shell{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
+.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
+nav{flex:1}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-item:hover{background:var(--em-dim);color:var(--text)}
+.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
+.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
+.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header-actions{display:flex;gap:10px}
+.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-primary{background:var(--em);color:#000}.btn-primary:hover{background:var(--em-l)}
+.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
+.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
+.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
+/* Gig cards */
+.gig-card{background:var(--faint);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.gig-avatar{width:40px;height:40px;border-radius:50%;background:var(--em-dim);border:1px solid var(--em);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.gig-title{font-size:13px;font-weight:700}
+.gig-seller{font-size:12px;color:var(--muted);margin-top:2px}
+.gig-rating{font-size:11px;color:var(--warn);margin-top:3px}
+.gig-price{font-size:14px;font-weight:800;color:var(--em);text-align:right;white-space:nowrap}
+.gig-orders{font-size:11px;color:var(--muted);text-align:right;margin-top:2px}
+/* Category stats */
+.cat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.cat-row:last-child{border-bottom:none}
+.cat-name{font-size:13px;font-weight:600}
+.cat-count{font-size:12px;color:var(--muted)}
+.cat-gmv{font-size:13px;font-weight:700;color:var(--em)}
+/* Order table */
+.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:14px;font-weight:700}
+.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--faint)}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-delivered{background:rgba(16,185,129,0.15);color:var(--em)}
+.badge-active{background:rgba(96,165,250,0.12);color:var(--info)}
+.badge-revision{background:rgba(245,158,11,0.12);color:var(--warn)}
+.badge-disputed{background:rgba(248,113,113,0.12);color:var(--danger)}
+@media(max-width:900px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.main{padding:20px 16px}}
+@media(max-width:600px){.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <span>🔒 Demo Mode — GigBridge Freelance &amp; Gig Marketplace (Admin Panel)</span>
+  <div class="demo-creds">
+    <span>Login: <b>admin@gigbridge.app</b></span>
+    <span>Password: <b>demo1234</b></span>
+  </div>
+  <a class="back-link" href="../../">← Back to Portfolio</a>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="name">GigBridge</div>
+      <div class="tagline">Freelance Marketplace Admin</div>
+    </div>
+    <nav>
+      <div class="nav-section">Marketplace</div>
+      <div class="nav-item active"><span class="icon">📊</span> Dashboard</div>
+      <div class="nav-item"><span class="icon">🛒</span> Orders <span class="nav-badge">8</span></div>
+      <div class="nav-item"><span class="icon">💼</span> Gigs</div>
+      <div class="nav-item"><span class="icon">⚠️</span> Disputes <span class="nav-badge">2</span></div>
+      <div class="nav-section">Users</div>
+      <div class="nav-item"><span class="icon">👤</span> Freelancers</div>
+      <div class="nav-item"><span class="icon">🏢</span> Buyers</div>
+      <div class="nav-item"><span class="icon">✅</span> Verification Queue</div>
+      <div class="nav-section">Finance</div>
+      <div class="nav-item"><span class="icon">💰</span> Payouts</div>
+      <div class="nav-item"><span class="icon">📈</span> GMV Analytics</div>
+      <div class="nav-item"><span class="icon">🏷️</span> Platform Fee</div>
+      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Marketplace Overview</div>
+        <div class="page-sub">September 2025 · All Categories</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost">💳 Process Payouts</button>
+        <button class="btn btn-primary">+ Feature Gig</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">GMV (Sep)</div>
+        <div class="stat-value">$84K</div>
+        <div class="stat-delta">↑ 28% vs last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Orders</div>
+        <div class="stat-value">312</div>
+        <div class="stat-delta">↑ 14% this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Registered Sellers</div>
+        <div class="stat-value">1,840</div>
+        <div class="stat-delta">↑ 62 new this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Platform Revenue</div>
+        <div class="stat-value">$12.6K</div>
+        <div class="stat-delta">15% take rate</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-title">Top Performing Gigs</div>
+        <div class="gig-card">
+          <div class="gig-avatar">🎨</div>
+          <div style="flex:1">
+            <div class="gig-title">Modern Logo Design + Brand Kit</div>
+            <div class="gig-seller">@creative_sara · Graphic Design</div>
+            <div class="gig-rating">★ 4.9 (312 reviews)</div>
+          </div>
+          <div>
+            <div class="gig-price">$120</div>
+            <div class="gig-orders">88 orders</div>
+          </div>
+        </div>
+        <div class="gig-card">
+          <div class="gig-avatar">⚡</div>
+          <div style="flex:1">
+            <div class="gig-title">Full-Stack Web App Development</div>
+            <div class="gig-seller">@dev_usman · Web Development</div>
+            <div class="gig-rating">★ 5.0 (44 reviews)</div>
+          </div>
+          <div>
+            <div class="gig-price">$800</div>
+            <div class="gig-orders">22 orders</div>
+          </div>
+        </div>
+        <div class="gig-card">
+          <div class="gig-avatar">📱</div>
+          <div style="flex:1">
+            <div class="gig-title">Social Media Content Calendar (30 days)</div>
+            <div class="gig-seller">@nadia_social · Marketing</div>
+            <div class="gig-rating">★ 4.8 (197 reviews)</div>
+          </div>
+          <div>
+            <div class="gig-price">$250</div>
+            <div class="gig-orders">54 orders</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">GMV by Category</div>
+        <div class="cat-row">
+          <div>
+            <div class="cat-name">Web Development</div>
+            <div class="cat-count">88 gigs</div>
+          </div>
+          <div class="cat-gmv">$28K</div>
+        </div>
+        <div class="cat-row">
+          <div>
+            <div class="cat-name">Graphic Design</div>
+            <div class="cat-count">214 gigs</div>
+          </div>
+          <div class="cat-gmv">$22K</div>
+        </div>
+        <div class="cat-row">
+          <div>
+            <div class="cat-name">Digital Marketing</div>
+            <div class="cat-count">156 gigs</div>
+          </div>
+          <div class="cat-gmv">$17K</div>
+        </div>
+        <div class="cat-row">
+          <div>
+            <div class="cat-name">Video & Animation</div>
+            <div class="cat-count">72 gigs</div>
+          </div>
+          <div class="cat-gmv">$10K</div>
+        </div>
+        <div class="cat-row">
+          <div>
+            <div class="cat-name">Writing & Translation</div>
+            <div class="cat-count">300 gigs</div>
+          </div>
+          <div class="cat-gmv">$7K</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-panel">
+      <div class="table-header">
+        <span class="table-title">Recent Orders</span>
+        <input class="search-box" placeholder="Search orders…" value="">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Gig</th>
+            <th>Buyer</th>
+            <th>Seller</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>#GB-8801</b></td>
+            <td>Logo Design</td>
+            <td>Robert H.</td>
+            <td>@creative_sara</td>
+            <td>$120</td>
+            <td><span class="status-badge badge-delivered">✓ Completed</span></td>
+          </tr>
+          <tr>
+            <td><b>#GB-8802</b></td>
+            <td>Social Media Kit</td>
+            <td>Diana O.</td>
+            <td>@nadia_social</td>
+            <td>$250</td>
+            <td><span class="status-badge badge-active">In Progress</span></td>
+          </tr>
+          <tr>
+            <td><b>#GB-8803</b></td>
+            <td>Next.js Web App</td>
+            <td>Farrukh N.</td>
+            <td>@dev_usman</td>
+            <td>$800</td>
+            <td><span class="status-badge badge-revision">Revision</span></td>
+          </tr>
+          <tr>
+            <td><b>#GB-8804</b></td>
+            <td>SEO Audit</td>
+            <td>Lisa C.</td>
+            <td>@seo_pro99</td>
+            <td>$180</td>
+            <td><span class="status-badge badge-disputed">⚠ Disputed</span></td>
+          </tr>
+          <tr>
+            <td><b>#GB-8805</b></td>
+            <td>Brand Guidelines</td>
+            <td>Tom B.</td>
+            <td>@creative_sara</td>
+            <td>$350</td>
+            <td><span class="status-badge badge-delivered">✓ Completed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

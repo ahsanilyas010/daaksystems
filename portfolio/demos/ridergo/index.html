@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RiderGo — Rider Mobile PWA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080F1A;--surf:#0F1C2E;--card:#131F30;--em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);--border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;--warn:#F59E0B;--danger:#F87171;--info:#60A5FA;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
+.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}.demo-creds b{color:var(--em-l)}
+.back-link{font-size:12px;color:var(--muted);transition:color .2s}.back-link:hover{color:var(--em)}
+/* Phone mockup layout */
+.outer{display:flex;flex:1;align-items:flex-start;justify-content:center;gap:48px;padding:40px 24px;flex-wrap:wrap}
+.phone-wrap{position:relative;flex-shrink:0}
+.phone-frame{width:320px;background:var(--surf);border:2px solid rgba(255,255,255,0.12);border-radius:36px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.5);display:flex;flex-direction:column}
+.phone-notch{height:28px;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.notch-pill{width:80px;height:8px;background:rgba(255,255,255,0.1);border-radius:4px}
+.phone-screen{flex:1;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+.phone-home-bar{height:20px;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.home-pill{width:50px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px}
+/* App UI inside phone */
+.app-header{background:var(--surf);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.app-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--em)}
+.status-pill{display:flex;align-items:center;gap:5px;background:var(--em-dim);border:1px solid var(--em);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--em)}
+.status-dot{width:6px;height:6px;background:var(--em);border-radius:50%}
+.app-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.earn-card{background:linear-gradient(135deg,var(--em),#059669);border-radius:14px;padding:16px;color:#000}
+.earn-label{font-size:11px;font-weight:600;opacity:.7}
+.earn-amount{font-family:'Syne',sans-serif;font-weight:900;font-size:32px;margin:4px 0}
+.earn-sub{font-size:11px;opacity:.7}
+.order-alert{background:var(--card);border:2px solid var(--em);border-radius:12px;padding:14px}
+.alert-label{font-size:10px;font-weight:700;color:var(--em);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.alert-merchant{font-size:14px;font-weight:700}
+.alert-items{font-size:12px;color:var(--muted);margin:2px 0}
+.alert-route{font-size:12px;color:var(--text);margin-top:6px;display:flex;flex-direction:column;gap:3px}
+.route-from{color:var(--muted)}
+.route-to{color:var(--em-l)}
+.alert-actions{display:flex;gap:8px;margin-top:10px}
+.a-btn{flex:1;padding:9px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;text-align:center}
+.a-accept{background:var(--em);color:#000}
+.a-decline{background:var(--faint);color:var(--muted);border:1px solid var(--border)}
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini-stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px}
+.mini-label{font-size:10px;color:var(--muted);margin-bottom:3px}
+.mini-value{font-size:16px;font-weight:700;color:var(--em)}
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+.hi-id{font-size:12px;font-weight:600}
+.hi-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.hi-pay{font-size:13px;font-weight:700;color:var(--em)}
+.app-tab-bar{background:var(--surf);border-top:1px solid var(--border);display:flex}
+.tab-item{flex:1;padding:10px 4px 6px;text-align:center;cursor:pointer}
+.tab-icon{font-size:18px}
+.tab-label{font-size:9px;color:var(--muted);margin-top:2px;font-weight:500}
+.tab-item.active .tab-label{color:var(--em)}
+/* Features column */
+.features{max-width:380px}
+.features-title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;margin-bottom:8px}
+.features-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+.feature-row{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start}
+.feature-icon{width:40px;height:40px;background:var(--em-dim);border:1px solid var(--em);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.feature-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.feature-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.pwa-badge{display:inline-flex;align-items:center;gap:6px;background:var(--faint);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--muted);margin-bottom:24px}
+@media(max-width:700px){.outer{flex-direction:column;align-items:center;padding:24px 16px}}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <span>🔒 Demo Mode — RiderGo Rider Mobile PWA</span>
+  <div class="demo-creds">
+    <span>Login: <b>demo@ridergo.app</b></span>
+    <span>Password: <b>demo1234</b></span>
+  </div>
+  <a class="back-link" href="../../">← Back to Portfolio</a>
+</div>
+
+<div class="outer">
+  <!-- Phone mockup -->
+  <div class="phone-wrap">
+    <div class="phone-frame">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <div class="app-logo">RiderGo</div>
+          <div class="status-pill"><div class="status-dot"></div>ONLINE</div>
+        </div>
+        <div class="app-body">
+          <div class="earn-card">
+            <div class="earn-label">TODAY'S EARNINGS</div>
+            <div class="earn-amount">$24.80</div>
+            <div class="earn-sub">12 deliveries · 4h 20m online</div>
+          </div>
+
+          <div class="order-alert">
+            <div class="alert-label">⚡ New Order Incoming</div>
+            <div class="alert-merchant">QuickBites Restaurant</div>
+            <div class="alert-items">2 items · Est. 3.2 km</div>
+            <div class="alert-route">
+              <span class="route-from">📍 Pickup: F-7 Markaz, Islamabad</span>
+              <span class="route-to">🏠 Dropoff: G-10/2 Street 4</span>
+            </div>
+            <div class="alert-actions">
+              <button class="a-btn a-accept">Accept $3.50</button>
+              <button class="a-btn a-decline">Decline</button>
+            </div>
+          </div>
+
+          <div class="mini-stats">
+            <div class="mini-stat">
+              <div class="mini-label">On-time Rate</div>
+              <div class="mini-value">97%</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-label">Avg per run</div>
+              <div class="mini-value">$2.07</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-label">Rating</div>
+              <div class="mini-value">4.9 ★</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-label">This Week</div>
+              <div class="mini-value">$138</div>
+            </div>
+          </div>
+
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-top:2px">Recent Deliveries</div>
+          <div class="history-item">
+            <div>
+              <div class="hi-id">ORD-6590</div>
+              <div class="hi-sub">GroceryNow · E-11</div>
+            </div>
+            <div class="hi-pay">+$2.50</div>
+          </div>
+          <div class="history-item">
+            <div>
+              <div class="hi-id">ORD-6585</div>
+              <div class="hi-sub">MedExpress · F-8</div>
+            </div>
+            <div class="hi-pay">+$1.80</div>
+          </div>
+        </div>
+        <div class="app-tab-bar">
+          <div class="tab-item active"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
+          <div class="tab-item"><div class="tab-icon">📦</div><div class="tab-label">Orders</div></div>
+          <div class="tab-item"><div class="tab-icon">💰</div><div class="tab-label">Earnings</div></div>
+          <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-home-bar"><div class="home-pill"></div></div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features">
+    <div class="pwa-badge">📱 Progressive Web App — No App Store Needed</div>
+    <div class="features-title">Built for the Road</div>
+    <div class="features-sub">A lightweight mobile-first PWA that riders install from the browser. Works offline, syncs in real time, and integrates directly with the DeliverLink dispatch platform.</div>
+
+    <div class="feature-row">
+      <div class="feature-icon">⚡</div>
+      <div>
+        <div class="feature-name">Instant Order Alerts</div>
+        <div class="feature-desc">Push notifications for new orders with one-tap accept or decline. Real-time sync with dispatch.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">🗺️</div>
+      <div>
+        <div class="feature-name">Turn-by-Turn Navigation</div>
+        <div class="feature-desc">Integrated maps with optimized routes, live traffic, and estimated arrival times.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">💰</div>
+      <div>
+        <div class="feature-name">Earnings Tracker</div>
+        <div class="feature-desc">Live earnings dashboard with daily, weekly and monthly breakdowns. Payout history included.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">📶</div>
+      <div>
+        <div class="feature-name">Offline-Ready</div>
+        <div class="feature-desc">Works in low-signal areas. Orders are cached locally and synced when connectivity resumes.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">⭐</div>
+      <div>
+        <div class="feature-name">Performance Dashboard</div>
+        <div class="feature-desc">Riders see their rating, on-time percentage, and leaderboard position in real time.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
