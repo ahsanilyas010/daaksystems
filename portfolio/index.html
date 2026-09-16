@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Software Portfolio — Live Demos</title>
+  <meta name="description" content="Enterprise-grade ERP, CRM, HRM, Accounting, Logistics, and Marketplace software. Explore live demos with sample data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:       #080F1A;
+      --surface:  #0F1C2E;
+      --card:     #131F30;
+      --border:   rgba(255,255,255,0.07);
+      --text:     #E2E8F0;
+      --muted:    #64748B;
+      --em:       #10B981;
+      --em2:      #34D399;
+      --em-dim:   rgba(16,185,129,0.12);
+      --blue:     #3B82F6;
+      --purple:   #8B5CF6;
+      --orange:   #F59E0B;
+      --red:      #EF4444;
+      --pink:     #EC4899;
+      --teal:     #06B6D4;
+      --r:        14px;
+      --r-sm:     8px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      background: rgba(8,15,26,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--em), #065f46);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px; color: #fff; letter-spacing: -0.5px;
+    }
+    .nav-name { font-weight: 700; font-size: 15px; color: var(--text); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--em); color: #fff;
+      padding: 9px 20px; border-radius: var(--r-sm);
+      font-weight: 600; font-size: 13px; text-decoration: none; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--em2); }
+
+    /* HERO */
+    .hero {
+      padding: 140px 5% 80px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--em-dim); border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 20px; padding: 6px 16px;
+      font-size: 12px; font-weight: 600; color: var(--em); letter-spacing: .04em;
+      text-transform: uppercase; margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 6vw, 72px);
+      font-weight: 900; line-height: 1.08;
+      max-width: 900px; margin: 0 auto 24px;
+      text-wrap: balance;
+    }
+    .hero h1 em { font-style: normal; color: var(--em); }
+    .hero-sub {
+      max-width: 600px; margin: 0 auto 40px;
+      font-size: 17px; color: var(--muted); line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--em); color: #fff;
+      padding: 13px 28px; border-radius: var(--r-sm);
+      font-weight: 700; font-size: 14px; text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--em2); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      padding: 13px 28px; border-radius: var(--r-sm);
+      font-weight: 600; font-size: 14px; text-decoration: none;
+      border: 1px solid var(--border); transition: border-color .2s;
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.2); }
+
+    /* HERO GLOW */
+    .hero-glow {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 400px; pointer-events: none;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.14), transparent);
+    }
+
+    /* STATS STRIP */
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+    }
+    .stat-item { padding: 28px 0; text-align: center; }
+    .stat-item + .stat-item { border-left: 1px solid var(--border); }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 900; color: var(--em); }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* SECTION */
+    .section { padding: 80px 5%; }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--em); margin-bottom: 12px;
+    }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; text-wrap: balance; }
+    .section-sub { font-size: 16px; color: var(--muted); margin-top: 10px; }
+
+    /* FILTER */
+    .filter-bar {
+      display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;
+    }
+    .filter-btn {
+      padding: 8px 20px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; cursor: pointer; border: none;
+      background: var(--surface); color: var(--muted); transition: all .2s;
+    }
+    .filter-btn:hover { background: var(--card); color: var(--text); }
+    .filter-btn.active { background: var(--em); color: #000; }
+
+    /* PRODUCT GRID */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card[hidden] { display: none !important; }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .2s, border-color .2s;
+      text-decoration: none; color: inherit;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(16,185,129,0.3); }
+
+    /* MOCKUP / BROWSER FRAME */
+    .mockup {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 12px 0;
+    }
+    .browser-bar {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px 6px 0 0;
+      padding: 6px 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .dot-r { background: #FF5F57; }
+    .dot-y { background: #FEBC2E; }
+    .dot-g { background: #28C840; }
+    .url-bar {
+      flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px;
+      padding: 3px 8px; font-size: 10px; color: var(--muted);
+      margin: 0 8px;
+    }
+    .browser-screen {
+      border-radius: 0 0 0 0;
+      overflow: hidden;
+      height: 190px;
+      position: relative;
+    }
+
+    /* SIDEBAR MOCKUP INSIDE CARD */
+    .mock-inner { display: flex; height: 100%; }
+    .mock-side {
+      width: 52px; background: rgba(0,0,0,0.25);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      align-items: center; padding: 10px 0; gap: 8px;
+    }
+    .mock-icon { width: 22px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); }
+    .mock-icon.active { background: var(--em); }
+    .mock-main { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .mock-row { display: flex; gap: 6px; }
+    .mock-tile {
+      border-radius: 6px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .mock-tile.accent { background: var(--em-dim); border-color: rgba(16,185,129,0.2); }
+    .mock-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); }
+    .mock-bar.accent { background: var(--em); opacity: 0.6; }
+    .mock-table { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+    .mock-tr { display: flex; gap: 4px; align-items: center; }
+    .mock-td { height: 6px; border-radius: 2px; background: rgba(255,255,255,0.05); flex: 1; }
+    .mock-badge { height: 12px; width: 28px; border-radius: 6px; background: var(--em-dim); flex-shrink: 0; }
+
+    /* CARD BODY */
+    .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .card-industry {
+      font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800;
+      margin-bottom: 6px; line-height: 1.3;
+    }
+    .card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
+    .card-tech { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+    .tech-tag {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 9px; font-size: 11px; color: var(--muted);
+    }
+    .card-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .creds {
+      font-size: 11px; color: var(--muted); line-height: 1.5;
+    }
+    .creds b { color: var(--em); }
+    .demo-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--em); color: #000; padding: 7px 16px;
+      border-radius: var(--r-sm); font-size: 12px; font-weight: 700;
+      text-decoration: none; white-space: nowrap; transition: background .2s;
+    }
+    .demo-btn:hover { background: var(--em2); }
+    .demo-soon {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05); color: var(--muted);
+      padding: 7px 16px; border-radius: var(--r-sm);
+      font-size: 12px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+
+    /* ACCENT COLORS PER CATEGORY */
+    .c-erp  .card-industry { color: var(--em); }
+    .c-crm  .card-industry { color: var(--blue); }
+    .c-logi .card-industry { color: var(--orange); }
+    .c-co   .card-industry { color: var(--purple); }
+    .c-mkt  .card-industry { color: var(--pink); }
+
+    .c-erp:hover  { border-color: rgba(16,185,129,0.35) !important; }
+    .c-crm:hover  { border-color: rgba(59,130,246,0.35) !important; }
+    .c-logi:hover { border-color: rgba(245,158,11,0.35) !important; }
+    .c-co:hover   { border-color: rgba(139,92,246,0.35) !important; }
+    .c-mkt:hover  { border-color: rgba(236,72,153,0.35) !important; }
+
+    .mock-icon.blue { background: var(--blue); }
+    .mock-icon.orange { background: var(--orange); }
+    .mock-icon.purple { background: var(--purple); }
+    .mock-icon.pink { background: var(--pink); }
+    .mock-tile.blue { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); }
+    .mock-tile.orange { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+    .mock-tile.purple { background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.2); }
+    .mock-tile.pink { background: rgba(236,72,153,0.1); border-color: rgba(236,72,153,0.2); }
+    .mock-badge.blue { background: rgba(59,130,246,0.15); }
+    .mock-badge.orange { background: rgba(245,158,11,0.15); }
+    .mock-badge.purple { background: rgba(139,92,246,0.15); }
+    .mock-badge.pink { background: rgba(236,72,153,0.15); }
+
+    /* PROCESS SECTION */
+    .process { padding: 80px 5%; background: var(--surface); }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .step-num { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 900; color: var(--em-dim); margin-bottom: 12px; }
+    .step-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* CTA */
+    .cta-section {
+      padding: 100px 5%;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, #0a1520 100%);
+    }
+    .cta-section h2 { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 900; margin-bottom: 14px; }
+    .cta-section p { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 36px; }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 5%;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    footer p { font-size: 12px; color: var(--muted); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 900px) {
+      .steps { grid-template-columns: 1fr 1fr; }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .stats-strip .stat-item { border-left: none !important; }
+      .stats-strip .stat-item:nth-child(odd) { border-right: 1px solid var(--border); }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">ES</div>
+    <div>
+      <div class="nav-name">Enterprise Software</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#demos">Demos</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#demos" class="nav-cta">View Demos</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">✦ Live Demo Showcase</div>
+  <h1>Enterprise Software<br><em>Built to Scale</em></h1>
+  <p class="hero-sub">Full-stack ERP, CRM, HRM, Logistics, and Marketplace platforms — each deployed, demo-ready, and available with a white-label or custom build for your business.</p>
+  <div class="hero-actions">
+    <a href="#demos" class="btn-primary">Explore Live Demos →</a>
+    <a href="#contact" class="btn-outline">Discuss a Project</a>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num">9+</div>
+    <div class="stat-label">Products Built</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">5</div>
+    <div class="stat-label">Industry Verticals</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">Full</div>
+    <div class="stat-label">Stack Coverage</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">SaaS</div>
+    <div class="stat-label">Ready Architecture</div>
+  </div>
+</div>
+
+<!-- DEMOS -->
+<section class="section" id="demos">
+  <div class="section-header">
+    <div class="section-eyebrow">Live Demos</div>
+    <h2 class="section-title">Explore the Products</h2>
+    <p class="section-sub">Click any card to open a live demo with pre-filled sample data.</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-f="all">All</button>
+    <button class="filter-btn" data-f="erp">ERP &amp; Accounting</button>
+    <button class="filter-btn" data-f="crm">CRM &amp; BPO</button>
+    <button class="filter-btn" data-f="logistics">Logistics</button>
+    <button class="filter-btn" data-f="coworking">Coworking</button>
+    <button class="filter-btn" data-f="market">Marketplace</button>
+  </div>
+
+  <div class="grid" id="product-grid">
+
+    <!-- 1. LedgerPro -->
+    <div class="card c-erp" data-c="erp">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">ledgerpro.app/dashboard</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active" style="background:var(--em)"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile accent" style="flex:1;height:40px;padding:6px">
+                  <div class="mock-bar" style="width:60%;margin-bottom:4px"></div>
+                  <div class="mock-bar accent" style="width:80%"></div>
+                </div>
+                <div class="mock-tile accent" style="flex:1;height:40px;padding:6px">
+                  <div class="mock-bar" style="width:60%;margin-bottom:4px"></div>
+                  <div class="mock-bar accent" style="width:55%"></div>
+                </div>
+                <div class="mock-tile accent" style="flex:1;height:40px;padding:6px">
+                  <div class="mock-bar" style="width:60%;margin-bottom:4px"></div>
+                  <div class="mock-bar accent" style="width:70%"></div>
+                </div>
+              </div>
+              <div class="mock-tile" style="height:30px;padding:6px;display:flex;gap:4px;align-items:flex-end">
+                <div style="flex:1;background:var(--em-dim);border-radius:2px;height:14px"></div>
+                <div style="flex:1;background:var(--em-dim);border-radius:2px;height:22px"></div>
+                <div style="flex:1;background:var(--em);opacity:.5;border-radius:2px;height:18px"></div>
+                <div style="flex:1;background:var(--em-dim);border-radius:2px;height:25px"></div>
+                <div style="flex:1;background:var(--em);opacity:.7;border-radius:2px;height:20px"></div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">ERP &amp; Accounting</div>
+        <div class="card-title">LedgerPro — Multi-Entity Accounting ERP</div>
+        <div class="card-desc">Complete accounting platform for multi-entity corporate groups. Manage invoices, payments, bank reconciliation, P&amp;L, and financial reporting across multiple entities from one dashboard.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 16</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">Drizzle ORM</span>
+          <span class="tech-tag">Auth.js</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@ledgerpro.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/ledgerpro/">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 2. DialDesk -->
+    <div class="card c-crm" data-c="crm">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">dialdesk.app/live</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active blue"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile blue" style="flex:1;height:40px;padding:6px">
+                  <div class="mock-bar" style="width:55%;margin-bottom:4px"></div>
+                  <div class="mock-bar" style="width:80%;background:rgba(59,130,246,.4)"></div>
+                </div>
+                <div class="mock-tile blue" style="flex:1;height:40px;padding:6px">
+                  <div class="mock-bar" style="width:55%;margin-bottom:4px"></div>
+                  <div class="mock-bar" style="width:60%;background:rgba(59,130,246,.4)"></div>
+                </div>
+                <div class="mock-tile blue" style="flex:1;height:40px;padding:6px">
+                  <div class="mock-bar" style="width:55%;margin-bottom:4px"></div>
+                  <div class="mock-bar" style="width:75%;background:rgba(59,130,246,.4)"></div>
+                </div>
+              </div>
+              <div class="mock-tile" style="height:44px;padding:8px;display:flex;flex-direction:column;gap:4px">
+                <div class="mock-bar" style="width:45%"></div>
+                <div class="mock-row" style="gap:6px">
+                  <div class="mock-bar" style="flex:1;background:rgba(59,130,246,.2)"></div>
+                  <div class="mock-bar" style="width:28px;background:var(--blue);opacity:.5"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge blue"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge blue"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">CRM &amp; BPO</div>
+        <div class="card-title">DialDesk — Call Center CRM Platform</div>
+        <div class="card-desc">Real-time call center operations platform. Live agent dashboard, call queue management, lead tracking, pipeline view, and detailed call analytics for BPO and telesales teams.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 15</span>
+          <span class="tech-tag">Supabase</span>
+          <span class="tech-tag">Real-time</span>
+          <span class="tech-tag">Google Sheets API</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@dialdesk.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/dialdesk/" style="background:var(--blue);color:#fff">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 3. TradeDesk -->
+    <div class="card c-crm" data-c="crm">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">tradedesk.app/orders</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active blue"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile blue" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:70%;background:rgba(59,130,246,.4)"></div>
+                </div>
+                <div class="mock-tile blue" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:85%;background:rgba(59,130,246,.4)"></div>
+                </div>
+              </div>
+              <div class="mock-tile" style="flex:1;height:50px;padding:8px">
+                <div class="mock-bar" style="width:40%;margin-bottom:5px"></div>
+                <div style="display:flex;gap:3px;align-items:flex-end;height:24px">
+                  <div style="flex:1;background:rgba(59,130,246,.15);border-radius:2px;height:50%"></div>
+                  <div style="flex:1;background:rgba(59,130,246,.15);border-radius:2px;height:80%"></div>
+                  <div style="flex:1;background:var(--blue);opacity:.4;border-radius:2px;height:65%"></div>
+                  <div style="flex:1;background:rgba(59,130,246,.15);border-radius:2px;height:90%"></div>
+                  <div style="flex:1;background:var(--blue);opacity:.6;border-radius:2px;height:100%"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge blue"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge blue"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge blue"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">CRM &amp; Distribution</div>
+        <div class="card-title">TradeDesk — Distribution &amp; Supply Chain CRM</div>
+        <div class="card-desc">End-to-end CRM for importers and distributors. Track SKUs, manage purchase and sales orders, monitor inventory levels, run a sales pipeline, and serve multiple retail clients from one system.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 15</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">Drizzle ORM</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@tradedesk.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/tradedesk/" style="background:var(--blue);color:#fff">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 4. DeliverLink -->
+    <div class="card c-logi" data-c="logistics">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">deliverlink.app/dispatch</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active orange"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile orange" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:70%;background:rgba(245,158,11,.4)"></div>
+                </div>
+                <div class="mock-tile orange" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:90%;background:rgba(245,158,11,.4)"></div>
+                </div>
+                <div class="mock-tile orange" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:60%;background:rgba(245,158,11,.4)"></div>
+                </div>
+              </div>
+              <div class="mock-tile" style="flex:1;height:54px;padding:8px;background:rgba(0,0,0,.15)">
+                <div class="mock-bar" style="width:35%;margin-bottom:5px"></div>
+                <div style="display:flex;gap:5px">
+                  <div style="flex:1;height:28px;background:rgba(245,158,11,.08);border-radius:3px;border:1px solid rgba(245,158,11,.2)"></div>
+                  <div style="flex:1;height:28px;background:rgba(245,158,11,.08);border-radius:3px;border:1px solid rgba(245,158,11,.2)"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge orange"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge orange"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">Logistics &amp; Delivery</div>
+        <div class="card-title">DeliverLink — Rider &amp; Order Management</div>
+        <div class="card-desc">Operations platform for on-demand delivery networks. Live order tracking, rider dispatch, merchant management, zone-based assignment, and real-time delivery KPI dashboards.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 15</span>
+          <span class="tech-tag">Supabase Realtime</span>
+          <span class="tech-tag">Firebase Auth</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@deliverlink.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/deliverlink/" style="background:var(--orange);color:#000">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 5. RiderGo -->
+    <div class="card c-logi" data-c="logistics">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">ridergo.app</span>
+        </div>
+        <div class="browser-screen" style="display:flex;align-items:center;justify-content:center;background:#0a1520">
+          <div style="width:100px;background:#0F1C2E;border-radius:16px;overflow:hidden;border:1.5px solid rgba(255,255,255,.1);box-shadow:0 8px 24px rgba(0,0,0,.4)">
+            <div style="height:8px;background:#080F1A;display:flex;align-items:center;justify-content:center">
+              <div style="width:30px;height:3px;background:rgba(255,255,255,.1);border-radius:2px"></div>
+            </div>
+            <div style="padding:8px;display:flex;flex-direction:column;gap:4px">
+              <div style="background:linear-gradient(135deg,var(--em),#059669);border-radius:6px;height:28px;padding:4px 5px">
+                <div style="height:3px;background:rgba(0,0,0,.2);border-radius:2px;width:50%;margin-bottom:3px"></div>
+                <div style="height:5px;background:rgba(0,0,0,.15);border-radius:2px;width:70%"></div>
+              </div>
+              <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.25);border-radius:5px;height:22px;padding:3px 4px">
+                <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;width:60%;margin-bottom:2px"></div>
+                <div style="height:2px;background:rgba(255,255,255,.06);border-radius:2px;width:80%"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
+                <div style="background:rgba(255,255,255,.04);border-radius:4px;height:18px;border:1px solid rgba(255,255,255,.06)"></div>
+                <div style="background:rgba(255,255,255,.04);border-radius:4px;height:18px;border:1px solid rgba(255,255,255,.06)"></div>
+              </div>
+            </div>
+            <div style="display:flex;border-top:1px solid rgba(255,255,255,.07);background:#080F1A">
+              <div style="flex:1;padding:4px;text-align:center"><div style="height:6px;background:var(--em);opacity:.5;border-radius:2px;margin:0 auto;width:60%"></div></div>
+              <div style="flex:1;padding:4px;text-align:center"><div style="height:6px;background:rgba(255,255,255,.07);border-radius:2px;margin:0 auto;width:60%"></div></div>
+              <div style="flex:1;padding:4px;text-align:center"><div style="height:6px;background:rgba(255,255,255,.07);border-radius:2px;margin:0 auto;width:60%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">Logistics &amp; Mobile</div>
+        <div class="card-title">RiderGo — Rider Mobile PWA</div>
+        <div class="card-desc">Lightweight Progressive Web App for delivery riders. Real-time order alerts, one-tap accept/decline, earnings tracker, navigation integration, and offline support. No app store needed.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js PWA</span>
+          <span class="tech-tag">Vite / React 18</span>
+          <span class="tech-tag">Firebase Auth</span>
+          <span class="tech-tag">Push API</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@ridergo.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/ridergo/" style="background:var(--orange);color:#000">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 6. CourierOS -->
+    <div class="card c-logi" data-c="logistics">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">courieros.app/noc</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active orange"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile orange" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:80%;background:rgba(245,158,11,.4)"></div>
+                </div>
+                <div class="mock-tile orange" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:65%;background:rgba(245,158,11,.4)"></div>
+                </div>
+                <div class="mock-tile" style="flex:1;height:36px;padding:5px;background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.2)">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:40%;background:rgba(248,113,113,.4)"></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+                <div class="mock-tile" style="height:40px;padding:5px">
+                  <div class="mock-bar" style="width:40%;margin-bottom:4px"></div>
+                  <div class="mock-bar" style="width:70%"></div>
+                  <div class="mock-bar" style="width:55%;margin-top:2px"></div>
+                </div>
+                <div class="mock-tile" style="height:40px;padding:5px;background:rgba(248,113,113,.06);border-color:rgba(248,113,113,.15)">
+                  <div class="mock-bar" style="width:40%;margin-bottom:4px"></div>
+                  <div class="mock-bar" style="width:80%"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge orange"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge orange"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">Logistics &amp; Courier</div>
+        <div class="card-title">CourierOS — Full Courier &amp; Logistics ERP</div>
+        <div class="card-desc">End-to-end courier ERP covering shipment intake, hub sorting, fleet management, route planning, exception handling, and SLA tracking. Built for courier companies handling thousands of parcels daily.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 16</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">Drizzle ORM</span>
+          <span class="tech-tag">Auth.js</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@courieros.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/courieros/" style="background:var(--orange);color:#000">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 7. HubSpace -->
+    <div class="card c-co" data-c="coworking">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">hubspace.app/dashboard</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active purple"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile purple" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:80%;background:rgba(139,92,246,.4)"></div>
+                </div>
+                <div class="mock-tile purple" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:60%;background:rgba(139,92,246,.4)"></div>
+                </div>
+                <div class="mock-tile purple" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:90%;background:rgba(139,92,246,.4)"></div>
+                </div>
+              </div>
+              <div class="mock-tile" style="height:50px;padding:6px">
+                <div class="mock-bar" style="width:30%;margin-bottom:5px"></div>
+                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;height:24px">
+                  <div style="background:rgba(139,92,246,.15);border-radius:2px"></div>
+                  <div style="background:rgba(139,92,246,.15);border-radius:2px"></div>
+                  <div style="background:rgba(139,92,246,.5);border-radius:2px"></div>
+                  <div style="background:rgba(139,92,246,.15);border-radius:2px"></div>
+                  <div style="background:rgba(245,158,11,.3);border-radius:2px"></div>
+                  <div style="background:rgba(139,92,246,.15);border-radius:2px"></div>
+                  <div style="background:rgba(139,92,246,.5);border-radius:2px"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge purple"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge purple"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">Coworking &amp; Space</div>
+        <div class="card-title">HubSpace — Coworking Space Management ERP</div>
+        <div class="card-desc">All-in-one management platform for coworking spaces. Live floor plan, desk bookings, meeting room scheduling, member management, billing plans, and monthly revenue reporting.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 15</span>
+          <span class="tech-tag">Supabase</span>
+          <span class="tech-tag">Stripe</span>
+          <span class="tech-tag">Auth.js</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@hubspace.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/hubspace/" style="background:var(--purple);color:#fff">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 8. PeopleCore -->
+    <div class="card c-erp" data-c="erp">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">peoplecore.app/hr</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active" style="background:var(--em)"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile accent" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar accent" style="width:75%"></div>
+                </div>
+                <div class="mock-tile accent" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar accent" style="width:90%"></div>
+                </div>
+              </div>
+              <div class="mock-tile" style="flex:1;height:54px;padding:6px">
+                <div class="mock-bar" style="width:35%;margin-bottom:5px"></div>
+                <div style="display:flex;gap:3px">
+                  <div style="width:18px;height:18px;border-radius:50%;background:var(--em-dim);border:1px solid rgba(16,185,129,.3)"></div>
+                  <div style="width:18px;height:18px;border-radius:50%;background:var(--em-dim);border:1px solid rgba(16,185,129,.3)"></div>
+                  <div style="width:18px;height:18px;border-radius:50%;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3)"></div>
+                  <div style="width:18px;height:18px;border-radius:50%;background:var(--em-dim);border:1px solid rgba(16,185,129,.3)"></div>
+                  <div style="width:18px;height:18px;border-radius:50%;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3)"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">HR Management</div>
+        <div class="card-title">PeopleCore — HR Management System</div>
+        <div class="card-desc">Comprehensive HR platform for managing employees, attendance, leave approvals, payroll processing, and performance appraisals. Includes department management and onboarding workflows.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 16</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">Drizzle ORM</span>
+          <span class="tech-tag">Auth.js</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">demo@peoplecore.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/peoplecore/">Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 9. GigBridge -->
+    <div class="card c-mkt" data-c="market">
+      <div class="mockup">
+        <div class="browser-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="url-bar">gigbridge.app/marketplace</span>
+        </div>
+        <div class="browser-screen">
+          <div class="mock-inner">
+            <div class="mock-side">
+              <div class="mock-icon active pink"></div>
+              <div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div><div class="mock-icon"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-row">
+                <div class="mock-tile pink" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:80%;background:rgba(236,72,153,.4)"></div>
+                </div>
+                <div class="mock-tile pink" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:65%;background:rgba(236,72,153,.4)"></div>
+                </div>
+                <div class="mock-tile pink" style="flex:1;height:36px;padding:5px">
+                  <div class="mock-bar" style="width:50%;margin-bottom:3px"></div>
+                  <div class="mock-bar" style="width:90%;background:rgba(236,72,153,.4)"></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+                <div class="mock-tile pink" style="height:40px;padding:5px;display:flex;flex-direction:column;gap:3px">
+                  <div class="mock-bar" style="width:60%"></div>
+                  <div class="mock-bar" style="width:80%;background:rgba(236,72,153,.15)"></div>
+                  <div class="mock-bar" style="width:40%;background:rgba(236,72,153,.3)"></div>
+                </div>
+                <div class="mock-tile pink" style="height:40px;padding:5px;display:flex;flex-direction:column;gap:3px">
+                  <div class="mock-bar" style="width:60%"></div>
+                  <div class="mock-bar" style="width:70%;background:rgba(236,72,153,.15)"></div>
+                  <div class="mock-bar" style="width:50%;background:rgba(236,72,153,.3)"></div>
+                </div>
+              </div>
+              <div class="mock-table">
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge pink"></div></div>
+                <div class="mock-tr"><div class="mock-td"></div><div class="mock-td" style="flex:2"></div><div class="mock-badge pink"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-industry">Marketplace &amp; Gig Economy</div>
+        <div class="card-title">GigBridge — Freelance &amp; Gig Marketplace</div>
+        <div class="card-desc">Full-featured freelance marketplace platform with buyer/seller profiles, gig listings, order management, dispute resolution, payout processing, and a GMV analytics admin panel.</div>
+        <div class="card-tech">
+          <span class="tech-tag">Next.js 15</span>
+          <span class="tech-tag">Supabase</span>
+          <span class="tech-tag">TanStack Router</span>
+          <span class="tech-tag">Stripe</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="creds">admin@gigbridge.app<br><b>demo1234</b></div>
+        <a class="demo-btn" href="./demos/gigbridge/" style="background:var(--pink);color:#fff">Live Demo →</a>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-header">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">From Brief to Deployed</h2>
+    <p class="section-sub">A focused delivery process for enterprise software projects.</p>
+  </div>
+  <div class="steps">
+    <div>
+      <div class="step-num">01</div>
+      <div class="step-title">Discovery &amp; Scope</div>
+      <div class="step-desc">We map out your business flows, data model, and user roles before writing a single line of code. A detailed SRS document is produced and approved before development begins.</div>
+    </div>
+    <div>
+      <div class="step-num">02</div>
+      <div class="step-title">Design &amp; Prototype</div>
+      <div class="step-desc">Figma wireframes for every screen. You see exactly what the system will look like and how it will behave before development starts — reducing change requests later.</div>
+    </div>
+    <div>
+      <div class="step-num">03</div>
+      <div class="step-title">Build &amp; Test</div>
+      <div class="step-desc">Iterative sprints with bi-weekly demos. Full-stack Next.js with PostgreSQL. Role-based access control, audit logs, and seed data included. No half-baked handoffs.</div>
+    </div>
+    <div>
+      <div class="step-num">04</div>
+      <div class="step-title">Deploy &amp; Support</div>
+      <div class="step-desc">Production deployment on Vercel or your preferred cloud provider. Handover documentation, training session, and 60-day post-launch support included.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Ready to Build?</h2>
+  <p>Share your requirements and let's discuss how we can deliver a custom system for your business.</p>
+  <div class="hero-actions">
+    <a href="mailto:ahsanilyas35@gmail.com" class="btn-primary">Get in Touch →</a>
+    <a href="#demos" class="btn-outline">Browse Demos</a>
+  </div>
+</section>
+
+<footer>
+  <p>Enterprise Software Portfolio — Custom ERP, CRM, HRM &amp; Marketplace Solutions</p>
+  <p>All demos use sample data. Build with Next.js, Supabase &amp; PostgreSQL.</p>
+</footer>
+
+<script>
+  // Filter
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card[data-c]');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.f;
+      cards.forEach(c => {
+        c.hidden = f !== 'all' && c.dataset.c !== f;
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

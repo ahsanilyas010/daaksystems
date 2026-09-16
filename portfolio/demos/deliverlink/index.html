@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeliverLink — Rider & Order Management Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080F1A;--surf:#0F1C2E;--card:#131F30;--em:#10B981;--em-l:#34D399;--em-dim:rgba(16,185,129,0.1);--border:rgba(255,255,255,0.07);--text:#E2E8F0;--muted:#64748B;--faint:#1E2D42;--warn:#F59E0B;--danger:#F87171;--info:#60A5FA;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+.demo-banner{background:var(--em-dim);border-bottom:1px solid var(--em);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.demo-banner span{font-size:13px;color:var(--em);font-weight:500}
+.demo-creds{display:flex;gap:16px;font-size:12px;color:var(--muted)}.demo-creds b{color:var(--em-l)}
+.back-link{font-size:12px;color:var(--muted);transition:color .2s}.back-link:hover{color:var(--em)}
+.shell{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-logo .name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--em)}
+.sidebar-logo .tagline{font-size:11px;color:var(--muted);margin-top:2px}
+nav{flex:1}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding:8px 20px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-item:hover{background:var(--em-dim);color:var(--text)}
+.nav-item.active{background:var(--em-dim);color:var(--em);border-left-color:var(--em);font-weight:600}
+.nav-badge{margin-left:auto;background:var(--em);color:#000;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+.main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px}
+.page-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header-actions{display:flex;gap:10px}
+.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-primary{background:var(--em);color:#000}.btn-primary:hover{background:var(--em-l)}
+.btn-ghost{background:var(--faint);color:var(--text);border:1px solid var(--border)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.stat-label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px}
+.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--em)}
+.stat-delta{font-size:11px;color:var(--em-l);margin-top:4px}
+.stat-delta.neg{color:var(--danger)}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.panel-title{font-size:14px;font-weight:700;margin-bottom:16px}
+.order-item{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.order-id{font-size:12px;font-weight:700;color:var(--em)}
+.order-detail{font-size:12px;color:var(--text);margin-top:2px}
+.order-loc{font-size:11px;color:var(--muted);margin-top:2px}
+.order-eta{font-size:11px;font-weight:600}
+.eta-near{color:var(--em)}
+.eta-late{color:var(--warn)}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-delivered{background:rgba(16,185,129,0.15);color:var(--em)}
+.badge-transit{background:rgba(96,165,250,0.12);color:var(--info)}
+.badge-pickup{background:rgba(245,158,11,0.12);color:var(--warn)}
+.badge-cancelled{background:rgba(248,113,113,0.12);color:var(--danger)}
+.rider-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--faint);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
+.rider-name{font-size:13px;font-weight:600}
+.rider-status{font-size:11px;margin-top:2px}
+.r-online{color:var(--em)}
+.r-busy{color:var(--warn)}
+.r-offline{color:var(--muted)}
+.rider-meta{text-align:right;font-size:11px;color:var(--muted)}
+.table-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:14px;font-weight:700}
+.search-box{background:var(--faint);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);width:180px}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--faint)}
+@media(max-width:900px){.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.main{padding:20px 16px}}
+@media(max-width:600px){.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <span>🔒 Demo Mode — DeliverLink Rider &amp; Order Management Platform</span>
+  <div class="demo-creds">
+    <span>Login: <b>demo@deliverlink.app</b></span>
+    <span>Password: <b>demo1234</b></span>
+  </div>
+  <a class="back-link" href="../../">← Back to Portfolio</a>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="name">DeliverLink</div>
+      <div class="tagline">Rider &amp; Order Management</div>
+    </div>
+    <nav>
+      <div class="nav-section">Operations</div>
+      <div class="nav-item active"><span class="icon">🗺️</span> Live Map</div>
+      <div class="nav-item"><span class="icon">📦</span> Orders <span class="nav-badge">23</span></div>
+      <div class="nav-item"><span class="icon">🚴</span> Riders</div>
+      <div class="nav-item"><span class="icon">🏪</span> Merchants</div>
+      <div class="nav-section">Dispatch</div>
+      <div class="nav-item"><span class="icon">📋</span> Assign Runs</div>
+      <div class="nav-item"><span class="icon">🔄</span> Auto-Dispatch</div>
+      <div class="nav-item"><span class="icon">⚡</span> Urgent Queue <span class="nav-badge">3</span></div>
+      <div class="nav-section">Analytics</div>
+      <div class="nav-item"><span class="icon">📊</span> Delivery KPIs</div>
+      <div class="nav-item"><span class="icon">🌍</span> Zone Heatmap</div>
+      <div class="nav-item"><span class="icon">⚙️</span> Settings</div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Live Operations</div>
+        <div class="page-sub">Today · September 16, 2025 · All Zones</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost">Assign Rider</button>
+        <button class="btn btn-primary">+ New Order</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Active Orders</div>
+        <div class="stat-value">23</div>
+        <div class="stat-delta">3 urgent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Delivered Today</div>
+        <div class="stat-value">184</div>
+        <div class="stat-delta">↑ 96.2% on time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Online Riders</div>
+        <div class="stat-value">12</div>
+        <div class="stat-delta">8 available · 4 on run</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Delivery</div>
+        <div class="stat-value">28m</div>
+        <div class="stat-delta">↓ 4m vs last week</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-title">Active Orders</div>
+        <div class="order-item">
+          <div>
+            <div class="order-id">ORD-6601</div>
+            <div class="order-detail">3 items · Merchant: QuickBites</div>
+            <div class="order-loc">📍 Dropoff: G-10 Markaz, Islamabad</div>
+          </div>
+          <div style="text-align:right">
+            <span class="status-badge badge-transit">En Route</span>
+            <div class="order-eta eta-near" style="margin-top:6px">ETA 8 min</div>
+          </div>
+        </div>
+        <div class="order-item">
+          <div>
+            <div class="order-id">ORD-6602</div>
+            <div class="order-detail">1 item · Merchant: MedExpress</div>
+            <div class="order-loc">📍 Dropoff: F-7/1, Islamabad</div>
+          </div>
+          <div style="text-align:right">
+            <span class="status-badge badge-pickup">Pickup</span>
+            <div class="order-eta eta-late" style="margin-top:6px">ETA 22 min</div>
+          </div>
+        </div>
+        <div class="order-item">
+          <div>
+            <div class="order-id">ORD-6603</div>
+            <div class="order-detail">5 items · Merchant: GroceryNow</div>
+            <div class="order-loc">📍 Dropoff: E-11, Islamabad</div>
+          </div>
+          <div style="text-align:right">
+            <span class="status-badge badge-delivered">Delivered</span>
+            <div class="order-eta eta-near" style="margin-top:6px">Done</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Rider Status</div>
+        <div class="rider-item">
+          <div>
+            <div class="rider-name">Ali R.</div>
+            <div class="rider-status r-busy">● On delivery · ORD-6601</div>
+          </div>
+          <div class="rider-meta">4.9★ · 28 today</div>
+        </div>
+        <div class="rider-item">
+          <div>
+            <div class="rider-name">Zain M.</div>
+            <div class="rider-status r-online">● Available</div>
+          </div>
+          <div class="rider-meta">4.8★ · 21 today</div>
+        </div>
+        <div class="rider-item">
+          <div>
+            <div class="rider-name">Hassan K.</div>
+            <div class="rider-status r-busy">● On delivery · ORD-6602</div>
+          </div>
+          <div class="rider-meta">4.7★ · 19 today</div>
+        </div>
+        <div class="rider-item">
+          <div>
+            <div class="rider-name">Bilal S.</div>
+            <div class="rider-status r-online">● Available</div>
+          </div>
+          <div class="rider-meta">4.9★ · 32 today</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-panel">
+      <div class="table-header">
+        <span class="table-title">Order History — Today</span>
+        <input class="search-box" placeholder="Search orders…" value="">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Merchant</th>
+            <th>Zone</th>
+            <th>Rider</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>ORD-6590</b></td>
+            <td>QuickBites</td>
+            <td>G-10</td>
+            <td>Bilal S.</td>
+            <td>24m</td>
+            <td><span class="status-badge badge-delivered">✓ Delivered</span></td>
+          </tr>
+          <tr>
+            <td><b>ORD-6591</b></td>
+            <td>MedExpress</td>
+            <td>F-8</td>
+            <td>Ali R.</td>
+            <td>31m</td>
+            <td><span class="status-badge badge-delivered">✓ Delivered</span></td>
+          </tr>
+          <tr>
+            <td><b>ORD-6592</b></td>
+            <td>GroceryNow</td>
+            <td>E-11</td>
+            <td>Zain M.</td>
+            <td>19m</td>
+            <td><span class="status-badge badge-delivered">✓ Delivered</span></td>
+          </tr>
+          <tr>
+            <td><b>ORD-6593</b></td>
+            <td>FlowerShop</td>
+            <td>D-12</td>
+            <td>Hassan K.</td>
+            <td>—</td>
+            <td><span class="status-badge badge-transit">En Route</span></td>
+          </tr>
+          <tr>
+            <td><b>ORD-6594</b></td>
+            <td>PizzaHub</td>
+            <td>G-9</td>
+            <td>—</td>
+            <td>—</td>
+            <td><span class="status-badge badge-pickup">Awaiting Pickup</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
