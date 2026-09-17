@@ -64,11 +64,11 @@ nav{padding:8px 0;flex:1;overflow-y:auto}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.si-cyan{background:#ECFEFF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}
+.si-cyan{background:#ECFEFF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}.si-blue{background:#EFF6FF}.si-purple{background:#F5F3FF}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
 .stat-delta{font-size:11px;margin-top:4px;font-weight:600}
@@ -102,7 +102,26 @@ tr:hover td{background:#F8FAFC}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
 .badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
-@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+.badge-cyan{background:#ECFEFF;color:#164E63}.badge-gray{background:#F1F5F9;color:#475569}
+.stock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stock-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.stock-name{font-size:12px;font-weight:700;margin-bottom:4px}
+.stock-sku{font-size:10px;color:var(--text-3);margin-bottom:10px}
+.stock-bar-bg{height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden;margin-bottom:6px}
+.stock-bar-fill{height:100%;border-radius:3px}
+.stock-qty{font-size:11px;font-weight:600}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field label{font-size:11px;font-weight:600;color:var(--text-2);display:block;margin-bottom:5px}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none}
+.btn-save{padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.map-placeholder{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:40px;text-align:center}
+.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.territory-card{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:14px}
+.tc-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.tc-stats{font-size:11px;color:var(--text-2)}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.stock-grid{grid-template-columns:1fr 1fr}.map-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.sidebar{display:none}}
 </style>
 </head>
@@ -138,18 +157,18 @@ tr:hover td{background:#F8FAFC}
       </div>
       <nav>
         <div class="nav-group-label">Sales</div>
-        <div class="nav-link active">📊 Dashboard</div>
-        <div class="nav-link">💼 Pipeline</div>
-        <div class="nav-link">🛒 Orders <span class="nav-badge">4</span></div>
-        <div class="nav-link">🏪 Retail Accounts</div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 Dashboard</div>
+        <div class="nav-link" onclick="nav('pipeline',this)">💼 Pipeline</div>
+        <div class="nav-link" onclick="nav('orders',this)">🛒 Orders <span class="nav-badge">4</span></div>
+        <div class="nav-link" onclick="nav('retail',this)">🏪 Retail Accounts</div>
         <div class="nav-group-label">Inventory</div>
-        <div class="nav-link">📦 Stock Levels</div>
-        <div class="nav-link">🚨 Low Stock Alerts</div>
-        <div class="nav-link">📋 Purchase Orders</div>
+        <div class="nav-link" onclick="nav('stock',this)">📦 Stock Levels</div>
+        <div class="nav-link" onclick="nav('low-stock',this)">🚨 Low Stock Alerts</div>
+        <div class="nav-link" onclick="nav('po',this)">📋 Purchase Orders</div>
         <div class="nav-group-label">Reports</div>
-        <div class="nav-link">📈 Sales Analytics</div>
-        <div class="nav-link">🗺 Territory Map</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link" onclick="nav('analytics',this)">📈 Sales Analytics</div>
+        <div class="nav-link" onclick="nav('territory',this)">🗺 Territory Map</div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
@@ -158,13 +177,15 @@ tr:hover td{background:#F8FAFC}
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">Distribution Dashboard</div><div class="topbar-sub">ISB Region · January 2025</div></div>
+        <div><div class="topbar-title" id="page-title">Distribution Dashboard</div><div class="topbar-sub" id="page-sub">ISB Region · January 2025</div></div>
         <div class="topbar-actions">
           <button class="btn btn-outline">Export</button>
-          <button class="btn btn-primary">+ New Order</button>
+          <button class="btn btn-primary" id="primary-btn">+ New Order</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
           <div class="stat-card"><div class="stat-icon si-cyan">💰</div><div class="stat-label">Monthly Revenue</div><div class="stat-value">₨1.8M</div><div class="stat-delta delta-up">↑ 9.4% vs Dec</div></div>
           <div class="stat-card"><div class="stat-icon si-green">🛒</div><div class="stat-label">Orders This Month</div><div class="stat-value">184</div><div class="stat-delta delta-up">↑ 23 new accounts</div></div>
@@ -208,9 +229,253 @@ tr:hover td{background:#F8FAFC}
           </table>
         </div>
       </div>
+
+      <!-- PIPELINE -->
+      <div id="sec-pipeline" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">💼</div><div class="stat-label">Total Pipeline</div><div class="stat-value">₨1.43M</div><div class="stat-delta delta-up">↑ 67 active deals</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🎯</div><div class="stat-label">Weighted Value</div><div class="stat-value">₨680K</div><div class="stat-delta">Based on stage probability</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Avg Deal Age</div><div class="stat-value">18 days</div><div class="stat-delta delta-dn">↑ 3 days vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Closed Won (MTD)</div><div class="stat-value">₨96K</div><div class="stat-delta delta-up">↑ 3 deals this week</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Active Deals</span><input class="search-box" placeholder="Search deals…"></div>
+          <table>
+            <thead><tr><th>Account</th><th>Product Mix</th><th>Value</th><th>Stage</th><th>Rep</th><th>Expected Close</th></tr></thead>
+            <tbody>
+              <tr><td><b>Metro Cash & Carry</b></td><td>Honey, Olive Oil, Wafers</td><td>₨180,000</td><td><span class="badge badge-amber">Negotiation</span></td><td>Ali R.</td><td>Jan 20</td></tr>
+              <tr><td><b>Al-Fatah Superstores</b></td><td>Manuka Honey (bulk)</td><td>₨95,000</td><td><span class="badge badge-blue">Proposal Sent</span></td><td>Sara M.</td><td>Jan 25</td></tr>
+              <tr><td><b>Chase-Up</b></td><td>Orthopedic Supports × 50</td><td>₨75,000</td><td><span class="badge badge-blue">Proposal Sent</span></td><td>Ali R.</td><td>Feb 01</td></tr>
+              <tr><td><b>Naheed Supermarket</b></td><td>Caprice Full Range</td><td>₨62,000</td><td><span class="badge badge-cyan">Qualified</span></td><td>Omar K.</td><td>Feb 05</td></tr>
+              <tr><td><b>Lucky One Mall</b></td><td>Premium Foods Bundle</td><td>₨140,000</td><td><span class="badge badge-gray">Prospecting</span></td><td>Sara M.</td><td>Feb 15</td></tr>
+              <tr><td><b>CSD Canteen</b></td><td>Honey + Olive Oil</td><td>₨88,000</td><td><span class="badge badge-cyan">Qualified</span></td><td>Omar K.</td><td>Feb 10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div id="sec-orders" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">🛒</div><div class="stat-label">Total Orders</div><div class="stat-value">184</div><div class="stat-delta">January 2025</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Delivered</div><div class="stat-value">149</div><div class="stat-delta delta-up">81% fulfillment rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Pending</div><div class="stat-value">31</div><div class="stat-delta">Awaiting delivery</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🚫</div><div class="stat-label">Delayed</div><div class="stat-value">4</div><td><span class="badge badge-red">Needs action</span></td></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">All Orders — January 2025</span><input class="search-box" placeholder="Search orders…"></div>
+          <table>
+            <thead><tr><th>Order #</th><th>Store</th><th>Products</th><th>Amount</th><th>Order Date</th><th>Delivery</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>ORD-4821</b></td><td>Shams Superstore</td><td>Manuka Honey × 24, Caprice × 48</td><td>₨48,600</td><td>Jan 12</td><td>Jan 15</td><td><span class="badge badge-amber">Processing</span></td></tr>
+              <tr><td><b>ORD-4820</b></td><td>Imtiaz Super Market</td><td>Olive Oil × 60</td><td>₨36,000</td><td>Jan 11</td><td>Jan 14</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>ORD-4819</b></td><td>Shaheen Chemist</td><td>Orthopedic Support × 15</td><td>₨22,500</td><td>Jan 11</td><td>Jan 14</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>ORD-4818</b></td><td>D. Watson</td><td>Manuka Honey × 12, Olive Oil × 24</td><td>₨41,200</td><td>Jan 10</td><td>Jan 16</td><td><span class="badge badge-blue">Scheduled</span></td></tr>
+              <tr><td><b>ORD-4817</b></td><td>Esajees</td><td>Caprice Wafers × 72</td><td>₨28,800</td><td>Jan 09</td><td>Jan 13</td><td><span class="badge badge-red">Delayed</span></td></tr>
+              <tr><td><b>ORD-4816</b></td><td>Al-Fatah</td><td>Manuka Honey × 48</td><td>₨72,000</td><td>Jan 08</td><td>Jan 12</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>ORD-4815</b></td><td>Chase-Up</td><td>Olive Oil × 36, Wafers × 60</td><td>₨39,600</td><td>Jan 07</td><td>Jan 11</td><td><span class="badge badge-green">Delivered</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RETAIL ACCOUNTS -->
+      <div id="sec-retail" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">🏪</div><div class="stat-label">Active Stores</div><div class="stat-value">38</div><div class="stat-delta delta-up">↑ 5 new this quarter</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">💰</div><div class="stat-label">Top Account MOM</div><div class="stat-value">₨180K</div><td>Shams Superstore</td></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📍</div><div class="stat-label">Cities Covered</div><div class="stat-value">4</div><div class="stat-delta">ISB, RWP, LHR, KHI</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">⚠️</div><div class="stat-label">Inactive Accounts</div><div class="stat-value">6</div><div class="stat-delta delta-dn">No orders in 30+ days</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Retail Store Directory</span><input class="search-box" placeholder="Search stores…"></div>
+          <table>
+            <thead><tr><th>Store</th><th>City</th><th>Category</th><th>Monthly Avg</th><th>Last Order</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Shams Superstore</b></td><td>Islamabad</td><td>Supermarket</td><td>₨148,000</td><td>Jan 12</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Imtiaz Super Market</b></td><td>Islamabad</td><td>Supermarket</td><td>₨92,000</td><td>Jan 11</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Shaheen Chemist</b></td><td>Rawalpindi</td><td>Pharmacy</td><td>₨41,000</td><td>Jan 11</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>D. Watson</b></td><td>Islamabad</td><td>Health & Beauty</td><td>₨68,000</td><td>Jan 10</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Esajees</b></td><td>Islamabad</td><td>Supermarket</td><td>₨55,000</td><td>Jan 09</td><td><span class="badge badge-amber">Delayed Order</span></td></tr>
+              <tr><td><b>Al-Fatah Superstores</b></td><td>Lahore</td><td>Supermarket</td><td>₨124,000</td><td>Jan 08</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Chase-Up</b></td><td>Lahore</td><td>Supermarket</td><td>₨78,000</td><td>Jan 07</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Marina Market</b></td><td>Karachi</td><td>Supermarket</td><td>₨34,000</td><td>Dec 28</td><td><span class="badge badge-red">Inactive</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STOCK LEVELS -->
+      <div id="sec-stock" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">📦</div><div class="stat-label">Total SKUs</div><div class="stat-value">47</div><div class="stat-delta">Across all categories</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">In Stock</div><div class="stat-value">44</div><div class="stat-delta delta-up">93.6% availability</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🚨</div><div class="stat-label">Critical Low</div><div class="stat-value">3</div><td><span class="badge badge-red">Reorder needed</span></td></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">On Reorder</div><div class="stat-value">8</div><div class="stat-delta">POs sent to suppliers</div></div>
+        </div>
+        <div class="stock-grid">
+          <div class="stock-card"><div class="stock-name">Manuka Honey 500g</div><div class="stock-sku">SKU: MH-500</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:8%;background:var(--danger)"></div></div><div class="stock-qty" style="color:var(--danger)">4 units · CRITICAL</div></div>
+          <div class="stock-card"><div class="stock-name">Caprice Wafers Box</div><div class="stock-sku">SKU: CW-BOX</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:14%;background:var(--danger)"></div></div><div class="stock-qty" style="color:var(--danger)">7 units · CRITICAL</div></div>
+          <div class="stock-card"><div class="stock-name">Extra Virgin Olive Oil 1L</div><div class="stock-sku">SKU: OO-1L</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:24%;background:var(--warning)"></div></div><div class="stock-qty" style="color:var(--warning)">12 units · LOW</div></div>
+          <div class="stock-card"><div class="stock-name">Orthopedic Knee Support</div><div class="stock-sku">SKU: OKS-M</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:36%;background:var(--warning)"></div></div><div class="stock-qty" style="color:var(--warning)">18 units · LOW</div></div>
+          <div class="stock-card"><div class="stock-name">Manuka Honey 250g</div><div class="stock-sku">SKU: MH-250</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:72%;background:#10B981"></div></div><div class="stock-qty" style="color:var(--success)">84 units · OK</div></div>
+          <div class="stock-card"><div class="stock-name">Caprice Wafers Single</div><div class="stock-sku">SKU: CW-SNG</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:85%;background:#10B981"></div></div><div class="stock-qty" style="color:var(--success)">204 units · OK</div></div>
+          <div class="stock-card"><div class="stock-name">Olive Oil 500ml</div><div class="stock-sku">SKU: OO-500</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:68%;background:#10B981"></div></div><div class="stock-qty" style="color:var(--success)">56 units · OK</div></div>
+          <div class="stock-card"><div class="stock-name">Shoulder Support Wrap</div><div class="stock-sku">SKU: SSW-L</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:54%;background:#10B981"></div></div><div class="stock-qty" style="color:var(--success)">33 units · OK</div></div>
+          <div class="stock-card"><div class="stock-name">Back Pain Relief Belt</div><div class="stock-sku">SKU: BPR-XL</div><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:92%;background:#10B981"></div></div><div class="stock-qty" style="color:var(--success)">47 units · OK</div></div>
+        </div>
+      </div>
+
+      <!-- LOW STOCK -->
+      <div id="sec-low-stock" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-red">🚨</div><div class="stat-label">Critical Items</div><div class="stat-value">3</div><div class="stat-delta delta-dn">Below safety stock</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⚠️</div><div class="stat-label">Low Stock Items</div><div class="stat-value">5</div><div class="stat-delta">Below reorder point</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📋</div><div class="stat-label">Reorders Pending</div><div class="stat-value">2</div><div class="stat-delta">With suppliers</div></div>
+          <div class="stat-card"><div class="stat-icon si-cyan">📅</div><div class="stat-label">Next Arrival</div><div class="stat-value">Jan 18</div><div class="stat-delta">Manuka Honey restock</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Low Stock Alerts</span><span style="font-size:11px;color:var(--danger);font-weight:600">Immediate action required</span></div>
+          <table>
+            <thead><tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Safety Level</th><th>Reorder Qty</th><th>Supplier</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td><b>Manuka Honey 500g</b></td><td>MH-500</td><td style="color:var(--danger);font-weight:700">4 units</td><td>50</td><td>200</td><td>NZ Naturals</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Reorder</button></td></tr>
+              <tr><td><b>Caprice Wafers Box</b></td><td>CW-BOX</td><td style="color:var(--danger);font-weight:700">7 units</td><td>40</td><td>150</td><td>Bisconni PK</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Reorder</button></td></tr>
+              <tr><td><b>Extra Virgin Olive Oil 1L</b></td><td>OO-1L</td><td style="color:var(--danger);font-weight:700">12 units</td><td>30</td><td>120</td><td>Borges Spain</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Reorder</button></td></tr>
+              <tr><td><b>Orthopedic Knee Support</b></td><td>OKS-M</td><td style="color:var(--warning);font-weight:700">18 units</td><td>25</td><td>100</td><td>MedFlex PK</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Plan</button></td></tr>
+              <tr><td><b>Shoulder Support Wrap</b></td><td>SSW-L</td><td style="color:var(--warning);font-weight:700">22 units</td><td>20</td><td>80</td><td>MedFlex PK</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Plan</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PURCHASE ORDERS -->
+      <div id="sec-po" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">📋</div><div class="stat-label">Open POs</div><div class="stat-value">8</div><div class="stat-delta">Sent to suppliers</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">In Transit</div><div class="stat-value">3</div><div class="stat-delta">Expected this week</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Received (MTD)</div><div class="stat-value">14</div><div class="stat-delta delta-up">₨740K total value</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">⚠️</div><div class="stat-label">Overdue POs</div><div class="stat-value">1</div><div class="stat-delta delta-dn">Delayed by supplier</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Purchase Orders</span><input class="search-box" placeholder="Search POs…"></div>
+          <table>
+            <thead><tr><th>PO #</th><th>Supplier</th><th>Items</th><th>Value</th><th>Ordered</th><th>Expected</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>PO-0291</b></td><td>NZ Naturals</td><td>Manuka Honey 500g × 200</td><td>₨320,000</td><td>Jan 10</td><td>Jan 18</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+              <tr><td><b>PO-0290</b></td><td>Bisconni PK</td><td>Caprice Wafers Box × 150</td><td>₨67,500</td><td>Jan 09</td><td>Jan 15</td><td><span class="badge badge-amber">Processing</span></td></tr>
+              <tr><td><b>PO-0289</b></td><td>Borges Spain</td><td>Olive Oil 1L × 120</td><td>₨144,000</td><td>Jan 08</td><td>Jan 20</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+              <tr><td><b>PO-0288</b></td><td>MedFlex PK</td><td>Knee Support × 100, Shoulder × 80</td><td>₨108,000</td><td>Jan 07</td><td>Jan 12</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>PO-0287</b></td><td>NZ Naturals</td><td>Manuka Honey 250g × 300</td><td>₨270,000</td><td>Jan 02</td><td>Jan 10</td><td><span class="badge badge-green">Received</span></td></tr>
+              <tr><td><b>PO-0286</b></td><td>Bisconni PK</td><td>Caprice Singles × 500</td><td>₨37,500</td><td>Dec 28</td><td>Jan 05</td><td><span class="badge badge-green">Received</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sec-analytics" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">📈</div><div class="stat-label">YTD Revenue</div><div class="stat-value">₨1.8M</div><div class="stat-delta delta-up">↑ 9.4% vs Jan '24</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🛒</div><div class="stat-label">Avg Order Value</div><div class="stat-value">₨9,782</div><div class="stat-delta delta-up">↑ 12% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🏪</div><div class="stat-label">Top Category</div><div class="stat-value">Honey</div><div class="stat-delta">42% of revenue</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📦</div><div class="stat-label">Units Sold (MTD)</div><div class="stat-value">2,847</div><div class="stat-delta delta-up">↑ 18% vs Dec</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Revenue by Product Category</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Manuka Honey</span><div style="display:flex;align-items:center;gap:8px"><div style="width:100px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:42%;background:#0891B2;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--primary)">42%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Olive Oil</span><div style="display:flex;align-items:center;gap:8px"><div style="width:100px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:28%;background:#0891B2;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--primary)">28%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Caprice Wafers</span><div style="display:flex;align-items:center;gap:8px"><div style="width:100px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:19%;background:#0891B2;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--primary)">19%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Orthopedic Supports</span><div style="display:flex;align-items:center;gap:8px"><div style="width:100px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:11%;background:#0891B2;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--primary)">11%</span></div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Top Performing Stores</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Shams Superstore</span><span style="font-size:12px;font-weight:700;color:var(--primary)">₨148,000</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Al-Fatah Superstores</span><span style="font-size:12px;font-weight:700;color:var(--primary)">₨124,000</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Imtiaz Super Market</span><span style="font-size:12px;font-weight:700;color:var(--primary)">₨92,000</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Chase-Up</span><span style="font-size:12px;font-weight:700;color:var(--primary)">₨78,000</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">D. Watson</span><span style="font-size:12px;font-weight:700;color:var(--primary)">₨68,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TERRITORY -->
+      <div id="sec-territory" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-cyan">🗺</div><div class="stat-label">Active Territories</div><div class="stat-value">4</div><div class="stat-delta">ISB · RWP · LHR · KHI</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🏪</div><div class="stat-label">Total Stores</div><div class="stat-value">38</div><div class="stat-delta">Across all regions</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🚚</div><div class="stat-label">Routes Active</div><div class="stat-value">6</div><div class="stat-delta">Weekly delivery routes</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📈</div><div class="stat-label">Best Territory</div><div class="stat-value">ISB</div><div class="stat-delta">₨980K monthly revenue</div></div>
+        </div>
+        <div class="map-placeholder">
+          <div style="font-size:40px;margin-bottom:12px">🗺</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Interactive Territory Map</div>
+          <div style="font-size:12px;color:var(--text-2)">Geospatial view available in full deployment — stores, routes & coverage displayed on map</div>
+        </div>
+        <div class="map-grid">
+          <div class="territory-card"><div class="tc-name">Islamabad (ISB)</div><div class="tc-stats">14 stores · 2 routes · ₨980K/mo</div></div>
+          <div class="territory-card"><div class="tc-name">Rawalpindi (RWP)</div><div class="tc-stats">8 stores · 1 route · ₨340K/mo</div></div>
+          <div class="territory-card"><div class="tc-name">Lahore (LHR)</div><div class="tc-stats">10 stores · 2 routes · ₨420K/mo</div></div>
+          <div class="territory-card"><div class="tc-name">Karachi (KHI)</div><div class="tc-stats">6 stores · 1 route · ₨60K/mo</div></div>
+          <div class="territory-card"><div class="tc-name">Mirpur (MRP)</div><div class="tc-stats">0 stores · expansion planned Q2</div></div>
+          <div class="territory-card"><div class="tc-name">Multan (MLT)</div><div class="tc-stats">0 stores · expansion planned Q3</div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Company Information</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Company Name</label><input type="text" value="Assorted Produce Traders"></div>
+            <div class="form-field"><label>GST / NTN Number</label><input type="text" value="1234567-8"></div>
+            <div class="form-field"><label>Primary Warehouse</label><input type="text" value="FF 27, Zarpar Arcade, D-12, Islamabad"></div>
+            <div class="form-field"><label>Contact Phone</label><input type="text" value="+92 342 2221633"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Inventory Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Low Stock Threshold</label><input type="number" value="20"></div>
+            <div class="form-field"><label>Critical Stock Threshold</label><input type="number" value="10"></div>
+            <div class="form-field"><label>Auto-Reorder</label><select><option>Enabled (Notify Only)</option><option>Disabled</option><option>Fully Automatic</option></select></div>
+            <div class="form-field"><label>Reorder Lead Time (days)</label><input type="number" value="7"></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
-<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
+<script>
+var TITLES={
+  dashboard:['Distribution Dashboard','ISB Region · January 2025','+ New Order'],
+  pipeline:['Sales Pipeline','67 active deals · ₨1.43M total','+ New Deal'],
+  orders:['Orders','January 2025 · 184 orders','+ New Order'],
+  retail:['Retail Accounts','38 active stores across 4 cities','+ Add Store'],
+  stock:['Stock Levels','47 SKUs across all warehouses','+ Add SKU'],
+  'low-stock':['Low Stock Alerts','8 items need attention','Reorder All'],
+  po:['Purchase Orders','8 open POs with suppliers','+ New PO'],
+  analytics:['Sales Analytics','January 2025 · ISB Region','Export Report'],
+  territory:['Territory Map','4 active territories · 38 stores','+ New Territory'],
+  settings:['Settings','System configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+</script>
 </body>
 </html>

@@ -3,107 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HubSpace — Coworking Space Management</title>
+<title>HubSpace — Coworking Management</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
+  --bg:#F5F3FF;--surface:#FFFFFF;--sidebar:#1E1B4B;
   --primary:#7C3AED;--primary-h:#6D28D9;
-  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
-  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --text:#1E1B4B;--text-2:#4C1D95;--text-3:#8B5CF6;
+  --border:#EDE9FE;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
   --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
   --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
 }
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D0B1E;--surface:#1E1B4B;--sidebar:#0D0B1E;
+  --text:#EDE9FE;--text-2:#A78BFA;--text-3:#6D28D9;
+  --border:#312E81;--shadow:0 1px 3px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{--bg:#0D0B1E;--surface:#1E1B4B;--sidebar:#0D0B1E;--text:#EDE9FE;--text-2:#A78BFA;--text-3:#6D28D9;--border:#312E81;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E1B4B 0%,#0D0B1E 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
 #login-screen.hidden{display:none}
 .login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
 .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
-.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.login-logo-name{font-size:22px;font-weight:800;color:#1E1B4B}.login-logo-tag{font-size:11px;color:#8B5CF6;font-weight:500}
+.login-heading{font-size:20px;font-weight:700;color:#1E1B4B;margin-bottom:4px}.login-sub{font-size:13px;color:#4C1D95;margin-bottom:24px}
 .demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
 .form-group{margin-bottom:16px}
-.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
-.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-label{font-size:12px;font-weight:600;color:#4C1D95;margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid #EDE9FE;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:#1E1B4B;outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--primary)}
 .btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
-.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:#8B5CF6}
 #app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
-.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar{background:#0D0B1E;color:#8B5CF6;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
 .demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
-.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
-.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#4C1D95}.demo-bar-creds b{color:#8B5CF6}
+.demo-bar-back{color:#4C1D95;transition:color .15s}.demo-bar-back:hover{color:#EDE9FE}
 .shell{display:flex;flex:1}
 .sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
 .sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
 .sidebar-brand{display:flex;align-items:center;gap:10px}
 .sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+.sidebar-name{font-size:15px;font-weight:700;color:#EDE9FE}.sidebar-tagline{font-size:10px;color:#6D28D9;margin-top:1px}
 nav{padding:8px 0;flex:1;overflow-y:auto}
-.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
-.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
-.nav-link.active{background:rgba(124,58,237,.15);color:#C4B5FD;border-left-color:#7C3AED;font-weight:600}
-.nav-badge{margin-left:auto;background:var(--warning);color:#000;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4C1D95;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#8B5CF6;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#C4B5FD}
+.nav-link.active{background:rgba(124,58,237,.2);color:#C4B5FD;border-left-color:#7C3AED;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
 .sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
 .user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
-.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.user-name{font-size:12px;font-weight:600;color:#C4B5FD}.user-role{font-size:10px;color:#4C1D95}
 .main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
 .topbar-actions{display:flex;gap:8px}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
-.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.si-purple{background:#F5F3FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-blue{background:#EFF6FF}
+.si-purple{background:#F5F3FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-blue{background:#EFF6FF}.si-red{background:#FFF1F2}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
 .stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
-.two-col{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
 .panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .panel-title{font-size:13px;font-weight:700}
-.floor-legend{display:flex;gap:12px;font-size:10px;padding:10px 20px;border-bottom:1px solid var(--border)}
-.leg-item{display:flex;align-items:center;gap:4px;color:var(--text-2)}
+.panel-body{padding:14px 20px}
+.panel-link{font-size:11px;color:var(--primary);font-weight:600;cursor:pointer}
+.floor-legend{display:flex;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-2)}
 .leg-dot{width:10px;height:10px;border-radius:2px}
-.floor-grid{padding:16px 20px;display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
-.desk{width:100%;aspect-ratio:1;border-radius:4px;cursor:pointer;transition:opacity .15s}
+.floor-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:16px 20px}
+.desk{width:100%;aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:opacity .15s}
 .desk:hover{opacity:.8}
-.desk-occ{background:#7C3AED}
-.desk-free{background:#E2E8F0}
-.desk-reserved{background:#F59E0B}
-.desk-maintenance{background:#EF4444}
-.room-list{display:flex;flex-direction:column}
-.room-item{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.desk-occupied{background:var(--primary);color:#fff}
+.desk-free{background:var(--border);color:var(--text-3)}
+.desk-reserved{background:#F59E0B;color:#fff}
+.desk-maintenance{background:#EF4444;color:#fff}
+.room-list{padding:4px 20px 16px}
+.room-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
 .room-item:last-child{border-bottom:none}
-.room-name{font-size:12px;font-weight:600;color:var(--text)}
-.room-cap{font-size:11px;color:var(--text-3)}
-.room-slots{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
-.slot{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
-.slot-free{background:#F0FDF4;color:#166534}
+.room-name{font-size:12px;font-weight:700;color:var(--text)}
+.room-cap{font-size:10px;color:var(--text-2);margin-top:2px}
+.room-slots{display:flex;gap:6px;flex-wrap:wrap}
+.slot{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px}
 .slot-busy{background:#FFF1F2;color:#991B1B}
+.slot-free{background:#F0FDF4;color:#166534}
 .table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
 .table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .table-title{font-size:13px;font-weight:700}
-.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px;background:var(--surface)}
 table{width:100%;border-collapse:collapse}
-th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
-td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:var(--bg);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#F8FAFC}
+tr:hover td{background:var(--bg)}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
-.badge-blue{background:#EFF6FF;color:#1E40AF}.badge-purple{background:#F5F3FF;color:#5B21B6}
-@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
-@media(max-width:640px){.sidebar{display:none}}
+.badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
+.badge-purple{background:#F5F3FF;color:#5B21B6}.badge-gray{background:#F1F5F9;color:#475569}
+.member-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.member-item:last-child{border-bottom:none}
+.member-avatar{width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.member-name{font-size:12px;font-weight:700;color:var(--text)}
+.member-meta{font-size:10px;color:var(--text-2)}
+.member-plan{font-size:11px;font-weight:600;color:var(--primary);margin-left:auto}
+.hotdesk-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.hotdesk{background:var(--surface);border:2px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .15s}
+.hotdesk.hd-free{border-color:#10B981;background:#F0FDF4}
+.hotdesk.hd-busy{border-color:var(--primary);background:#F5F3FF}
+.hotdesk.hd-reserved{border-color:#F59E0B;background:#FFFBEB}
+.hotdesk-num{font-size:13px;font-weight:800;margin-bottom:4px}
+.hotdesk-status{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.hd-free .hotdesk-status{color:#10B981}
+.hd-busy .hotdesk-status{color:var(--primary)}
+.hd-reserved .hotdesk-status{color:#F59E0B}
+.ann-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.ann-item:last-child{border-bottom:none}
+.ann-icon{font-size:20px;flex-shrink:0}
+.ann-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
+.ann-body{font-size:11px;color:var(--text-2);line-height:1.5}
+.ann-time{font-size:10px;color:var(--text-3);margin-top:4px}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-field label{display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px}
+.form-field input,.form-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;background:var(--surface)}
+.form-field input:focus,.form-field select:focus{border-color:var(--primary)}
+.btn-save{background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.rev-bar-row{display:flex;align-items:center;gap:12px;padding:6px 0}
+.rev-label{font-size:12px;color:var(--text-2);min-width:100px}
+.rev-bar-bg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.rev-bar-fill{height:100%;background:var(--primary);border-radius:4px}
+.rev-val{font-size:12px;font-weight:700;color:var(--text);min-width:80px;text-align:right}
+.booking-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.booking-item:last-child{border-bottom:none}
+.booking-room{font-size:12px;font-weight:700;color:var(--text)}
+.booking-by{font-size:10px;color:var(--text-2);margin-top:2px}
+.booking-time{font-size:12px;font-weight:600;color:var(--primary)}
+.booking-dur{font-size:10px;color:var(--text-3);text-align:right;margin-top:2px}
+.plan-card{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:20px;transition:border-color .15s}
+.plan-card:hover{border-color:var(--primary)}
+.plan-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.plan-price{font-size:24px;font-weight:800;color:var(--primary);margin-bottom:8px}
+.plan-price span{font-size:12px;font-weight:400;color:var(--text-2)}
+.plan-feature{font-size:11px;color:var(--text-2);padding:3px 0}
+.plan-count{font-size:11px;font-weight:700;color:var(--text);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.three-col{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.sidebar{display:none}.hotdesk-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -111,9 +168,9 @@ tr:hover td{background:#F8FAFC}
   <div class="login-card">
     <div class="login-logo">
       <div class="login-logo-icon">🏢</div>
-      <div><div class="login-logo-name">HubSpace</div><div class="login-logo-tag">Coworking Space Management</div></div>
+      <div><div class="login-logo-name">HubSpace</div><div class="login-logo-tag">Coworking Management Platform</div></div>
     </div>
-    <div class="login-heading">Space Admin Login</div>
+    <div class="login-heading">Space Manager Login</div>
     <div class="login-sub">Sign in to manage your coworking space</div>
     <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
     <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@hubspace.app"></div>
@@ -124,7 +181,7 @@ tr:hover td{background:#F8FAFC}
 </div>
 <div id="app">
   <div class="demo-bar">
-    <div><span class="demo-bar-dot"></span>Demo Mode — HubSpace Coworking Space Management</div>
+    <div><span class="demo-bar-dot"></span>Demo Mode — HubSpace Coworking Management</div>
     <div class="demo-bar-creds"><span>Login: <b>demo@hubspace.app</b></span><span>Password: <b>demo1234</b></span></div>
     <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
   </div>
@@ -133,23 +190,23 @@ tr:hover td{background:#F8FAFC}
       <div class="sidebar-top">
         <div class="sidebar-brand">
           <div class="sidebar-icon">🏢</div>
-          <div><div class="sidebar-name">HubSpace</div><div class="sidebar-tagline">Coworking Management</div></div>
+          <div><div class="sidebar-name">HubSpace</div><div class="sidebar-tagline">Coworking Platform</div></div>
         </div>
       </div>
       <nav>
         <div class="nav-group-label">Space</div>
-        <div class="nav-link active">📊 Dashboard</div>
-        <div class="nav-link">🗓 Floor Plan</div>
-        <div class="nav-link">📅 Room Bookings <span class="nav-badge">3</span></div>
-        <div class="nav-link">🖥 Hot Desks</div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 Dashboard</div>
+        <div class="nav-link" onclick="nav('floorplan',this)">🗓 Floor Plan</div>
+        <div class="nav-link" onclick="nav('bookings',this)">📅 Room Bookings <span class="nav-badge">3</span></div>
+        <div class="nav-link" onclick="nav('hotdesks',this)">🖥 Hot Desks</div>
         <div class="nav-group-label">Members</div>
-        <div class="nav-link">👥 Members</div>
-        <div class="nav-link">💳 Memberships</div>
-        <div class="nav-link">💰 Billing</div>
+        <div class="nav-link" onclick="nav('members',this)">👥 Members</div>
+        <div class="nav-link" onclick="nav('memberships',this)">💳 Memberships</div>
+        <div class="nav-link" onclick="nav('billing',this)">💰 Billing</div>
         <div class="nav-group-label">Admin</div>
-        <div class="nav-link">📈 Analytics</div>
-        <div class="nav-link">🔔 Announcements</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link" onclick="nav('analytics',this)">📈 Analytics</div>
+        <div class="nav-link" onclick="nav('announcements',this)">🔔 Announcements</div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
@@ -158,65 +215,346 @@ tr:hover td{background:#F8FAFC}
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">Space Dashboard</div><div class="topbar-sub">HubSpace D-12 · Today, Jan 14 2025</div></div>
+        <div><div class="topbar-title" id="page-title">Space Dashboard</div><div class="topbar-sub" id="page-sub">HubSpace D-12 · Today, Jan 14 2025</div></div>
         <div class="topbar-actions">
           <button class="btn btn-outline">Add Member</button>
-          <button class="btn btn-primary">+ Book Room</button>
+          <button class="btn btn-primary" id="primary-btn">+ Book Room</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
           <div class="stat-card"><div class="stat-icon si-purple">💺</div><div class="stat-label">Desks Occupied</div><div class="stat-value">21/30</div><div class="stat-delta delta-up">70% occupancy</div></div>
           <div class="stat-card"><div class="stat-icon si-green">👥</div><div class="stat-label">Active Members</div><div class="stat-value">48</div><div class="stat-delta delta-up">↑ 5 this month</div></div>
-          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">MRR</div><div class="stat-value">₨284K</div><div class="stat-delta delta-up">↑ 12.4%</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">MRR</div><div class="stat-value">₨ 284K</div><div class="stat-delta delta-up">↑ 12.4%</div></div>
           <div class="stat-card"><div class="stat-icon si-blue">📅</div><div class="stat-label">Room Bookings</div><div class="stat-value">14</div><div class="stat-delta delta-up">Today's total</div></div>
         </div>
         <div class="two-col">
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Live Floor Plan</div><span style="font-size:11px;color:var(--text-3)">30 desks</span></div>
-            <div class="floor-legend">
-              <div class="leg-item"><div class="leg-dot" style="background:#7C3AED"></div>Occupied</div>
-              <div class="leg-item"><div class="leg-dot" style="background:#E2E8F0"></div>Available</div>
-              <div class="leg-item"><div class="leg-dot" style="background:#F59E0B"></div>Reserved</div>
-              <div class="leg-item"><div class="leg-dot" style="background:#EF4444"></div>Maintenance</div>
+            <div class="panel-head"><div class="panel-title">Today's Bookings</div><span class="panel-link">View All</span></div>
+            <div class="panel-body">
+              <div class="booking-item"><div><div class="booking-room">Falcon Room</div><div class="booking-by">Sara Ahmed · TechCo</div></div><div><div class="booking-time">9:00 – 11:00 AM</div><div class="booking-dur">2 hrs · ₨ 2,400</div></div></div>
+              <div class="booking-item"><div><div class="booking-room">Eagle Suite</div><div class="booking-by">Omar Malik · Freelancer</div></div><div><div class="booking-time">11:30 AM – 1:30 PM</div><div class="booking-dur">2 hrs · ₨ 1,600</div></div></div>
+              <div class="booking-item"><div><div class="booking-room">Falcon Room</div><div class="booking-by">Zara Enterprises</div></div><div><div class="booking-time">2:00 – 4:00 PM</div><div class="booking-dur">2 hrs · ₨ 2,400</div></div></div>
+              <div class="booking-item"><div><div class="booking-room">Phoenix Pod</div><div class="booking-by">Bilal R. · Startup</div></div><div><div class="booking-time">3:00 – 5:00 PM</div><div class="booking-dur">2 hrs · ₨ 1,200</div></div></div>
             </div>
-            <div class="floor-grid" id="floor-grid"></div>
           </div>
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Meeting Rooms</div></div>
-            <div class="room-list">
+            <div class="panel-head"><div class="panel-title">Recent Check-ins</div><span class="panel-link">All Members</span></div>
+            <div class="panel-body">
+              <div class="member-item"><div class="member-avatar">SA</div><div><div class="member-name">Sara Ahmed</div><div class="member-meta">TechCo · Checked in 8:52 AM</div></div><span class="badge badge-purple">Dedicated</span></div>
+              <div class="member-item"><div class="member-avatar">OM</div><div><div class="member-name">Omar Malik</div><div class="member-meta">Freelancer · Checked in 9:10 AM</div></div><span class="badge badge-blue">Hot Desk</span></div>
+              <div class="member-item"><div class="member-avatar">ZK</div><div><div class="member-name">Zara Khan</div><div class="member-meta">Design Studio · Checked in 9:31 AM</div></div><span class="badge badge-purple">Dedicated</span></div>
+              <div class="member-item"><div class="member-avatar">BR</div><div><div class="member-name">Bilal Rauf</div><div class="member-meta">Startup · Checked in 10:02 AM</div></div><span class="badge badge-green">Virtual</span></div>
+              <div class="member-item"><div class="member-avatar">AK</div><div><div class="member-name">Ayesha Khalid</div><div class="member-meta">Consultant · Checked in 10:15 AM</div></div><span class="badge badge-blue">Hot Desk</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLOOR PLAN -->
+      <div id="sec-floorplan" class="section" hidden>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Live Floor Plan — HubSpace D-12</span><span style="font-size:11px;color:var(--text-3)">30 desks total</span></div>
+          <div class="floor-legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#7C3AED"></div>Occupied</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#E2E8F0"></div>Available</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#F59E0B"></div>Reserved</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#EF4444"></div>Maintenance</div>
+          </div>
+          <div class="floor-grid">
+            <div class="desk desk-occupied">A1</div><div class="desk desk-occupied">A2</div><div class="desk desk-free">A3</div><div class="desk desk-occupied">A4</div><div class="desk desk-occupied">A5</div><div class="desk desk-free">A6</div>
+            <div class="desk desk-occupied">B1</div><div class="desk desk-reserved">B2</div><div class="desk desk-occupied">B3</div><div class="desk desk-occupied">B4</div><div class="desk desk-free">B5</div><div class="desk desk-occupied">B6</div>
+            <div class="desk desk-free">C1</div><div class="desk desk-occupied">C2</div><div class="desk desk-occupied">C3</div><div class="desk desk-maintenance">C4</div><div class="desk desk-occupied">C5</div><div class="desk desk-free">C6</div>
+            <div class="desk desk-occupied">D1</div><div class="desk desk-occupied">D2</div><div class="desk desk-free">D3</div><div class="desk desk-occupied">D4</div><div class="desk desk-occupied">D5</div><div class="desk desk-reserved">D6</div>
+            <div class="desk desk-occupied">E1</div><div class="desk desk-free">E2</div><div class="desk desk-occupied">E3</div><div class="desk desk-occupied">E4</div><div class="desk desk-free">E5</div><div class="desk desk-occupied">E6</div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Meeting Rooms</span></div>
+            <div class="panel-body">
               <div class="room-item"><div><div class="room-name">Falcon Room</div><div class="room-cap">8 seats · Projector</div></div><div class="room-slots"><span class="slot slot-busy">9–11 AM</span><span class="slot slot-free">11 AM–1 PM</span><span class="slot slot-busy">2–4 PM</span></div></div>
               <div class="room-item"><div><div class="room-name">Eagle Suite</div><div class="room-cap">4 seats · TV Screen</div></div><div class="room-slots"><span class="slot slot-free">All day free</span></div></div>
               <div class="room-item"><div><div class="room-name">Phoenix Pod</div><div class="room-cap">2 seats · Phone Booth</div></div><div class="room-slots"><span class="slot slot-busy">10–11 AM</span><span class="slot slot-free">11 AM+</span></div></div>
               <div class="room-item"><div><div class="room-name">Spark Lounge</div><div class="room-cap">12 seats · Events</div></div><div class="room-slots"><span class="slot slot-free">Available</span></div></div>
             </div>
           </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Amenities Status</span></div>
+            <div class="panel-body">
+              <div class="booking-item"><div><div class="booking-room">☕ Coffee Bar</div></div><span class="badge badge-green">Stocked</span></div>
+              <div class="booking-item"><div><div class="booking-room">🖨 Printer Zone</div></div><span class="badge badge-green">Online</span></div>
+              <div class="booking-item"><div><div class="booking-room">📦 Locker Room</div></div><span class="badge badge-amber">3 Available</span></div>
+              <div class="booking-item"><div><div class="booking-room">🌐 High-Speed Wi-Fi</div></div><span class="badge badge-green">100 Mbps</span></div>
+              <div class="booking-item"><div><div class="booking-room">🔌 Power Backup</div></div><span class="badge badge-green">Active</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROOM BOOKINGS -->
+      <div id="sec-bookings" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">📅</div><div class="stat-label">Today's Bookings</div><div class="stat-value">14</div><div class="stat-delta delta-up">↑ 3 vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">⏳</div><div class="stat-label">Upcoming Today</div><div class="stat-value">7</div><div class="stat-delta">Next: 2:00 PM</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">Revenue Today</div><div class="stat-value">₨ 18,400</div><div class="stat-delta delta-up">From rooms</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🏆</div><div class="stat-label">Most Booked</div><div class="stat-value">Falcon</div><div class="stat-delta">8 times this week</div></div>
         </div>
         <div class="table-panel">
-          <div class="table-head"><span class="table-title">Active Members</span><input class="search-box" placeholder="Search members…"></div>
+          <div class="table-head"><span class="table-title">Booking Schedule — Jan 14</span><button class="btn btn-primary" style="padding:6px 14px;font-size:12px">+ New Booking</button></div>
           <table>
-            <thead><tr><th>Member</th><th>Company</th><th>Plan</th><th>Desk</th><th>Renewal</th><th>Status</th></tr></thead>
+            <thead><tr><th>Room</th><th>Booked By</th><th>Time Slot</th><th>Duration</th><th>Attendees</th><th>Amount</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td><b>Sana Mirza</b></td><td>FreelanceX Design</td><td>Hot Desk — Monthly</td><td>#07</td><td>Feb 1</td><td><span class="badge badge-green">Active</span></td></tr>
-              <tr><td><b>Usman Baig</b></td><td>CodeCraft Studio</td><td>Dedicated — Annual</td><td>#12</td><td>Oct 2025</td><td><span class="badge badge-green">Active</span></td></tr>
-              <tr><td><b>Fatima Sheikh</b></td><td>Bloom Marketing</td><td>Team Suite 4</td><td>#19–22</td><td>Mar 1</td><td><span class="badge badge-purple">Team</span></td></tr>
-              <tr><td><b>Asad Qayyum</b></td><td>Indie Dev</td><td>Hot Desk — Monthly</td><td>Flexible</td><td>Jan 31</td><td><span class="badge badge-amber">Renewal Due</span></td></tr>
-              <tr><td><b>Hira Noor</b></td><td>Noor Consulting</td><td>Dedicated — Annual</td><td>#05</td><td>Aug 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Falcon Room</b></td><td>Sara Ahmed · TechCo</td><td>9:00 – 11:00 AM</td><td>2 hrs</td><td>6</td><td>₨ 2,400</td><td><span class="badge badge-green">Completed</span></td></tr>
+              <tr><td><b>Eagle Suite</b></td><td>Omar Malik</td><td>11:30 AM – 1:30 PM</td><td>2 hrs</td><td>3</td><td>₨ 1,600</td><td><span class="badge badge-green">Completed</span></td></tr>
+              <tr><td><b>Phoenix Pod</b></td><td>Bilal Rauf</td><td>10:00 – 11:00 AM</td><td>1 hr</td><td>2</td><td>₨ 600</td><td><span class="badge badge-green">Completed</span></td></tr>
+              <tr><td><b>Falcon Room</b></td><td>Zara Enterprises</td><td>2:00 – 4:00 PM</td><td>2 hrs</td><td>5</td><td>₨ 2,400</td><td><span class="badge badge-blue">Upcoming</span></td></tr>
+              <tr><td><b>Spark Lounge</b></td><td>StartupHub PK</td><td>5:00 – 8:00 PM</td><td>3 hrs</td><td>18</td><td>₨ 9,000</td><td><span class="badge badge-blue">Upcoming</span></td></tr>
+              <tr><td><b>Eagle Suite</b></td><td>Ayesha Khalid</td><td>3:00 – 4:00 PM</td><td>1 hr</td><td>2</td><td>₨ 800</td><td><span class="badge badge-amber">Pending</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <!-- HOT DESKS -->
+      <div id="sec-hotdesks" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">🖥</div><div class="stat-label">Total Hot Desks</div><div class="stat-value">20</div><div class="stat-delta">Across 2 zones</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Available Now</div><div class="stat-value">7</div><div class="stat-delta delta-up">35% free</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Reserved Today</div><div class="stat-value">4</div><div class="stat-delta">After 2 PM</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">Hot Desk Revenue</div><div class="stat-value">₨ 22,500</div><div class="stat-delta delta-up">This month</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Zone A — Open Floor (10 desks)</span></div>
+          <div style="padding:16px 20px">
+            <div class="hotdesk-grid">
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">A1</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">A2</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-free"><div class="hotdesk-num">A3</div><div class="hotdesk-status">Free</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">A4</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-free"><div class="hotdesk-num">A5</div><div class="hotdesk-status">Free</div></div>
+              <div class="hotdesk hd-reserved"><div class="hotdesk-num">A6</div><div class="hotdesk-status">Reserved</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">A7</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-free"><div class="hotdesk-num">A8</div><div class="hotdesk-status">Free</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">A9</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-reserved"><div class="hotdesk-num">A10</div><div class="hotdesk-status">Reserved</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Zone B — Quiet Zone (10 desks)</span></div>
+          <div style="padding:16px 20px">
+            <div class="hotdesk-grid">
+              <div class="hotdesk hd-free"><div class="hotdesk-num">B1</div><div class="hotdesk-status">Free</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">B2</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">B3</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-free"><div class="hotdesk-num">B4</div><div class="hotdesk-status">Free</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">B5</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">B6</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-free"><div class="hotdesk-num">B7</div><div class="hotdesk-status">Free</div></div>
+              <div class="hotdesk hd-reserved"><div class="hotdesk-num">B8</div><div class="hotdesk-status">Reserved</div></div>
+              <div class="hotdesk hd-busy"><div class="hotdesk-num">B9</div><div class="hotdesk-status">Occupied</div></div>
+              <div class="hotdesk hd-free"><div class="hotdesk-num">B10</div><div class="hotdesk-status">Free</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div id="sec-members" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">👥</div><div class="stat-label">Total Members</div><div class="stat-value">48</div><div class="stat-delta delta-up">↑ 5 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Active Today</div><div class="stat-value">21</div><div class="stat-delta delta-up">44% attendance</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Renewals Due</div><div class="stat-value">6</div><div class="stat-delta delta-dn">This month</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">Avg Revenue/Member</div><div class="stat-value">₨ 5,917</div><div class="stat-delta delta-up">↑ 8% vs last month</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Member Directory</span><input class="search-box" placeholder="Search members…"></div>
+          <table>
+            <thead><tr><th>Name</th><th>Company</th><th>Plan</th><th>Desk</th><th>Member Since</th><th>Renewal</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Sara Ahmed</b></td><td>TechCo Solutions</td><td>Dedicated Desk</td><td>A4</td><td>Mar 2024</td><td>Mar 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Omar Malik</b></td><td>Freelancer</td><td>Hot Desk 20</td><td>—</td><td>Jun 2024</td><td>Feb 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Zara Khan</b></td><td>Design Studio PK</td><td>Dedicated Desk</td><td>C2</td><td>Jan 2024</td><td>Jan 2025</td><td><span class="badge badge-amber">Renewal Due</span></td></tr>
+              <tr><td><b>Bilal Rauf</b></td><td>StartupHub</td><td>Virtual Office</td><td>—</td><td>Sep 2024</td><td>Sep 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Ayesha Khalid</b></td><td>Business Consultant</td><td>Hot Desk 10</td><td>—</td><td>Nov 2024</td><td>Nov 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Rizwan Mir</b></td><td>Mir & Co. Law</td><td>Private Office</td><td>Office 1</td><td>Feb 2024</td><td>Feb 2025</td><td><span class="badge badge-amber">Renewal Due</span></td></tr>
+              <tr><td><b>Nadia Butt</b></td><td>Media Agency</td><td>Dedicated Desk</td><td>E3</td><td>Jul 2024</td><td>Jul 2025</td><td><span class="badge badge-green">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MEMBERSHIPS -->
+      <div id="sec-memberships" class="section" hidden>
+        <div class="three-col">
+          <div class="plan-card"><div class="plan-name">Hot Desk 10</div><div class="plan-price">₨ 3,500 <span>/ month</span></div><div class="plan-feature">✓ 10 days hot desk access</div><div class="plan-feature">✓ High-speed Wi-Fi</div><div class="plan-feature">✓ Tea & Coffee</div><div class="plan-feature">✓ 2 hrs meeting room</div><div class="plan-count">12 active members</div></div>
+          <div class="plan-card" style="border-color:var(--primary)"><div class="plan-name">Hot Desk 20 ⭐</div><div class="plan-price">₨ 6,000 <span>/ month</span></div><div class="plan-feature">✓ 20 days hot desk access</div><div class="plan-feature">✓ High-speed Wi-Fi</div><div class="plan-feature">✓ Tea & Coffee</div><div class="plan-feature">✓ 5 hrs meeting room</div><div class="plan-count">18 active members</div></div>
+          <div class="plan-card"><div class="plan-name">Dedicated Desk</div><div class="plan-price">₨ 9,500 <span>/ month</span></div><div class="plan-feature">✓ Your own desk, always</div><div class="plan-feature">✓ Personal locker</div><div class="plan-feature">✓ 10 hrs meeting room</div><div class="plan-feature">✓ Priority support</div><div class="plan-count">11 active members</div></div>
+        </div>
+        <div class="two-col">
+          <div class="plan-card"><div class="plan-name">Virtual Office</div><div class="plan-price">₨ 1,500 <span>/ month</span></div><div class="plan-feature">✓ Business address</div><div class="plan-feature">✓ Mail handling</div><div class="plan-feature">✓ 2 hrs / month access</div><div class="plan-count">5 active members</div></div>
+          <div class="plan-card"><div class="plan-name">Private Office</div><div class="plan-price">₨ 35,000 <span>/ month</span></div><div class="plan-feature">✓ Dedicated private office</div><div class="plan-feature">✓ Up to 4 team members</div><div class="plan-feature">✓ Unlimited meeting room</div><div class="plan-count">2 active members</div></div>
+        </div>
+      </div>
+
+      <!-- BILLING -->
+      <div id="sec-billing" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">💰</div><div class="stat-label">MRR</div><div class="stat-value">₨ 284K</div><div class="stat-delta delta-up">↑ 12.4% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Pending Invoices</div><div class="stat-value">₨ 42K</div><div class="stat-delta delta-dn">6 invoices overdue</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Collected Jan</div><div class="stat-value">₨ 242K</div><div class="stat-delta delta-up">85% collection rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📄</div><div class="stat-label">Invoices Sent</div><div class="stat-value">48</div><div class="stat-delta">This month</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Invoice Register — January 2025</span><button class="btn btn-primary" style="padding:6px 14px;font-size:12px">+ Create Invoice</button></div>
+          <table>
+            <thead><tr><th>Invoice #</th><th>Member</th><th>Plan</th><th>Amount</th><th>Due Date</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>INV-2025-048</b></td><td>Sara Ahmed</td><td>Dedicated Desk</td><td>₨ 9,500</td><td>Jan 15</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td><b>INV-2025-047</b></td><td>Omar Malik</td><td>Hot Desk 20</td><td>₨ 6,000</td><td>Jan 15</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td><b>INV-2025-046</b></td><td>Zara Khan</td><td>Dedicated Desk</td><td>₨ 9,500</td><td>Jan 1</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>INV-2025-045</b></td><td>Rizwan Mir</td><td>Private Office</td><td>₨ 35,000</td><td>Jan 1</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>INV-2025-044</b></td><td>Bilal Rauf</td><td>Virtual Office</td><td>₨ 1,500</td><td>Jan 15</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>INV-2025-043</b></td><td>Nadia Butt</td><td>Dedicated Desk</td><td>₨ 9,500</td><td>Jan 15</td><td><span class="badge badge-green">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sec-analytics" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">📊</div><div class="stat-label">Avg Occupancy</div><div class="stat-value">68%</div><div class="stat-delta delta-up">↑ 8% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">💵</div><div class="stat-label">Revenue / Desk</div><div class="stat-value">₨ 9,467</div><div class="stat-delta delta-up">↑ 12% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🏆</div><div class="stat-label">Peak Day</div><div class="stat-value">Wednesday</div><div class="stat-delta">82% occupancy</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📅</div><div class="stat-label">Room Utilization</div><div class="stat-value">74%</div><div class="stat-delta delta-up">↑ 6% vs last month</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Occupancy by Day — This Week</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Monday</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:58%"></div></div><div class="rev-val">58%</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Tuesday</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:65%"></div></div><div class="rev-val">65%</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Wednesday</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:82%"></div></div><div class="rev-val">82%</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Thursday</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:75%"></div></div><div class="rev-val">75%</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Friday</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:70%"></div></div><div class="rev-val">70%</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Revenue by Plan — January</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Private Office</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:74%"></div></div><div class="rev-val">₨ 70K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Dedicated Desk</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:62%"></div></div><div class="rev-val">₨ 104K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Hot Desk 20</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:48%"></div></div><div class="rev-val">₨ 72K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Hot Desk 10</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:30%"></div></div><div class="rev-val">₨ 42K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Virtual Office</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:5%"></div></div><div class="rev-val">₨ 7.5K</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div id="sec-announcements" class="section" hidden>
+        <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary">+ New Announcement</button></div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Member Announcements</span></div>
+          <div class="panel-body">
+            <div class="ann-item">
+              <div class="ann-icon">🎉</div>
+              <div>
+                <div class="ann-title">New Meeting Room — Phoenix Pod Now Open!</div>
+                <div class="ann-body">We've added a new 2-seat phone booth for focused calls and private meetings. Bookable through the app. Available from today.</div>
+                <div class="ann-time">Jan 14, 2025 · 9:00 AM · All Members</div>
+              </div>
+            </div>
+            <div class="ann-item">
+              <div class="ann-icon">☕</div>
+              <div>
+                <div class="ann-title">Coffee Bar Upgrade — New Espresso Machine Installed</div>
+                <div class="ann-body">We've upgraded to a Jura commercial espresso machine. Free espresso, lattes and cappuccinos are now available. Enjoy!</div>
+                <div class="ann-time">Jan 10, 2025 · 12:00 PM · All Members</div>
+              </div>
+            </div>
+            <div class="ann-item">
+              <div class="ann-icon">⚡</div>
+              <div>
+                <div class="ann-title">Planned Maintenance — Electrical Work Jan 20 (Sunday)</div>
+                <div class="ann-body">There will be a 3-hour power outage from 9 AM to 12 PM on Sunday Jan 20 for electrical upgrades. The space will be closed during this time.</div>
+                <div class="ann-time">Jan 8, 2025 · 3:00 PM · All Members</div>
+              </div>
+            </div>
+            <div class="ann-item">
+              <div class="ann-icon">🌐</div>
+              <div>
+                <div class="ann-title">Wi-Fi Speed Upgrade — Now 200 Mbps Fiber</div>
+                <div class="ann-body">We've upgraded to a 200 Mbps fiber connection, up from 100 Mbps. New credentials are posted at reception and the coffee bar.</div>
+                <div class="ann-time">Jan 5, 2025 · 10:00 AM · All Members</div>
+              </div>
+            </div>
+            <div class="ann-item">
+              <div class="ann-icon">🎓</div>
+              <div>
+                <div class="ann-title">Startup Workshop — Jan 25, 6:00 PM in Spark Lounge</div>
+                <div class="ann-body">Join us for a free workshop on "Funding Your Startup in Pakistan" with guest speaker Usman Qureshi from i2i Ventures. RSVP at reception.</div>
+                <div class="ann-time">Jan 3, 2025 · 9:00 AM · All Members</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Space Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Space Name</label><input value="HubSpace D-12, Islamabad"></div>
+            <div class="form-field"><label>Total Desks</label><input value="30"></div>
+            <div class="form-field"><label>Opening Time</label><input value="8:00 AM"></div>
+            <div class="form-field"><label>Closing Time</label><input value="10:00 PM"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Billing Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Invoice Generation Day</label><input value="1"></div>
+            <div class="form-field"><label>Payment Due Days</label><input value="15"></div>
+            <div class="form-field"><label>Late Fee (₨)</label><input value="500"></div>
+            <div class="form-field"><label>Currency</label><select><option>PKR — Pakistani Rupee</option><option>USD</option></select></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
 <script>
+var TITLES={
+  dashboard:['Space Dashboard','HubSpace D-12 · Today, Jan 14 2025','+ Book Room'],
+  floorplan:['Floor Plan','Live desk & room availability','+ Add Desk'],
+  bookings:['Room Bookings','14 bookings today','+ New Booking'],
+  hotdesks:['Hot Desks','20 desks · 65% occupied right now','+ Reserve Desk'],
+  members:['Members','48 active members','+ Add Member'],
+  memberships:['Membership Plans','5 plans · Manage pricing','+ New Plan'],
+  billing:['Billing','January 2025 · ₨ 284K MRR','+ Create Invoice'],
+  analytics:['Analytics','Space & revenue analytics','Export Report'],
+  announcements:['Announcements','Member communications','+ New Announcement'],
+  settings:['Settings','Space configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
 function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
-(function(){
-  var statuses=['occ','occ','occ','occ','free','occ','occ','reserved','occ','occ','occ','free','occ','occ','occ','free','occ','occ','free','occ','occ','occ','occ','free','maintenance','occ','free','occ','occ','occ'];
-  var html='';
-  statuses.forEach(function(s){html+='<div class="desk desk-'+s+'" title="'+s+'"></div>'});
-  document.getElementById('floor-grid').innerHTML=html;
-})();
 </script>
 </body>
 </html>

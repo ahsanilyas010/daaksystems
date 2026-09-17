@@ -3,129 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PeopleCore — HR Management System</title>
+<title>PeopleCore — HR & Payroll Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
-  --primary:#0F766E;--primary-h:#0D6B62;
+  --bg:#F0FDFA;--surface:#FFFFFF;--sidebar:#134E4A;
+  --primary:#0F766E;--primary-h:#0D6961;
   --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
-  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --border:#CCFBF1;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
   --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
   --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
 }
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#042F2E;--surface:#0D3330;--sidebar:#021B1A;
+  --text:#CCFBF1;--text-2:#5EEAD4;--text-3:#0D9488;
+  --border:#134E4A;--shadow:0 1px 3px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{--bg:#042F2E;--surface:#0D3330;--sidebar:#021B1A;--text:#CCFBF1;--text-2:#5EEAD4;--text-3:#0D9488;--border:#134E4A;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#134E4A 0%,#042F2E 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
 #login-screen.hidden{display:none}
 .login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
 .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
-.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.login-logo-name{font-size:22px;font-weight:800;color:#0F172A}.login-logo-tag{font-size:11px;color:#0D9488;font-weight:500}
+.login-heading{font-size:20px;font-weight:700;color:#0F172A;margin-bottom:4px}.login-sub{font-size:13px;color:#475569;margin-bottom:24px}
 .demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
 .form-group{margin-bottom:16px}
-.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
-.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-label{font-size:12px;font-weight:600;color:#475569;margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:#0F172A;outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--primary)}
 .btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
-.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:#0D9488}
 #app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
-.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar{background:#021B1A;color:#5EEAD4;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
 .demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
-.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
-.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#134E4A}.demo-bar-creds b{color:#5EEAD4}
+.demo-bar-back{color:#134E4A;transition:color .15s}.demo-bar-back:hover{color:#CCFBF1}
 .shell{display:flex;flex:1}
 .sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
 .sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
 .sidebar-brand{display:flex;align-items:center;gap:10px}
 .sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+.sidebar-name{font-size:15px;font-weight:700;color:#CCFBF1}.sidebar-tagline{font-size:10px;color:#0D9488;margin-top:1px}
 nav{padding:8px 0;flex:1;overflow-y:auto}
-.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
-.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
-.nav-link.active{background:rgba(15,118,110,.15);color:#5EEAD4;border-left-color:#0F766E;font-weight:600}
-.nav-badge{margin-left:auto;background:var(--warning);color:#000;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0D9488;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#5EEAD4;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#99F6E4}
+.nav-link.active{background:rgba(15,118,110,.25);color:#99F6E4;border-left-color:#0F766E;font-weight:600}
+.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
 .sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
 .user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
-.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.user-name{font-size:12px;font-weight:600;color:#99F6E4}.user-role{font-size:10px;color:#0D9488}
 .main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
 .topbar-actions{display:flex;gap:8px}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
-.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.si-teal{background:#F0FDFA}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}
+.si-teal{background:#F0FDFA}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-blue{background:#EFF6FF}.si-red{background:#FFF1F2}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
 .stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
-.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
 .panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .panel-title{font-size:13px;font-weight:700}
-.att-scroll{overflow-x:auto}
-.att-table{width:max-content;min-width:100%}
-.att-table th{padding:6px 10px;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:center;border-bottom:1px solid var(--border)}
-.att-table td{padding:7px 10px;font-size:11px;border-bottom:1px solid var(--border);text-align:center}
-.att-table td:first-child{text-align:left;font-weight:600;color:var(--text);min-width:120px}
-.att-cell{display:inline-block;width:22px;height:22px;border-radius:4px;font-size:10px;font-weight:700;line-height:22px;text-align:center}
-.ac-p{background:#F0FDFA;color:#0F766E}
-.ac-a{background:#FFF1F2;color:#991B1B}
-.ac-h{background:#FFFBEB;color:#92400E}
-.ac-l{background:#EFF6FF;color:#1E40AF}
-.leave-list{display:flex;flex-direction:column}
-.leave-item{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.leave-item:last-child{border-bottom:none}
-.leave-name{font-size:12px;font-weight:600;color:var(--text)}
-.leave-type{font-size:11px;color:var(--text-3)}
-.leave-dates{font-size:11px;color:var(--text-2)}
-.leave-btns{display:flex;gap:6px}
-.lbtn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif}
-.lbtn-approve{background:#F0FDF4;color:#166534}
-.lbtn-deny{background:#FFF1F2;color:#991B1B}
+.panel-body{padding:14px 20px}
+.panel-link{font-size:11px;color:var(--primary);font-weight:600;cursor:pointer}
+.emp-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.emp-item:last-child{border-bottom:none}
+.emp-avatar{width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.emp-name{font-size:12px;font-weight:700;color:var(--text)}
+.emp-meta{font-size:10px;color:var(--text-2)}
+.att-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-present{background:#10B981}.dot-late{background:#F59E0B}.dot-absent{background:#EF4444}.dot-leave{background:#8B5CF6}
 .table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
 .table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .table-title{font-size:13px;font-weight:700}
-.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px;background:var(--surface)}
 table{width:100%;border-collapse:collapse}
-th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
-td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:var(--bg);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#F8FAFC}
+tr:hover td{background:var(--bg)}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
 .badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
-@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
-@media(max-width:640px){.sidebar{display:none}}
+.badge-teal{background:#F0FDFA;color:#0D6961}.badge-purple{background:#F5F3FF;color:#5B21B6}
+.badge-gray{background:#F1F5F9;color:#475569}
+.leave-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.leave-item:last-child{border-bottom:none}
+.leave-name{font-size:12px;font-weight:700;color:var(--text)}
+.leave-type{font-size:10px;color:var(--text-2);margin-top:2px}
+.leave-dates{font-size:11px;font-weight:600;color:var(--primary)}
+.leave-days{font-size:10px;color:var(--text-3);text-align:right;margin-top:2px}
+.payslip-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.payslip-row:last-child{border-bottom:none}
+.payslip-label{font-size:12px;color:var(--text-2)}
+.payslip-amount{font-size:13px;font-weight:700;color:var(--text)}
+.payslip-amount.positive{color:var(--success)}
+.payslip-amount.negative{color:var(--danger)}
+.rev-bar-row{display:flex;align-items:center;gap:12px;padding:6px 0}
+.rev-label{font-size:12px;color:var(--text-2);min-width:100px}
+.rev-bar-bg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.rev-bar-fill{height:100%;background:var(--primary);border-radius:4px}
+.rev-val{font-size:12px;font-weight:700;color:var(--text);min-width:60px;text-align:right}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-field label{display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px}
+.form-field input,.form-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;background:var(--surface)}
+.form-field input:focus,.form-field select:focus{border-color:var(--primary)}
+.btn-save{background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.benefit-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.benefit-item:last-child{border-bottom:none}
+.benefit-name{font-size:12px;font-weight:700;color:var(--text)}
+.benefit-desc{font-size:10px;color:var(--text-2);margin-top:2px}
+.benefit-val{font-size:12px;font-weight:700;color:var(--primary)}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.three-col{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.sidebar{display:none}.three-col{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">👔</div>
-      <div><div class="login-logo-name">PeopleCore</div><div class="login-logo-tag">HR Management System</div></div>
+      <div class="login-logo-icon">👤</div>
+      <div><div class="login-logo-name">PeopleCore</div><div class="login-logo-tag">HR & Payroll Platform</div></div>
     </div>
-    <div class="login-heading">HR Admin Login</div>
+    <div class="login-heading">HR Manager Login</div>
     <div class="login-sub">Sign in to manage your workforce</div>
     <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
     <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@peoplecore.app"></div>
     <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
     <button class="btn-login" onclick="doLogin()">Sign In →</button>
-    <div class="login-footer">PeopleCore v2.7 · Secure demo environment</div>
+    <div class="login-footer">PeopleCore v3.2 · Secure demo environment</div>
   </div>
 </div>
 <div id="app">
   <div class="demo-bar">
-    <div><span class="demo-bar-dot"></span>Demo Mode — PeopleCore HR Management System</div>
+    <div><span class="demo-bar-dot"></span>Demo Mode — PeopleCore HR & Payroll Platform</div>
     <div class="demo-bar-creds"><span>Login: <b>demo@peoplecore.app</b></span><span>Password: <b>demo1234</b></span></div>
     <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
   </div>
@@ -133,24 +160,24 @@ tr:hover td{background:#F8FAFC}
     <aside class="sidebar">
       <div class="sidebar-top">
         <div class="sidebar-brand">
-          <div class="sidebar-icon">👔</div>
-          <div><div class="sidebar-name">PeopleCore</div><div class="sidebar-tagline">HR Management</div></div>
+          <div class="sidebar-icon">👤</div>
+          <div><div class="sidebar-name">PeopleCore</div><div class="sidebar-tagline">HR & Payroll</div></div>
         </div>
       </div>
       <nav>
         <div class="nav-group-label">People</div>
-        <div class="nav-link active">📊 Dashboard</div>
-        <div class="nav-link">👥 Employees</div>
-        <div class="nav-link">🗓 Attendance</div>
-        <div class="nav-link">🏖 Leave Requests <span class="nav-badge">4</span></div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 Dashboard</div>
+        <div class="nav-link" onclick="nav('employees',this)">👥 Employees</div>
+        <div class="nav-link" onclick="nav('attendance',this)">⏰ Attendance</div>
+        <div class="nav-link" onclick="nav('leave',this)">🌴 Leave <span class="nav-badge">4</span></div>
         <div class="nav-group-label">Payroll</div>
-        <div class="nav-link">💰 Payroll</div>
-        <div class="nav-link">📊 Salary Structure</div>
-        <div class="nav-link">🎁 Benefits</div>
+        <div class="nav-link" onclick="nav('payroll',this)">💰 Payroll</div>
+        <div class="nav-link" onclick="nav('salary',this)">📋 Salary Slips</div>
+        <div class="nav-link" onclick="nav('benefits',this)">🏥 Benefits</div>
         <div class="nav-group-label">Reports</div>
-        <div class="nav-link">📈 HR Analytics</div>
-        <div class="nav-link">📋 Compliance</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link" onclick="nav('analytics',this)">📈 Analytics</div>
+        <div class="nav-link" onclick="nav('compliance',this)">⚖️ Compliance</div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
@@ -159,62 +186,318 @@ tr:hover td{background:#F8FAFC}
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">HR Dashboard</div><div class="topbar-sub">January 2025 · 48 Employees</div></div>
+        <div><div class="topbar-title" id="page-title">HR Dashboard</div><div class="topbar-sub" id="page-sub">January 2025 · All Departments</div></div>
         <div class="topbar-actions">
           <button class="btn btn-outline">Run Payroll</button>
-          <button class="btn btn-primary">+ Add Employee</button>
+          <button class="btn btn-primary" id="primary-btn">+ Add Employee</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
-          <div class="stat-card"><div class="stat-icon si-teal">👥</div><div class="stat-label">Total Employees</div><div class="stat-value">48</div><div class="stat-delta delta-up">↑ 3 this month</div></div>
-          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Present Today</div><div class="stat-value">41</div><div class="stat-delta delta-up">85.4% attendance</div></div>
-          <div class="stat-card"><div class="stat-icon si-amber">🏖</div><div class="stat-label">On Leave</div><div class="stat-value">4</div><div class="stat-delta">Within policy</div></div>
-          <div class="stat-card"><div class="stat-icon si-red">💰</div><div class="stat-label">Payroll This Month</div><div class="stat-value">₨2.1M</div><div class="stat-delta delta-up">↑ 4.2% vs last</div></div>
+          <div class="stat-card"><div class="stat-icon si-teal">👥</div><div class="stat-label">Total Employees</div><div class="stat-value">142</div><div class="stat-delta delta-up">↑ 8 this quarter</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Present Today</div><div class="stat-value">118</div><div class="stat-delta delta-up">83% attendance</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🌴</div><div class="stat-label">On Leave</div><div class="stat-value">14</div><div class="stat-delta">9.9% on leave</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">Payroll (Jan)</div><div class="stat-value">₨ 9.4M</div><div class="stat-delta delta-up">↑ 3.2% vs Dec</div></div>
         </div>
-        <div class="two-col">
+        <div class="three-col">
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Attendance — Jan 6–12</div><span style="font-size:10px;color:var(--text-3)">P=Present A=Absent H=Holiday L=Leave</span></div>
-            <div style="padding:0 0 16px;overflow-x:auto">
-              <table class="att-table">
-                <thead><tr><th style="text-align:left">Employee</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
-                <tbody>
-                  <tr><td>Zara Khan</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
-                  <tr><td>Kamran Ali</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-a">A</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
-                  <tr><td>Nadia Hussain</td><td><span class="att-cell ac-l">L</span></td><td><span class="att-cell ac-l">L</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
-                  <tr><td>Hassan Raza</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-a">A</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
-                  <tr><td>Sara Malik</td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-p">P</span></td><td><span class="att-cell ac-h">H</span></td><td><span class="att-cell ac-h">H</span></td></tr>
-                </tbody>
-              </table>
+            <div class="panel-head"><span class="panel-title">Attendance Today</span><span class="panel-link">View All</span></div>
+            <div class="panel-body">
+              <div class="emp-item"><div class="att-dot dot-present"></div><div class="emp-avatar">SA</div><div><div class="emp-name">Sara Ahmed</div><div class="emp-meta">Engineering · 8:52 AM</div></div></div>
+              <div class="emp-item"><div class="att-dot dot-late"></div><div class="emp-avatar">OM</div><div><div class="emp-name">Omar Malik</div><div class="emp-meta">Sales · 9:42 AM (late)</div></div></div>
+              <div class="emp-item"><div class="att-dot dot-present"></div><div class="emp-avatar">ZK</div><div><div class="emp-name">Zara Khan</div><div class="emp-meta">Design · 8:47 AM</div></div></div>
+              <div class="emp-item"><div class="att-dot dot-leave"></div><div class="emp-avatar">BR</div><div><div class="emp-name">Bilal Rauf</div><div class="emp-meta">HR · Annual Leave</div></div></div>
+              <div class="emp-item"><div class="att-dot dot-absent"></div><div class="emp-avatar">AK</div><div><div class="emp-name">Ayesha Khalid</div><div class="emp-meta">Finance · Absent</div></div></div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Leave Requests</div><span style="font-size:11px;color:var(--warning)">4 pending</span></div>
-            <div class="leave-list">
-              <div class="leave-item"><div><div class="leave-name">Rania Tariq</div><div class="leave-type">Annual Leave</div><div class="leave-dates">Jan 18–20 (3 days)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
-              <div class="leave-item"><div><div class="leave-name">Bilal Saeed</div><div class="leave-type">Sick Leave</div><div class="leave-dates">Jan 17 (1 day)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
-              <div class="leave-item"><div><div class="leave-name">Ayesha Noor</div><div class="leave-type">Casual Leave</div><div class="leave-dates">Jan 22–23 (2 days)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
-              <div class="leave-item"><div><div class="leave-name">Imran Farooq</div><div class="leave-type">Annual Leave</div><div class="leave-dates">Jan 28–31 (4 days)</div></div><div class="leave-btns"><button class="lbtn lbtn-approve">✓</button><button class="lbtn lbtn-deny">✕</button></div></div>
+            <div class="panel-head"><span class="panel-title">Leave Pending Approval</span><span class="panel-link">Approve All</span></div>
+            <div class="panel-body">
+              <div class="leave-item"><div><div class="leave-name">Omar Malik</div><div class="leave-type">Sick Leave · Sales</div></div><div><div class="leave-dates">Jan 20 – 21</div><div class="leave-days">2 days</div></div></div>
+              <div class="leave-item"><div><div class="leave-name">Nadia Butt</div><div class="leave-type">Annual Leave · Design</div></div><div><div class="leave-dates">Jan 25 – 31</div><div class="leave-days">5 days</div></div></div>
+              <div class="leave-item"><div><div class="leave-name">Rizwan Mir</div><div class="leave-type">Casual Leave · Ops</div></div><div><div class="leave-dates">Jan 17</div><div class="leave-days">1 day</div></div></div>
+              <div class="leave-item"><div><div class="leave-name">Ayesha Khalid</div><div class="leave-type">Sick Leave · Finance</div></div><div><div class="leave-dates">Jan 14 – 15</div><div class="leave-days">2 days</div></div></div>
             </div>
           </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Payroll Summary — Jan</span><span class="panel-link">Run Payroll</span></div>
+            <div class="panel-body">
+              <div class="payslip-row"><div class="payslip-label">Gross Salaries</div><div class="payslip-amount positive">₨ 10.2M</div></div>
+              <div class="payslip-row"><div class="payslip-label">EOBI Deductions</div><div class="payslip-amount negative">— ₨ 284K</div></div>
+              <div class="payslip-row"><div class="payslip-label">Income Tax</div><div class="payslip-amount negative">— ₨ 512K</div></div>
+              <div class="payslip-row"><div class="payslip-label">Net Payroll</div><div class="payslip-amount">₨ 9.4M</div></div>
+              <div style="margin-top:12px"><span class="badge badge-amber">Payroll Pending — Jan 31</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES -->
+      <div id="sec-employees" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-teal">👥</div><div class="stat-label">Total</div><div class="stat-value">142</div><div class="stat-delta delta-up">↑ 8 this quarter</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🟢</div><div class="stat-label">Active</div><div class="stat-value">138</div><div class="stat-delta">97.2% retention</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🆕</div><div class="stat-label">New Hires (Jan)</div><div class="stat-value">4</div><div class="stat-delta">Onboarding</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🚪</div><div class="stat-label">Exits (YTD)</div><div class="stat-value">2</div><div class="stat-delta delta-dn">1.4% attrition</div></div>
         </div>
         <div class="table-panel">
           <div class="table-head"><span class="table-title">Employee Directory</span><input class="search-box" placeholder="Search employees…"></div>
           <table>
-            <thead><tr><th>Name</th><th>Department</th><th>Position</th><th>Joined</th><th>Salary</th><th>Status</th></tr></thead>
+            <thead><tr><th>Name</th><th>ID</th><th>Department</th><th>Designation</th><th>Join Date</th><th>Salary</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td><b>Zara Khan</b></td><td>Engineering</td><td>Senior Developer</td><td>Mar 2022</td><td>₨120K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
-              <tr><td><b>Kamran Ali</b></td><td>Sales</td><td>Sales Executive</td><td>Aug 2023</td><td>₨65K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
-              <tr><td><b>Nadia Hussain</b></td><td>Marketing</td><td>Brand Manager</td><td>Jan 2021</td><td>₨90K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
-              <tr><td><b>Hassan Raza</b></td><td>Operations</td><td>Ops Coordinator</td><td>Nov 2023</td><td>₨55K/mo</td><td><span class="badge badge-amber">Probation</span></td></tr>
-              <tr><td><b>Sara Malik</b></td><td>Finance</td><td>Accounts Officer</td><td>Jun 2022</td><td>₨75K/mo</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Sara Ahmed</b></td><td>EMP-0042</td><td>Engineering</td><td>Senior Developer</td><td>Mar 2022</td><td>₨ 185,000</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Omar Malik</b></td><td>EMP-0078</td><td>Sales</td><td>Sales Manager</td><td>Jun 2021</td><td>₨ 120,000</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Zara Khan</b></td><td>EMP-0031</td><td>Design</td><td>UI/UX Lead</td><td>Jan 2023</td><td>₨ 95,000</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Bilal Rauf</b></td><td>EMP-0055</td><td>HR</td><td>HR Executive</td><td>Sep 2022</td><td>₨ 75,000</td><td><span class="badge badge-teal">On Leave</span></td></tr>
+              <tr><td><b>Ayesha Khalid</b></td><td>EMP-0091</td><td>Finance</td><td>Accountant</td><td>Nov 2023</td><td>₨ 65,000</td><td><span class="badge badge-amber">Probation</span></td></tr>
+              <tr><td><b>Rizwan Mir</b></td><td>EMP-0018</td><td>Operations</td><td>Ops Manager</td><td>Feb 2020</td><td>₨ 145,000</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Nadia Butt</b></td><td>EMP-0063</td><td>Design</td><td>Graphic Designer</td><td>Jul 2023</td><td>₨ 60,000</td><td><span class="badge badge-green">Active</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <!-- ATTENDANCE -->
+      <div id="sec-attendance" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Present Today</div><div class="stat-value">118</div><div class="stat-delta delta-up">83%</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏰</div><div class="stat-label">Late Arrivals</div><div class="stat-value">8</div><div class="stat-delta delta-dn">6.8% late today</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">❌</div><div class="stat-label">Absent</div><div class="stat-value">10</div><div class="stat-delta delta-dn">7% absent</div></div>
+          <div class="stat-card"><div class="stat-icon si-teal">🌴</div><div class="stat-label">On Leave</div><div class="stat-value">14</div><div class="stat-delta">Approved leave</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Attendance Log — Jan 14, 2025</span><input class="search-box" placeholder="Search employee…"></div>
+          <table>
+            <thead><tr><th>Employee</th><th>Department</th><th>In Time</th><th>Out Time</th><th>Hours</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Sara Ahmed</b></td><td>Engineering</td><td>8:52 AM</td><td>—</td><td>5h 8m</td><td><span class="badge badge-green">Present</span></td></tr>
+              <tr><td><b>Omar Malik</b></td><td>Sales</td><td>9:42 AM</td><td>—</td><td>4h 18m</td><td><span class="badge badge-amber">Late</span></td></tr>
+              <tr><td><b>Zara Khan</b></td><td>Design</td><td>8:47 AM</td><td>—</td><td>5h 13m</td><td><span class="badge badge-green">Present</span></td></tr>
+              <tr><td><b>Bilal Rauf</b></td><td>HR</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-teal">Leave</span></td></tr>
+              <tr><td><b>Ayesha Khalid</b></td><td>Finance</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-red">Absent</span></td></tr>
+              <tr><td><b>Rizwan Mir</b></td><td>Operations</td><td>9:00 AM</td><td>—</td><td>5h 0m</td><td><span class="badge badge-green">Present</span></td></tr>
+              <tr><td><b>Nadia Butt</b></td><td>Design</td><td>9:05 AM</td><td>—</td><td>4h 55m</td><td><span class="badge badge-green">Present</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LEAVE -->
+      <div id="sec-leave" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-teal">🌴</div><div class="stat-label">On Leave Today</div><div class="stat-value">14</div><div class="stat-delta">9.9% workforce</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Pending Approval</div><div class="stat-value">4</div><div class="stat-delta delta-dn">Action needed</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Approved (Jan)</div><div class="stat-value">28</div><div class="stat-delta delta-up">Leave requests</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📊</div><div class="stat-label">Avg Leave / Emp</div><div class="stat-value">2.1</div><div class="stat-delta">Days taken Jan</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Pending Approval</span><span class="panel-link">Approve All</span></div>
+            <div class="panel-body">
+              <div class="leave-item"><div><div class="leave-name">Omar Malik — Sick Leave</div><div class="leave-type">Sales · Jan 20 – 21 (2 days)</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Approve</button><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Reject</button></div></div>
+              <div class="leave-item"><div><div class="leave-name">Nadia Butt — Annual Leave</div><div class="leave-type">Design · Jan 25 – 31 (5 days)</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Approve</button><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Reject</button></div></div>
+              <div class="leave-item"><div><div class="leave-name">Rizwan Mir — Casual Leave</div><div class="leave-type">Operations · Jan 17 (1 day)</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Approve</button><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Reject</button></div></div>
+              <div class="leave-item"><div><div class="leave-name">Ayesha Khalid — Sick Leave</div><div class="leave-type">Finance · Jan 14 – 15 (2 days)</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Approve</button><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Reject</button></div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Leave Balance — Engineering Dept</span></div>
+            <div class="panel-body">
+              <div class="leave-item"><div><div class="leave-name">Sara Ahmed</div></div><div><span class="badge badge-teal">12 Annual</span> <span class="badge badge-blue">5 Sick</span></div></div>
+              <div class="leave-item"><div><div class="leave-name">Hassan Tariq</div></div><div><span class="badge badge-teal">8 Annual</span> <span class="badge badge-blue">4 Sick</span></div></div>
+              <div class="leave-item"><div><div class="leave-name">Amna Qureshi</div></div><div><span class="badge badge-teal">15 Annual</span> <span class="badge badge-blue">7 Sick</span></div></div>
+              <div class="leave-item"><div><div class="leave-name">Faisal Mehmood</div></div><div><span class="badge badge-teal">10 Annual</span> <span class="badge badge-blue">6 Sick</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYROLL -->
+      <div id="sec-payroll" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-teal">💰</div><div class="stat-label">Gross Payroll</div><div class="stat-value">₨ 10.2M</div><div class="stat-delta delta-up">January 2025</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">📉</div><div class="stat-label">Total Deductions</div><div class="stat-value">₨ 796K</div><div class="stat-delta">Tax + EOBI</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Net Payroll</div><div class="stat-value">₨ 9.4M</div><div class="stat-delta">To be disbursed Jan 31</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Status</div><div class="stat-value">Pending</div><div class="stat-delta delta-dn">Run by Jan 31</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Department-wise Payroll</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Engineering</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:75%"></div></div><div class="rev-val">₨ 3.8M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Sales</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:52%"></div></div><div class="rev-val">₨ 2.6M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Operations</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:40%"></div></div><div class="rev-val">₨ 2.0M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Design</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:25%"></div></div><div class="rev-val">₨ 1.1M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Finance & HR</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:15%"></div></div><div class="rev-val">₨ 700K</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Payroll Checklist — January</span></div>
+            <div class="panel-body">
+              <div class="payslip-row"><div class="payslip-label">✅ Attendance locked</div><div class="badge badge-green">Done</div></div>
+              <div class="payslip-row"><div class="payslip-label">✅ Leave deductions applied</div><div class="badge badge-green">Done</div></div>
+              <div class="payslip-row"><div class="payslip-label">✅ Overtime calculated</div><div class="badge badge-green">Done</div></div>
+              <div class="payslip-row"><div class="payslip-label">⏳ Tax computation</div><div class="badge badge-amber">Pending</div></div>
+              <div class="payslip-row"><div class="payslip-label">⏳ Bank file generated</div><div class="badge badge-amber">Pending</div></div>
+              <div class="payslip-row"><div class="payslip-label">⏳ Manager approval</div><div class="badge badge-amber">Pending</div></div>
+              <div style="margin-top:12px"><button class="btn btn-primary">Run Payroll →</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SALARY SLIPS -->
+      <div id="sec-salary" class="section" hidden>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Salary Slips — January 2025</span><input class="search-box" placeholder="Search employee…"></div>
+          <table>
+            <thead><tr><th>Employee</th><th>Department</th><th>Basic</th><th>Allowances</th><th>Deductions</th><th>Net Salary</th><th>Slip</th></tr></thead>
+            <tbody>
+              <tr><td><b>Sara Ahmed</b></td><td>Engineering</td><td>₨ 150,000</td><td>₨ 35,000</td><td>₨ 22,400</td><td>₨ 162,600</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Download</button></td></tr>
+              <tr><td><b>Omar Malik</b></td><td>Sales</td><td>₨ 90,000</td><td>₨ 30,000</td><td>₨ 12,000</td><td>₨ 108,000</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Download</button></td></tr>
+              <tr><td><b>Zara Khan</b></td><td>Design</td><td>₨ 75,000</td><td>₨ 20,000</td><td>₨ 9,500</td><td>₨ 85,500</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Download</button></td></tr>
+              <tr><td><b>Rizwan Mir</b></td><td>Operations</td><td>₨ 110,000</td><td>₨ 35,000</td><td>₨ 15,500</td><td>₨ 129,500</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Download</button></td></tr>
+              <tr><td><b>Nadia Butt</b></td><td>Design</td><td>₨ 50,000</td><td>₨ 10,000</td><td>₨ 6,000</td><td>₨ 54,000</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Download</button></td></tr>
+              <tr><td><b>Ayesha Khalid</b></td><td>Finance</td><td>₨ 55,000</td><td>₨ 10,000</td><td>₨ 6,500</td><td>₨ 58,500</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Download</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BENEFITS -->
+      <div id="sec-benefits" class="section" hidden>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Employee Benefits</span></div>
+            <div class="panel-body">
+              <div class="benefit-item"><div><div class="benefit-name">🏥 Medical Insurance</div><div class="benefit-desc">Individual + family coverage</div></div><div class="benefit-val">₨ 5,000/month</div></div>
+              <div class="benefit-item"><div><div class="benefit-name">🏦 EOBI</div><div class="benefit-desc">Employee Old-Age Benefits</div></div><div class="benefit-val">₨ 2,000/month</div></div>
+              <div class="benefit-item"><div><div class="benefit-name">🎓 Education Allowance</div><div class="benefit-desc">Children's education support</div></div><div class="benefit-val">₨ 3,000/month</div></div>
+              <div class="benefit-item"><div><div class="benefit-name">🚗 Conveyance</div><div class="benefit-desc">Transport allowance</div></div><div class="benefit-val">₨ 5,000/month</div></div>
+              <div class="benefit-item"><div><div class="benefit-name">🍽 Meal Allowance</div><div class="benefit-desc">Daily meal subsidy</div></div><div class="benefit-val">₨ 2,500/month</div></div>
+              <div class="benefit-item"><div><div class="benefit-name">📱 Phone Allowance</div><div class="benefit-desc">Senior staff only</div></div><div class="benefit-val">₨ 1,500/month</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Total Benefits Cost — January</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Medical</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:65%"></div></div><div class="rev-val">₨ 710K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Conveyance</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:48%"></div></div><div class="rev-val">₨ 525K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">EOBI</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:35%"></div></div><div class="rev-val">₨ 284K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Meal</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:28%"></div></div><div class="rev-val">₨ 355K</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Education</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:22%"></div></div><div class="rev-val">₨ 186K</div></div>
+              <div style="padding-top:12px;border-top:1px solid var(--border);font-size:13px;font-weight:700">Total: ₨ 2.06M / month</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sec-analytics" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-teal">📊</div><div class="stat-label">Attrition Rate</div><div class="stat-value">1.4%</div><div class="stat-delta delta-up">Below industry avg</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🏆</div><div class="stat-label">Avg Tenure</div><div class="stat-value">2.4 yrs</div><div class="stat-delta delta-up">↑ 0.3 vs last year</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📈</div><div class="stat-label">Revenue / Employee</div><div class="stat-value">₨ 880K</div><div class="stat-delta delta-up">↑ 12% YoY</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🧑</div><div class="stat-label">Avg Age</div><div class="stat-value">28 yrs</div><div class="stat-delta">Young workforce</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Headcount by Department</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Engineering</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:62%"></div></div><div class="rev-val">42 (30%)</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Sales</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:48%"></div></div><div class="rev-val">32 (23%)</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Operations</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:38%"></div></div><div class="rev-val">26 (18%)</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Design</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:25%"></div></div><div class="rev-val">18 (13%)</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Finance & HR</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:18%"></div></div><div class="rev-val">14 (10%)</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Other</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:8%"></div></div><div class="rev-val">10 (7%)</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Monthly Hiring Trend</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">August</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:30%"></div></div><div class="rev-val">3 hires</div></div>
+              <div class="rev-bar-row"><div class="rev-label">September</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:50%"></div></div><div class="rev-val">5 hires</div></div>
+              <div class="rev-bar-row"><div class="rev-label">October</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:20%"></div></div><div class="rev-val">2 hires</div></div>
+              <div class="rev-bar-row"><div class="rev-label">November</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:60%"></div></div><div class="rev-val">6 hires</div></div>
+              <div class="rev-bar-row"><div class="rev-label">December</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:10%"></div></div><div class="rev-val">1 hire</div></div>
+              <div class="rev-bar-row"><div class="rev-label">January</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:40%"></div></div><div class="rev-val">4 hires</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPLIANCE -->
+      <div id="sec-compliance" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">EOBI Compliance</div><div class="stat-value">100%</div><div class="stat-delta delta-up">All employees registered</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">PESSI Compliance</div><div class="stat-value">100%</div><div class="stat-delta delta-up">All employees covered</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Pending Filings</div><div class="stat-value">2</div><div class="stat-delta delta-dn">Due Jan 31</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📄</div><div class="stat-label">Contracts Active</div><div class="stat-value">142</div><div class="stat-delta">All signed</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Compliance Checklist — January 2025</span></div>
+          <div class="panel-body">
+            <div class="payslip-row"><div class="payslip-label">✅ EOBI monthly return filed</div><div class="badge badge-green">Done — Jan 10</div></div>
+            <div class="payslip-row"><div class="payslip-label">✅ PESSI contribution deposited</div><div class="badge badge-green">Done — Jan 12</div></div>
+            <div class="payslip-row"><div class="payslip-label">⏳ Income Tax monthly return (FBR)</div><div class="badge badge-amber">Due Jan 31</div></div>
+            <div class="payslip-row"><div class="payslip-label">⏳ Annual bonus tax calculation</div><div class="badge badge-amber">Due Jan 31</div></div>
+            <div class="payslip-row"><div class="payslip-label">✅ Minimum wage compliance check</div><div class="badge badge-green">Done — Jan 5</div></div>
+            <div class="payslip-row"><div class="payslip-label">✅ Provident fund statement</div><div class="badge badge-green">Done — Jan 8</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Company Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Company Name</label><input value="Demo Company Pvt. Ltd."></div>
+            <div class="form-field"><label>Payroll Currency</label><select><option>PKR — Pakistani Rupee</option></select></div>
+            <div class="form-field"><label>Payroll Day</label><input value="Last working day of month"></div>
+            <div class="form-field"><label>Working Hours / Day</label><input value="8"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Leave Policy</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Annual Leave Days</label><input value="20"></div>
+            <div class="form-field"><label>Sick Leave Days</label><input value="10"></div>
+            <div class="form-field"><label>Casual Leave Days</label><input value="5"></div>
+            <div class="form-field"><label>Probation Period (months)</label><input value="3"></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
-<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
+<script>
+var TITLES={
+  dashboard:['HR Dashboard','January 2025 · All Departments','+ Add Employee'],
+  employees:['Employees','142 total employees · 97.2% retention','+ Add Employee'],
+  attendance:['Attendance','Today · Jan 14, 2025','Export Report'],
+  leave:['Leave Management','4 requests pending approval','+ Apply Leave'],
+  payroll:['Payroll','January 2025 · ₨ 9.4M net payroll','Run Payroll'],
+  salary:['Salary Slips','January 2025 · All employees','Generate Slips'],
+  benefits:['Employee Benefits','Benefits & allowances management','Update Benefits'],
+  analytics:['HR Analytics','Workforce & payroll analytics','Export Report'],
+  compliance:['Compliance','Statutory filings & compliance','File Return'],
+  settings:['Settings','Company & HR configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+</script>
 </body>
 </html>

@@ -64,11 +64,11 @@ nav{padding:8px 0;flex:1;overflow-y:auto}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.si-purple{background:#F5F3FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}
+.si-purple{background:#F5F3FF}.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}.si-blue{background:#EFF6FF}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
 .stat-delta{font-size:11px;margin-top:4px;font-weight:600}
@@ -101,8 +101,28 @@ tr:hover td{background:#F8FAFC}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
 .badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
-.badge-purple{background:#F5F3FF;color:#5B21B6}
-@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+.badge-purple{background:#F5F3FF;color:#5B21B6}.badge-gray{background:#F1F5F9;color:#475569}
+.active-call-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ac-left{display:flex;align-items:center;gap:12px}
+.ac-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:18px}
+.ac-name{font-size:13px;font-weight:700}.ac-num{font-size:11px;color:var(--text-3)}
+.ac-timer{font-size:20px;font-weight:800;color:var(--success);font-variant-numeric:tabular-nums}
+.ac-actions{display:flex;gap:8px}
+.ac-btn{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.ac-btn-red{background:#FFF1F2;color:var(--danger)}
+.ac-btn-green{background:#F0FDF4;color:var(--success)}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.metric-val{font-size:22px;font-weight:800;margin-bottom:4px}
+.metric-lbl{font-size:11px;color:var(--text-2)}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field label{font-size:11px;font-weight:600;color:var(--text-2);display:block;margin-bottom:5px}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none}
+.form-field textarea{resize:vertical;min-height:80px}
+.btn-save{padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.metric-row{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.sidebar{display:none}.agent-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -138,18 +158,18 @@ tr:hover td{background:#F8FAFC}
       </div>
       <nav>
         <div class="nav-group-label">Operations</div>
-        <div class="nav-link active">📊 Dashboard</div>
-        <div class="nav-link">📋 Call Queue <span class="nav-badge">8</span></div>
-        <div class="nav-link">📞 Active Calls</div>
-        <div class="nav-link">📅 Scheduled Callbacks</div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 Dashboard</div>
+        <div class="nav-link" onclick="nav('queue',this)">📋 Call Queue <span class="nav-badge">8</span></div>
+        <div class="nav-link" onclick="nav('active-calls',this)">📞 Active Calls</div>
+        <div class="nav-link" onclick="nav('callbacks',this)">📅 Scheduled Callbacks</div>
         <div class="nav-group-label">CRM</div>
-        <div class="nav-link">👤 Leads</div>
-        <div class="nav-link">🏢 Accounts</div>
-        <div class="nav-link">📁 Contacts</div>
+        <div class="nav-link" onclick="nav('leads',this)">👤 Leads</div>
+        <div class="nav-link" onclick="nav('accounts',this)">🏢 Accounts</div>
+        <div class="nav-link" onclick="nav('contacts',this)">📁 Contacts</div>
         <div class="nav-group-label">Reports</div>
-        <div class="nav-link">📈 Performance</div>
-        <div class="nav-link">⏱ Call Analytics</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link" onclick="nav('performance',this)">📈 Performance</div>
+        <div class="nav-link" onclick="nav('analytics',this)">⏱ Call Analytics</div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
@@ -158,13 +178,15 @@ tr:hover td{background:#F8FAFC}
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">Operations Dashboard</div><div class="topbar-sub">Live view · Today, Jan 14 2025</div></div>
+        <div><div class="topbar-title" id="page-title">Operations Dashboard</div><div class="topbar-sub" id="page-sub">Live view · Today, Jan 14 2025</div></div>
         <div class="topbar-actions">
           <button class="btn btn-outline">Reports</button>
-          <button class="btn btn-primary">+ Add Lead</button>
+          <button class="btn btn-primary" id="primary-btn">+ Add Lead</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
           <div class="stat-card"><div class="stat-icon si-purple">📞</div><div class="stat-label">Calls Today</div><div class="stat-value">347</div><div class="stat-delta delta-up">↑ 12% vs yesterday</div></div>
           <div class="stat-card"><div class="stat-icon si-amber">⏱</div><div class="stat-label">Avg Handle Time</div><div class="stat-value">4m 12s</div><div class="stat-delta delta-up">↓ 18s improved</div></div>
@@ -211,10 +233,295 @@ tr:hover td{background:#F8FAFC}
           </table>
         </div>
       </div>
+
+      <!-- CALL QUEUE -->
+      <div id="sec-queue" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-red">📋</div><div class="stat-label">In Queue</div><div class="stat-value">8</div><div class="stat-delta delta-dn">Longest wait 4m 12s</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏱</div><div class="stat-label">Avg Wait Time</div><div class="stat-value">2m 08s</div><div class="stat-delta delta-dn">↑ 34s vs target</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Agents Available</div><div class="stat-value">2</div><div class="stat-delta">of 6 agents online</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">📞</div><div class="stat-label">Handled Today</div><div class="stat-value">189</div><div class="stat-delta delta-up">↑ 14 vs yesterday</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Live Queue</span><span style="font-size:11px;color:var(--danger);font-weight:600">● Live</span></div>
+          <table>
+            <thead><tr><th>#</th><th>Caller</th><th>Type</th><th>Wait Time</th><th>Priority</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><b>+1 (202) 555-0184</b></td><td>Sales Inquiry</td><td style="color:var(--danger);font-weight:700">4m 12s</td><td><span class="badge badge-red">High</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>2</td><td><b>+1 (312) 555-0091</b></td><td>Support</td><td style="color:var(--danger);font-weight:700">3m 18s</td><td><span class="badge badge-red">High</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>3</td><td><b>+1 (415) 555-0237</b></td><td>Callback</td><td style="color:var(--warning);font-weight:700">2m 05s</td><td><span class="badge badge-amber">Medium</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>4</td><td><b>+1 (713) 555-0163</b></td><td>Sales Inquiry</td><td>1m 44s</td><td><span class="badge badge-amber">Medium</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>5</td><td><b>+1 (619) 555-0088</b></td><td>Complaint</td><td>1m 12s</td><td><span class="badge badge-red">High</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>6</td><td><b>+1 (480) 555-0231</b></td><td>General</td><td>0m 55s</td><td><span class="badge badge-gray">Low</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>7</td><td><b>+1 (206) 555-0177</b></td><td>Sales Inquiry</td><td>0m 32s</td><td><span class="badge badge-amber">Medium</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td>8</td><td><b>+1 (305) 555-0045</b></td><td>Support</td><td>0m 11s</td><td><span class="badge badge-gray">Low</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ACTIVE CALLS -->
+      <div id="sec-active-calls" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">📞</div><div class="stat-label">Active Now</div><div class="stat-value">4</div><div class="stat-delta">of 6 agents on calls</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">⏱</div><div class="stat-label">Longest Call</div><div class="stat-value">12m 44s</div><div class="stat-delta">Sarah K. — Apex Solutions</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🎯</div><div class="stat-label">Avg Call Duration</div><div class="stat-value">6m 18s</div><div class="stat-delta delta-up">↓ 22s vs last hour</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📝</div><div class="stat-label">Wrap-ups</div><div class="stat-value">1</div><div class="stat-delta">Aisha M. — 1m 10s</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="active-call-card">
+            <div class="ac-left">
+              <div class="ac-avatar">📞</div>
+              <div><div class="ac-name">Michael Torres — Apex Solutions</div><div class="ac-num">+1 (212) 555-0142 · Sales Inquiry · Agent: Sarah K.</div></div>
+            </div>
+            <div class="ac-timer">12:44</div>
+            <div class="ac-actions">
+              <button class="ac-btn ac-btn-green">🔇</button>
+              <button class="ac-btn ac-btn-red">⏹</button>
+            </div>
+          </div>
+          <div class="active-call-card">
+            <div class="ac-left">
+              <div class="ac-avatar">📞</div>
+              <div><div class="ac-name">Jennifer Wu — Global Ventures</div><div class="ac-num">+1 (415) 555-0088 · Support · Agent: Tyler B.</div></div>
+            </div>
+            <div class="ac-timer">08:21</div>
+            <div class="ac-actions">
+              <button class="ac-btn ac-btn-green">🔇</button>
+              <button class="ac-btn ac-btn-red">⏹</button>
+            </div>
+          </div>
+          <div class="active-call-card">
+            <div class="ac-left">
+              <div class="ac-avatar">📞</div>
+              <div><div class="ac-name">Rachel Kim — BrightPath Inc</div><div class="ac-num">+1 (650) 555-0193 · Callback · Agent: James R.</div></div>
+            </div>
+            <div class="ac-timer">04:05</div>
+            <div class="ac-actions">
+              <button class="ac-btn ac-btn-green">🔇</button>
+              <button class="ac-btn ac-btn-red">⏹</button>
+            </div>
+          </div>
+          <div class="active-call-card">
+            <div class="ac-left">
+              <div class="ac-avatar">📞</div>
+              <div><div class="ac-name">David Okonkwo — Frontier Tech</div><div class="ac-num">+1 (312) 555-0213 · General · Agent: Priya S.</div></div>
+            </div>
+            <div class="ac-timer">01:58</div>
+            <div class="ac-actions">
+              <button class="ac-btn ac-btn-green">🔇</button>
+              <button class="ac-btn ac-btn-red">⏹</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALLBACKS -->
+      <div id="sec-callbacks" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">📅</div><div class="stat-label">Scheduled Today</div><div class="stat-value">14</div><div class="stat-delta">6 completed, 8 remaining</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏰</div><div class="stat-label">Overdue</div><div class="stat-value">3</div><div class="stat-delta delta-dn">Needs attention</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Completed Today</div><div class="stat-value">6</div><div class="stat-delta delta-up">43% completion rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📆</div><div class="stat-label">Tomorrow</div><div class="stat-value">9</div><div class="stat-delta">Callbacks pre-scheduled</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Callback Schedule</span><input class="search-box" placeholder="Search callbacks…"></div>
+          <table>
+            <thead><tr><th>Lead</th><th>Phone</th><th>Scheduled Time</th><th>Agent</th><th>Notes</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Lisa Petrov</b></td><td>+1 (503) 555-0174</td><td>Today 12:00 PM</td><td>Sarah K.</td><td>Interested in premium plan</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>Kevin Marsh</b></td><td>+1 (617) 555-0031</td><td>Today 12:30 PM</td><td>James R.</td><td>Requested pricing details</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>Fatima Al-Rashid</b></td><td>+1 (281) 555-0199</td><td>Today 1:00 PM</td><td>Tyler B.</td><td>Follow-up after demo</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              <tr><td><b>Nathan Cole</b></td><td>+1 (404) 555-0087</td><td>Today 2:00 PM</td><td>Priya S.</td><td>Decision call — key account</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>Sophie Laurent</b></td><td>+1 (213) 555-0254</td><td>Today 3:00 PM</td><td>James R.</td><td>Contract review follow-up</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>Brandon Lee</b></td><td>+1 (469) 555-0118</td><td>Today 4:00 PM</td><td>Sarah K.</td><td>Re-engagement after lapse</td><td><span class="badge badge-blue">Scheduled</span></td></tr>
+              <tr><td><b>Maria Santos</b></td><td>+1 (305) 555-0063</td><td>Yesterday 11:00 AM</td><td>Aisha M.</td><td>Upsell opportunity</td><td><span class="badge badge-green">Completed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LEADS -->
+      <div id="sec-leads" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">👤</div><div class="stat-label">Total Leads</div><div class="stat-value">284</div><div class="stat-delta delta-up">↑ 32 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🎯</div><div class="stat-label">Converted</div><div class="stat-value">47</div><div class="stat-delta delta-up">16.5% conversion rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🔥</div><div class="stat-label">Hot Leads</div><div class="stat-value">23</div><div class="stat-delta">Require immediate follow-up</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">❌</div><div class="stat-label">Dead Leads</div><div class="stat-value">38</div><div class="stat-delta">Marked not interested</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">All Leads</span><input class="search-box" placeholder="Search leads…"></div>
+          <table>
+            <thead><tr><th>Name</th><th>Company</th><th>Phone</th><th>Source</th><th>Attempts</th><th>Last Contact</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Michael Torres</b></td><td>Apex Solutions</td><td>+1 (212) 555-0142</td><td>Web Form</td><td>3</td><td>Today</td><td><span class="badge badge-green">Interested</span></td></tr>
+              <tr><td><b>Jennifer Wu</b></td><td>Global Ventures</td><td>+1 (415) 555-0088</td><td>Cold Call</td><td>1</td><td>Today</td><td><span class="badge badge-blue">New</span></td></tr>
+              <tr><td><b>David Okonkwo</b></td><td>Frontier Tech</td><td>+1 (312) 555-0213</td><td>Referral</td><td>5</td><td>Yesterday</td><td><span class="badge badge-amber">Follow-up</span></td></tr>
+              <tr><td><b>Lisa Petrov</b></td><td>Cascade Media</td><td>+1 (503) 555-0174</td><td>LinkedIn</td><td>2</td><td>Jan 12</td><td><span class="badge badge-purple">Callback</span></td></tr>
+              <tr><td><b>Omar Hassan</b></td><td>BlueSky Corp</td><td>+1 (702) 555-0099</td><td>Cold Call</td><td>7</td><td>Jan 11</td><td><span class="badge badge-red">Not Interested</span></td></tr>
+              <tr><td><b>Rachel Kim</b></td><td>BrightPath Inc</td><td>+1 (650) 555-0193</td><td>Trade Show</td><td>2</td><td>Jan 10</td><td><span class="badge badge-green">Interested</span></td></tr>
+              <tr><td><b>Nathan Cole</b></td><td>Vertex Systems</td><td>+1 (404) 555-0087</td><td>Web Form</td><td>4</td><td>Jan 09</td><td><span class="badge badge-amber">Follow-up</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ACCOUNTS -->
+      <div id="sec-accounts" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">🏢</div><div class="stat-label">Total Accounts</div><div class="stat-value">92</div><div class="stat-delta delta-up">↑ 8 new this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">💰</div><div class="stat-label">Active Revenue</div><div class="stat-value">$284K</div><div class="stat-delta delta-up">↑ 11% MoM</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⚠️</div><div class="stat-label">At-Risk Accounts</div><div class="stat-value">7</div><div class="stat-delta delta-dn">Churn risk flagged</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">⭐</div><div class="stat-label">Enterprise</div><div class="stat-value">14</div><div class="stat-delta">High-value segment</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Account List</span><input class="search-box" placeholder="Search accounts…"></div>
+          <table>
+            <thead><tr><th>Company</th><th>Industry</th><th>Contacts</th><th>MRR</th><th>Since</th><th>Health</th></tr></thead>
+            <tbody>
+              <tr><td><b>Apex Solutions</b></td><td>Technology</td><td>5</td><td>$4,200</td><td>Mar 2022</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td><b>Global Ventures</b></td><td>Finance</td><td>3</td><td>$8,500</td><td>Jun 2021</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td><b>Frontier Tech</b></td><td>SaaS</td><td>8</td><td>$2,100</td><td>Nov 2023</td><td><span class="badge badge-amber">At Risk</span></td></tr>
+              <tr><td><b>Cascade Media</b></td><td>Media</td><td>2</td><td>$1,400</td><td>Aug 2022</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td><b>BlueSky Corp</b></td><td>Retail</td><td>4</td><td>$3,600</td><td>Jan 2023</td><td><span class="badge badge-red">Churned</span></td></tr>
+              <tr><td><b>BrightPath Inc</b></td><td>Education</td><td>6</td><td>$5,800</td><td>Feb 2022</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td><b>Vertex Systems</b></td><td>Manufacturing</td><td>11</td><td>$12,000</td><td>Sep 2020</td><td><span class="badge badge-amber">At Risk</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div id="sec-contacts" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">📁</div><div class="stat-label">Total Contacts</div><div class="stat-value">618</div><div class="stat-delta delta-up">↑ 44 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">👤</div><div class="stat-label">Decision Makers</div><div class="stat-value">127</div><div class="stat-delta">C-level & Directors</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✉️</div><div class="stat-label">Email Opt-in</div><div class="stat-value">84%</div><div class="stat-delta delta-up">↑ 3% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📞</div><div class="stat-label">Do Not Call</div><div class="stat-value">22</div><div class="stat-delta">DNC list maintained</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Contact Directory</span><input class="search-box" placeholder="Search contacts…"></div>
+          <table>
+            <thead><tr><th>Name</th><th>Title</th><th>Company</th><th>Phone</th><th>Email</th><th>Tag</th></tr></thead>
+            <tbody>
+              <tr><td><b>Michael Torres</b></td><td>VP Sales</td><td>Apex Solutions</td><td>+1 (212) 555-0142</td><td>m.torres@apex.com</td><td><span class="badge badge-purple">Decision Maker</span></td></tr>
+              <tr><td><b>Jennifer Wu</b></td><td>Operations Director</td><td>Global Ventures</td><td>+1 (415) 555-0088</td><td>j.wu@globalventures.com</td><td><span class="badge badge-purple">Decision Maker</span></td></tr>
+              <tr><td><b>David Okonkwo</b></td><td>CTO</td><td>Frontier Tech</td><td>+1 (312) 555-0213</td><td>d.okonkwo@frontier.io</td><td><span class="badge badge-blue">Technical</span></td></tr>
+              <tr><td><b>Lisa Petrov</b></td><td>Marketing Manager</td><td>Cascade Media</td><td>+1 (503) 555-0174</td><td>l.petrov@cascademedia.com</td><td><span class="badge badge-green">Influencer</span></td></tr>
+              <tr><td><b>Rachel Kim</b></td><td>CEO</td><td>BrightPath Inc</td><td>+1 (650) 555-0193</td><td>r.kim@brightpath.com</td><td><span class="badge badge-purple">Decision Maker</span></td></tr>
+              <tr><td><b>Nathan Cole</b></td><td>IT Manager</td><td>Vertex Systems</td><td>+1 (404) 555-0087</td><td>n.cole@vertex.com</td><td><span class="badge badge-blue">Technical</span></td></tr>
+              <tr><td><b>Sophie Laurent</b></td><td>Procurement Head</td><td>Euro Holdings</td><td>+1 (213) 555-0254</td><td>s.laurent@euroholdings.eu</td><td><span class="badge badge-amber">Gatekeeper</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PERFORMANCE -->
+      <div id="sec-performance" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">🏆</div><div class="stat-label">Top Agent Conv.</div><div class="stat-value">14.2%</div><div class="stat-delta">Sarah K. — 12 closes</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">📞</div><div class="stat-label">Team Total Calls</div><div class="stat-value">1,847</div><div class="stat-delta delta-up">↑ 8.3% this week</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⭐</div><div class="stat-label">CSAT Score</div><div class="stat-value">4.3/5</div><div class="stat-delta delta-up">↑ 0.2 vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🎯</div><div class="stat-label">Target Attainment</div><div class="stat-value">87%</div><div class="stat-delta">13% to monthly goal</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Agent Performance — January 2025</span></div>
+          <table>
+            <thead><tr><th>Agent</th><th>Calls Made</th><th>Avg Duration</th><th>Conversions</th><th>Conv. Rate</th><th>CSAT</th><th>Rank</th></tr></thead>
+            <tbody>
+              <tr><td><b>Sarah K.</b></td><td>312</td><td>4m 28s</td><td>44</td><td style="color:var(--success);font-weight:700">14.1%</td><td>4.7</td><td><span class="badge badge-green">#1</span></td></tr>
+              <tr><td><b>Priya S.</b></td><td>298</td><td>3m 52s</td><td>38</td><td style="color:var(--success);font-weight:700">12.8%</td><td>4.5</td><td><span class="badge badge-blue">#2</span></td></tr>
+              <tr><td><b>James R.</b></td><td>274</td><td>5m 10s</td><td>31</td><td>11.3%</td><td>4.2</td><td>#3</td></tr>
+              <tr><td><b>Tyler B.</b></td><td>261</td><td>4m 44s</td><td>27</td><td>10.3%</td><td>4.1</td><td>#4</td></tr>
+              <tr><td><b>Aisha M.</b></td><td>244</td><td>4m 01s</td><td>21</td><td>8.6%</td><td>3.9</td><td>#5</td></tr>
+              <tr><td><b>Marco D.</b></td><td>198</td><td>3m 33s</td><td>14</td><td style="color:var(--danger);font-weight:700">7.1%</td><td>3.6</td><td><span class="badge badge-red">#6</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sec-analytics" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-purple">📊</div><div class="stat-label">Total Calls (Month)</div><div class="stat-value">5,284</div><div class="stat-delta delta-up">↑ 9.2% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Connected Rate</div><div class="stat-value">62.4%</div><div class="stat-delta delta-up">↑ 3.1% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏱</div><div class="stat-label">Total Talk Time</div><div class="stat-value">368 hrs</div><div class="stat-delta">Avg 4m 11s per call</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">📉</div><div class="stat-label">Drop Rate</div><div class="stat-value">6.7%</div><div class="stat-delta delta-up">↓ 1.4% improved</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Calls by Hour (Today)</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:40px">9 AM</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:55%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:30px;text-align:right">44</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:40px">10 AM</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:82%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:30px;text-align:right">67</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:40px">11 AM</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:100%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:30px;text-align:right">81</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:40px">12 PM</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:62%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:30px;text-align:right">51</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:40px">1 PM</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:73%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:30px;text-align:right">59</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Call Outcomes (This Month)</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Converted</span><div style="display:flex;align-items:center;gap:8px"><div style="width:120px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:16.5%;background:#10B981;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--success)">16.5%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Follow-up</span><div style="display:flex;align-items:center;gap:8px"><div style="width:120px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:32%;background:#7C3AED;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--primary)">32%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">No Answer</span><div style="display:flex;align-items:center;gap:8px"><div style="width:120px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:28%;background:#F59E0B;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--warning)">28%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Not Interested</span><div style="display:flex;align-items:center;gap:8px"><div style="width:120px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:14%;background:#EF4444;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--danger)">14%</span></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:600">Voicemail</span><div style="display:flex;align-items:center;gap:8px"><div style="width:120px;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:9.5%;background:#94A3B8;border-radius:4px"></div></div><span style="font-size:12px;font-weight:700;color:var(--text-3)">9.5%</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Call Center Configuration</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Center Name</label><input type="text" value="DialDesk Operations Center"></div>
+            <div class="form-field"><label>Timezone</label><select><option>America/New_York (EST)</option><option>America/Chicago (CST)</option><option>America/Los_Angeles (PST)</option></select></div>
+            <div class="form-field"><label>Max Queue Size</label><input type="number" value="25"></div>
+            <div class="form-field"><label>Queue Timeout (seconds)</label><input type="number" value="300"></div>
+            <div class="form-field"><label>Wrap-up Time (seconds)</label><input type="number" value="60"></div>
+            <div class="form-field"><label>Recording</label><select><option>All Calls</option><option>Inbound Only</option><option>Disabled</option></select></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Agent Defaults</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Default Caller ID</label><input type="text" value="+1 (800) 555-0100"></div>
+            <div class="form-field"><label>Dialing Mode</label><select><option>Predictive</option><option>Power</option><option>Preview</option><option>Manual</option></select></div>
+            <div class="form-field"><label>Max Daily Attempts per Lead</label><input type="number" value="7"></div>
+            <div class="form-field"><label>Retry Interval (hours)</label><input type="number" value="4"></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
 <script>
+var TITLES={
+  dashboard:['Operations Dashboard','Live view · Today, Jan 14 2025','+ Add Lead'],
+  queue:['Call Queue','Live queue — 8 callers waiting','Assign All'],
+  'active-calls':['Active Calls','4 calls in progress right now','Monitor'],
+  callbacks:['Scheduled Callbacks','Today\'s callback schedule','+ Add Callback'],
+  leads:['Leads','All leads across campaigns','+ New Lead'],
+  accounts:['Accounts','92 active client accounts','+ New Account'],
+  contacts:['Contacts','Contact directory — 618 records','+ Add Contact'],
+  performance:['Agent Performance','January 2025 · All Agents','Export'],
+  analytics:['Call Analytics','Call statistics & outcomes','Export Report'],
+  settings:['Settings','System & agent configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
 function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
 </script>
 </body>

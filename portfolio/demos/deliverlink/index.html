@@ -10,7 +10,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
-  --primary:#059669;--primary-h:#047857;--primary-soft:#F0FDF4;
+  --primary:#059669;--primary-h:#047857;--primary-soft:#ECFDF5;
   --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
   --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
   --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
@@ -23,16 +23,20 @@ a{color:inherit;text-decoration:none}
 .login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
 .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
-.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}
+.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
+.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
 .demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
 .form-group{margin-bottom:16px}
 .form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
 .form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--primary)}
 .btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
-.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
-#app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
+.btn-login:hover{background:var(--primary-h)}
+.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+#app{display:none;flex-direction:column;min-height:100vh}
+#app.visible{display:flex}
 .demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
 .demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
 .demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
@@ -42,7 +46,8 @@ a{color:inherit;text-decoration:none}
 .sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
 .sidebar-brand{display:flex;align-items:center;gap:10px}
 .sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}
+.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
 nav{padding:8px 0;flex:1;overflow-y:auto}
 .nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
 .nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
@@ -55,41 +60,37 @@ nav{padding:8px 0;flex:1;overflow-y:auto}
 .main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
-.topbar-actions{display:flex;gap:8px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.si-green{background:#F0FDF4}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}.si-blue{background:#EFF6FF}
+.si-green{background:#F0FDF4}.si-blue{background:#EFF6FF}.si-amber{background:#FFFBEB}.si-red{background:#FFF1F2}.si-purple{background:#F5F3FF}.si-cyan{background:#ECFEFF}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
-.stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
-.two-col{display:grid;grid-template-columns:3fr 2fr;gap:16px}
+.stat-delta{font-size:11px;margin-top:4px;font-weight:600}
+.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
 .panel-head{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .panel-title{font-size:13px;font-weight:700}
-.panel-body{padding:0}
-.order-list{display:flex;flex-direction:column}
-.order-item{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
-.order-item:last-child{border-bottom:none}
-.order-id{font-size:12px;font-weight:700;color:var(--text);width:80px;flex-shrink:0}
+.panel-body{padding:16px 20px}
+.order-list{display:flex;flex-direction:column;gap:8px}
+.order-item{display:flex;align-items:center;gap:10px;padding:10px;background:#F8FAFC;border-radius:8px;border:1px solid var(--border)}
+.order-status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-moving{background:var(--success)}.dot-pending{background:var(--warning)}.dot-done{background:var(--text-3)}
+.order-id{font-size:10px;font-weight:700;color:var(--primary);min-width:60px}
 .order-details{flex:1}
-.order-dest{font-size:12px;font-weight:600;color:var(--text)}
-.order-meta{font-size:11px;color:var(--text-3);margin-top:2px}
-.order-eta{font-size:11px;font-weight:600;color:var(--primary);white-space:nowrap}
-.order-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.dot-moving{background:#059669}.dot-pending{background:#F59E0B}.dot-delivered{background:#94A3B8}
-.rider-list{display:flex;flex-direction:column}
-.rider-item{padding:11px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
-.rider-item:last-child{border-bottom:none}
-.rider-avatar{width:28px;height:28px;background:var(--primary-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--primary);flex-shrink:0}
-.rider-name{font-size:12px;font-weight:600;color:var(--text)}
-.rider-orders{font-size:11px;color:var(--text-3)}
-.rider-status{margin-left:auto;font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px}
-.rs-active{background:#F0FDF4;color:#166534}.rs-idle{background:#F1F5F9;color:#475569}
+.order-dest{font-size:12px;font-weight:600}
+.order-meta{font-size:10px;color:var(--text-3)}
+.order-eta{font-size:11px;font-weight:700;color:var(--success)}
+.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:13px;font-weight:700}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
 table{width:100%;border-collapse:collapse}
 th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
 td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
@@ -98,11 +99,24 @@ tr:hover td{background:#F8FAFC}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
 .badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
-.table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
-.table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.table-title{font-size:13px;font-weight:700}
-.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
-@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+.badge-purple{background:#F5F3FF;color:#5B21B6}.badge-gray{background:#F1F5F9;color:#475569}
+.rider-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.rider-avatar{width:42px;height:42px;border-radius:50%;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.rider-name{font-size:13px;font-weight:700}
+.rider-meta{font-size:11px;color:var(--text-3)}
+.rider-status{margin-left:auto;text-align:right}
+.rider-orders{font-size:11px;font-weight:700}
+.rider-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.map-placeholder{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:60px 40px;text-align:center;box-shadow:var(--shadow)}
+.payout-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border)}
+.payout-row:last-child{border-bottom:none}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field label{font-size:11px;font-weight:600;color:var(--text-2);display:block;margin-bottom:5px}
+.form-field input,.form-field select{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none}
+.btn-save{padding:9px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.rider-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.sidebar{display:none}}
 </style>
 </head>
@@ -114,12 +128,12 @@ tr:hover td{background:#F8FAFC}
       <div><div class="login-logo-name">DeliverLink</div><div class="login-logo-tag">Rider & Order Management</div></div>
     </div>
     <div class="login-heading">Operations Login</div>
-    <div class="login-sub">Sign in to manage riders and orders</div>
+    <div class="login-sub">Sign in to your delivery operations dashboard</div>
     <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
     <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@deliverlink.app"></div>
     <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
     <button class="btn-login" onclick="doLogin()">Sign In →</button>
-    <div class="login-footer">DeliverLink v2.1 · Secure demo environment</div>
+    <div class="login-footer">DeliverLink v3.1 · Secure demo environment</div>
   </div>
 </div>
 <div id="app">
@@ -138,15 +152,15 @@ tr:hover td{background:#F8FAFC}
       </div>
       <nav>
         <div class="nav-group-label">Operations</div>
-        <div class="nav-link active">📊 Live Dashboard</div>
-        <div class="nav-link">📋 All Orders <span class="nav-badge">7</span></div>
-        <div class="nav-link">🛵 Riders</div>
-        <div class="nav-link">🗺 Live Map</div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 Live Dashboard</div>
+        <div class="nav-link" onclick="nav('orders',this)">📋 All Orders <span class="nav-badge">7</span></div>
+        <div class="nav-link" onclick="nav('riders',this)">🛵 Riders</div>
+        <div class="nav-link" onclick="nav('livemap',this)">🗺 Live Map</div>
         <div class="nav-group-label">Management</div>
-        <div class="nav-link">🏪 Restaurants / Stores</div>
-        <div class="nav-link">💰 Payouts</div>
-        <div class="nav-link">📈 Analytics</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link" onclick="nav('stores',this)">🏪 Restaurants / Stores</div>
+        <div class="nav-link" onclick="nav('payouts',this)">💰 Payouts</div>
+        <div class="nav-link" onclick="nav('analytics',this)">📈 Analytics</div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
@@ -155,13 +169,15 @@ tr:hover td{background:#F8FAFC}
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">Live Operations</div><div class="topbar-sub">Islamabad · Real-time · Jan 14 2025</div></div>
+        <div><div class="topbar-title" id="page-title">Live Operations</div><div class="topbar-sub" id="page-sub">Islamabad · Real-time · Jan 14 2025</div></div>
         <div class="topbar-actions">
           <button class="btn btn-outline">Assign Rider</button>
-          <button class="btn btn-primary">+ New Order</button>
+          <button class="btn btn-primary" id="primary-btn">+ New Order</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
           <div class="stat-card"><div class="stat-icon si-green">🛵</div><div class="stat-label">Active Riders</div><div class="stat-value">14</div><div class="stat-delta delta-up">8 on delivery</div></div>
           <div class="stat-card"><div class="stat-icon si-blue">📦</div><div class="stat-label">Active Orders</div><div class="stat-value">23</div><div class="stat-delta delta-dn">7 pending assignment</div></div>
@@ -170,34 +186,236 @@ tr:hover td{background:#F8FAFC}
         </div>
         <div class="two-col">
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Active Orders</div><span style="font-size:11px;color:var(--success)">Live</span></div>
+            <div class="panel-head"><div class="panel-title">Active Orders</div><span style="font-size:11px;color:var(--success)">● Live</span></div>
             <div class="panel-body">
               <div class="order-list">
                 <div class="order-item"><div class="order-status-dot dot-moving"></div><span class="order-id">ORD-6601</span><div class="order-details"><div class="order-dest">F-7 Markaz, Islamabad</div><div class="order-meta">Rider: Ali Hassan · Domino's Pizza</div></div><div class="order-eta">ETA 8 min</div></div>
                 <div class="order-item"><div class="order-status-dot dot-moving"></div><span class="order-id">ORD-6602</span><div class="order-details"><div class="order-dest">G-9/3 Blue Area</div><div class="order-meta">Rider: Bilal Ahmed · KFC</div></div><div class="order-eta">ETA 14 min</div></div>
                 <div class="order-item"><div class="order-status-dot dot-pending"></div><span class="order-id">ORD-6603</span><div class="order-details"><div class="order-dest">D-12 Markaz, Islamabad</div><div class="order-meta">Pending assignment</div></div><div class="order-eta" style="color:var(--warning)">Unassigned</div></div>
                 <div class="order-item"><div class="order-status-dot dot-moving"></div><span class="order-id">ORD-6604</span><div class="order-details"><div class="order-dest">I-8/4 Islamabad</div><div class="order-meta">Rider: Usman Malik · McDonald's</div></div><div class="order-eta">ETA 21 min</div></div>
-                <div class="order-item"><div class="order-status-dot dot-pending"></div><span class="order-id">ORD-6605</span><div class="order-details"><div class="order-dest">E-11, Islamabad</div><div class="order-meta">Pending assignment</div></div><div class="order-eta" style="color:var(--warning)">Unassigned</div></div>
+                <div class="order-item"><div class="order-status-dot dot-pending"></div><span class="order-id">ORD-6605</span><div class="order-details"><div class="order-dest">F-10/2 Islamabad</div><div class="order-meta">Pending assignment</div></div><div class="order-eta" style="color:var(--warning)">Unassigned</div></div>
               </div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Rider Status</div><span style="font-size:11px;color:var(--text-3)">14 online</span></div>
-            <div class="panel-body">
-              <div class="rider-list">
-                <div class="rider-item"><div class="rider-avatar">AH</div><div><div class="rider-name">Ali Hassan</div><div class="rider-orders">3 deliveries today</div></div><span class="rider-status rs-active">On Delivery</span></div>
-                <div class="rider-item"><div class="rider-avatar">BA</div><div><div class="rider-name">Bilal Ahmed</div><div class="rider-orders">5 deliveries today</div></div><span class="rider-status rs-active">On Delivery</span></div>
-                <div class="rider-item"><div class="rider-avatar">UM</div><div><div class="rider-name">Usman Malik</div><div class="rider-orders">4 deliveries today</div></div><span class="rider-status rs-active">On Delivery</span></div>
-                <div class="rider-item"><div class="rider-avatar">FK</div><div><div class="rider-name">Fahad Khan</div><div class="rider-orders">7 deliveries today</div></div><span class="rider-status rs-idle">Idle</span></div>
-                <div class="rider-item"><div class="rider-avatar">ZA</div><div><div class="rider-name">Zain Arif</div><div class="rider-orders">2 deliveries today</div></div><span class="rider-status rs-idle">Idle</span></div>
-              </div>
+            <div class="panel-head"><div class="panel-title">Rider Status</div><span style="font-size:11px;color:var(--success)">14 active</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F0FDF4;border-radius:8px"><span style="font-size:12px;font-weight:600">On Delivery</span><span style="font-size:14px;font-weight:800;color:var(--success)">8</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#FFFBEB;border-radius:8px"><span style="font-size:12px;font-weight:600">Available</span><span style="font-size:14px;font-weight:800;color:var(--warning)">4</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">On Break</span><span style="font-size:14px;font-weight:800;color:var(--text-3)">2</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#FFF1F2;border-radius:8px"><span style="font-size:12px;font-weight:600">Offline</span><span style="font-size:14px;font-weight:800;color:var(--danger)">3</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Today's Order Summary</span></div>
+          <table>
+            <thead><tr><th>Hour</th><th>Orders</th><th>Completed</th><th>Avg Delivery Time</th><th>Revenue</th></tr></thead>
+            <tbody>
+              <tr><td>9–10 AM</td><td>12</td><td>12</td><td>24 min</td><td>₨14,400</td></tr>
+              <tr><td>10–11 AM</td><td>18</td><td>17</td><td>27 min</td><td>₨21,600</td></tr>
+              <tr><td>11 AM–12 PM</td><td>24</td><td>22</td><td>31 min</td><td>₨28,800</td></tr>
+              <tr><td>12–1 PM</td><td>31</td><td>28</td><td>26 min</td><td>₨37,200</td></tr>
+              <tr><td>1–2 PM</td><td>27</td><td>25</td><td>29 min</td><td>₨32,400</td></tr>
+              <tr><td>2–3 PM</td><td>19</td><td>18</td><td>25 min</td><td>₨22,800</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ALL ORDERS -->
+      <div id="sec-orders" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">📋</div><div class="stat-label">Total Today</div><div class="stat-value">165</div><div class="stat-delta delta-up">↑ 18 vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Delivered</div><div class="stat-value">142</div><div class="stat-delta delta-up">86% success rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">In Progress</div><div class="stat-value">16</div><div class="stat-delta">8 assigned, 8 unassigned</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">❌</div><div class="stat-label">Cancelled</div><div class="stat-value">7</div><div class="stat-delta delta-dn">4.2% cancellation rate</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">All Orders — Today</span><input class="search-box" placeholder="Search orders…"></div>
+          <table>
+            <thead><tr><th>Order #</th><th>Store</th><th>Customer</th><th>Delivery Address</th><th>Amount</th><th>Rider</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>ORD-6601</b></td><td>Domino's F-7</td><td>Ahmed R.</td><td>F-7 Markaz, ISB</td><td>₨1,450</td><td>Ali Hassan</td><td><span class="badge badge-blue">On the Way</span></td></tr>
+              <tr><td><b>ORD-6602</b></td><td>KFC G-9</td><td>Sara M.</td><td>G-9/3 Blue Area</td><td>₨890</td><td>Bilal Ahmed</td><td><span class="badge badge-blue">On the Way</span></td></tr>
+              <tr><td><b>ORD-6603</b></td><td>Hardee's F-10</td><td>Usman A.</td><td>D-12 Markaz, ISB</td><td>₨1,200</td><td>—</td><td><span class="badge badge-amber">Unassigned</span></td></tr>
+              <tr><td><b>ORD-6600</b></td><td>McDonald's I-8</td><td>Fatima K.</td><td>I-8/4 Islamabad</td><td>₨760</td><td>Usman Malik</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>ORD-6599</b></td><td>Pizza Hut D-12</td><td>Hasan J.</td><td>F-10/3 Islamabad</td><td>₨2,100</td><td>Kamran Ali</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td><b>ORD-6598</b></td><td>Subway G-11</td><td>Nadia S.</td><td>G-11/4 Islamabad</td><td>₨640</td><td>—</td><td><span class="badge badge-red">Cancelled</span></td></tr>
+              <tr><td><b>ORD-6597</b></td><td>Domino's F-7</td><td>Tariq M.</td><td>E-7 Islamabad</td><td>₨1,350</td><td>Ali Hassan</td><td><span class="badge badge-green">Delivered</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIDERS -->
+      <div id="sec-riders" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">🛵</div><div class="stat-label">Total Riders</div><div class="stat-value">17</div><div class="stat-delta">Registered on platform</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Active Today</div><div class="stat-value">14</div><div class="stat-delta">82% attendance rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⭐</div><div class="stat-label">Avg Rating</div><div class="stat-value">4.6/5</div><div class="stat-delta delta-up">↑ 0.1 vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📦</div><div class="stat-label">Avg Orders/Rider</div><div class="stat-value">9.7</div><div class="stat-delta">Per active rider today</div></div>
+        </div>
+        <div class="rider-grid">
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Ali Hassan</div><div class="rider-meta">Bike · F-7 Zone · 4.8 ★</div></div><div class="rider-status"><div class="rider-orders">12 orders</div><span class="badge badge-green">On Delivery</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Bilal Ahmed</div><div class="rider-meta">Bike · G-9 Zone · 4.7 ★</div></div><div class="rider-status"><div class="rider-orders">10 orders</div><span class="badge badge-green">On Delivery</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Usman Malik</div><div class="rider-meta">Bike · I-8 Zone · 4.5 ★</div></div><div class="rider-status"><div class="rider-orders">11 orders</div><span class="badge badge-blue">On the Way</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Kamran Ali</div><div class="rider-meta">Bike · D-12 Zone · 4.6 ★</div></div><div class="rider-status"><div class="rider-orders">9 orders</div><span class="badge badge-green">Available</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Zain Butt</div><div class="rider-meta">Bike · F-10 Zone · 4.4 ★</div></div><div class="rider-status"><div class="rider-orders">8 orders</div><span class="badge badge-amber">On Break</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Hassan Raza</div><div class="rider-meta">Bike · G-11 Zone · 4.9 ★</div></div><div class="rider-status"><div class="rider-orders">14 orders</div><span class="badge badge-green">On Delivery</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Rizwan Khan</div><div class="rider-meta">Bike · E-7 Zone · 4.3 ★</div></div><div class="rider-status"><div class="rider-orders">0 orders</div><span class="badge badge-gray">Offline</span></div></div>
+          <div class="rider-card"><div class="rider-avatar">🛵</div><div><div class="rider-name">Adeel Siddiqui</div><div class="rider-meta">Bike · H-11 Zone · 4.7 ★</div></div><div class="rider-status"><div class="rider-orders">7 orders</div><span class="badge badge-green">Available</span></div></div>
+        </div>
+      </div>
+
+      <!-- LIVE MAP -->
+      <div id="sec-livemap" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">📍</div><div class="stat-label">Riders on Map</div><div class="stat-value">14</div><div class="stat-delta">GPS tracking active</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📦</div><div class="stat-label">Live Deliveries</div><div class="stat-value">8</div><div class="stat-delta">In transit now</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📡</div><div class="stat-label">Signal Quality</div><div class="stat-value">Good</div><div class="stat-delta">All trackers online</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🔄</div><div class="stat-label">Last Updated</div><div class="stat-value">1 sec</div><div class="stat-delta">Real-time refresh</div></div>
+        </div>
+        <div class="map-placeholder">
+          <div style="font-size:48px;margin-bottom:16px">🗺</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">Live Rider Tracking Map</div>
+          <div style="font-size:13px;color:var(--text-2);margin-bottom:20px">Interactive map with real-time GPS positions, delivery routes and ETA overlays — available in full deployment</div>
+          <div style="display:inline-flex;gap:16px;flex-wrap:wrap;justify-content:center">
+            <span style="font-size:12px;display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:var(--success);display:inline-block"></span>On Delivery (8)</span>
+            <span style="font-size:12px;display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:var(--warning);display:inline-block"></span>Available (4)</span>
+            <span style="font-size:12px;display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:var(--text-3);display:inline-block"></span>On Break (2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STORES -->
+      <div id="sec-stores" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">🏪</div><div class="stat-label">Active Stores</div><div class="stat-value">24</div><div class="stat-delta delta-up">↑ 3 new this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">📦</div><div class="stat-label">Orders Today</div><div class="stat-value">165</div><div class="stat-delta delta-up">Across all stores</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⭐</div><div class="stat-label">Avg Store Rating</div><div class="stat-value">4.4/5</div><div class="stat-delta">Customer satisfaction</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">⏸</div><div class="stat-label">Paused Stores</div><div class="stat-value">2</div><div class="stat-delta delta-dn">Temporarily offline</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Restaurant & Store Directory</span><input class="search-box" placeholder="Search stores…"></div>
+          <table>
+            <thead><tr><th>Store</th><th>Category</th><th>Zone</th><th>Orders Today</th><th>Avg Prep Time</th><th>Rating</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Domino's Pizza F-7</b></td><td>Fast Food</td><td>F-7</td><td>34</td><td>18 min</td><td>4.7 ★</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>KFC G-9</b></td><td>Fast Food</td><td>G-9</td><td>28</td><td>12 min</td><td>4.5 ★</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>McDonald's I-8</b></td><td>Fast Food</td><td>I-8</td><td>31</td><td>10 min</td><td>4.6 ★</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Pizza Hut D-12</b></td><td>Pizza</td><td>D-12</td><td>22</td><td>22 min</td><td>4.3 ★</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Hardee's F-10</b></td><td>Fast Food</td><td>F-10</td><td>19</td><td>14 min</td><td>4.2 ★</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>Subway G-11</b></td><td>Sandwiches</td><td>G-11</td><td>15</td><td>8 min</td><td>4.4 ★</td><td><span class="badge badge-amber">Busy</span></td></tr>
+              <tr><td><b>Nando's F-6</b></td><td>Grills</td><td>F-6</td><td>0</td><td>—</td><td>4.8 ★</td><td><span class="badge badge-red">Paused</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYOUTS -->
+      <div id="sec-payouts" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">💰</div><div class="stat-label">Rider Earnings (Today)</div><div class="stat-value">₨34,800</div><div class="stat-delta delta-up">↑ 12% vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Pending Payouts</div><div class="stat-value">₨12,400</div><div class="stat-delta">6 riders awaiting</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📅</div><div class="stat-label">Next Payout Cycle</div><div class="stat-value">Jan 16</div><div class="stat-delta">Weekly settlement</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Settled (This Week)</div><div class="stat-value">₨148,000</div><div class="stat-delta delta-up">To 17 riders</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Rider Payout Summary — This Week</span></div>
+          <table>
+            <thead><tr><th>Rider</th><th>Orders</th><th>Base Pay</th><th>Incentives</th><th>Deductions</th><th>Net Pay</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Ali Hassan</b></td><td>58</td><td>₨8,700</td><td>₨1,200</td><td>₨0</td><td>₨9,900</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td><b>Hassan Raza</b></td><td>62</td><td>₨9,300</td><td>₨1,500</td><td>₨0</td><td>₨10,800</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td><b>Bilal Ahmed</b></td><td>51</td><td>₨7,650</td><td>₨900</td><td>₨200</td><td>₨8,350</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>Usman Malik</b></td><td>48</td><td>₨7,200</td><td>₨600</td><td>₨0</td><td>₨7,800</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>Kamran Ali</b></td><td>44</td><td>₨6,600</td><td>₨400</td><td>₨300</td><td>₨6,700</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>Adeel Siddiqui</b></td><td>39</td><td>₨5,850</td><td>₨200</td><td>₨0</td><td>₨6,050</td><td><span class="badge badge-green">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sec-analytics" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-green">📈</div><div class="stat-label">Monthly Orders</div><div class="stat-value">3,847</div><div class="stat-delta delta-up">↑ 22% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">Platform Revenue</div><div class="stat-value">₨2.1M</div><div class="stat-delta delta-up">↑ 18% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⭐</div><div class="stat-label">Avg Order Rating</div><div class="stat-value">4.5/5</div><div class="stat-delta delta-up">↑ 0.2 vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">❌</div><div class="stat-label">Cancellation Rate</div><div class="stat-value">4.2%</div><div class="stat-delta delta-up">↓ 0.8% improved</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Orders by Day (This Week)</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:30px">Mon</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:78%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:36px;text-align:right">512</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:30px">Tue</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:65%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:36px;text-align:right">428</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:30px">Wed</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:72%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:36px;text-align:right">474</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:30px">Thu</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:88%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:36px;text-align:right">578</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--text-2);width:30px">Fri</span><div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:100%;width:100%;background:var(--primary);border-radius:4px"></div></div><span style="font-size:11px;font-weight:600;width:36px;text-align:right">655</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Top Stores by Orders</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Domino's F-7</span><span style="font-size:12px;font-weight:700;color:var(--primary)">892 orders</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">McDonald's I-8</span><span style="font-size:12px;font-weight:700;color:var(--primary)">741 orders</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">KFC G-9</span><span style="font-size:12px;font-weight:700;color:var(--primary)">688 orders</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Pizza Hut D-12</span><span style="font-size:12px;font-weight:700;color:var(--primary)">524 orders</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#F8FAFC;border-radius:8px"><span style="font-size:12px;font-weight:600">Hardee's F-10</span><span style="font-size:12px;font-weight:700;color:var(--primary)">389 orders</span></div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Platform Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Platform Name</label><input type="text" value="DeliverLink Islamabad"></div>
+            <div class="form-field"><label>Service Area</label><input type="text" value="Islamabad Capital Territory"></div>
+            <div class="form-field"><label>Base Delivery Fee</label><input type="text" value="₨99"></div>
+            <div class="form-field"><label>Rider Base Pay (per order)</label><input type="text" value="₨150"></div>
+            <div class="form-field"><label>Max Delivery Radius (km)</label><input type="number" value="12"></div>
+            <div class="form-field"><label>Auto-assign Riders</label><select><option>Enabled (Nearest)</option><option>Manual Only</option><option>Enabled (Rating-based)</option></select></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Payout Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Payout Cycle</label><select><option>Weekly (Every Thursday)</option><option>Bi-weekly</option><option>Daily</option></select></div>
+            <div class="form-field"><label>Minimum Payout Threshold</label><input type="text" value="₨500"></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
-<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
+<script>
+var TITLES={
+  dashboard:['Live Operations','Islamabad · Real-time · Jan 14 2025','+ New Order'],
+  orders:['All Orders','Today · 165 orders placed','+ New Order'],
+  riders:['Riders','17 registered · 14 active today','+ Add Rider'],
+  livemap:['Live Map','Real-time GPS tracking · 14 riders','Refresh'],
+  stores:['Restaurants & Stores','24 active partner stores','+ Add Store'],
+  payouts:['Rider Payouts','Weekly settlement · Jan 10–16','Process Payouts'],
+  analytics:['Analytics','January 2025 · Platform Performance','Export Report'],
+  settings:['Settings','Platform configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+</script>
 </body>
 </html>
