@@ -16,6 +16,16 @@
   --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
   --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
 }
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F172A;--surface:#1E293B;--sidebar:#0F172A;
+  --text:#F1F5F9;--text-2:#94A3B8;--text-3:#475569;
+  --border:#334155;--shadow:0 1px 3px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --bg:#0F172A;--surface:#1E293B;--sidebar:#0F172A;
+  --text:#F1F5F9;--text-2:#94A3B8;--text-3:#475569;
+  --border:#334155;--shadow:0 1px 3px rgba(0,0,0,.3);
+}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
 #login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
@@ -23,15 +33,15 @@ a{color:inherit;text-decoration:none}
 .login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
 .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
-.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.login-logo-name{font-size:22px;font-weight:800;color:#0F172A}.login-logo-tag{font-size:11px;color:#94A3B8;font-weight:500}
+.login-heading{font-size:20px;font-weight:700;color:#0F172A;margin-bottom:4px}.login-sub{font-size:13px;color:#475569;margin-bottom:24px}
 .demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
 .form-group{margin-bottom:16px}
-.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
-.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-label{font-size:12px;font-weight:600;color:#475569;margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:#0F172A;outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--primary)}
 .btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
-.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:#94A3B8}
 #app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
 .demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
 .demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
@@ -59,7 +69,7 @@ nav{padding:8px 0;flex:1;overflow-y:auto}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
@@ -68,10 +78,12 @@ nav{padding:8px 0;flex:1;overflow-y:auto}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
 .stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
 .panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .panel-title{font-size:13px;font-weight:700}
 .panel-body{padding:14px 20px}
+.panel-link{font-size:11px;color:var(--primary);font-weight:600;cursor:pointer}
 .hub-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
 .hub-item:last-child{border-bottom:none}
 .hub-name{font-size:12px;font-weight:700;color:var(--text)}
@@ -97,18 +109,56 @@ nav{padding:8px 0;flex:1;overflow-y:auto}
 .table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
 .table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .table-title{font-size:13px;font-weight:700}
-.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px;background:var(--surface)}
 table{width:100%;border-collapse:collapse}
-th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
-td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:var(--bg);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#F8FAFC}
+tr:hover td{background:var(--bg)}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
 .badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
+.badge-gray{background:#F1F5F9;color:#475569}
+.map-placeholder{background:linear-gradient(135deg,#1E3A5F 0%,#0F2942 100%);border-radius:10px;height:300px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:#7CB9E8;position:relative;overflow:hidden}
+.map-placeholder .map-label{font-size:14px;font-weight:600;color:#93C5FD}
+.map-placeholder .map-sub{font-size:11px;color:#5B9BD5}
+.map-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981}
+.route-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.route-item:last-child{border-bottom:none}
+.route-code{font-size:11px;font-weight:700;background:#EFF6FF;color:#1E40AF;padding:2px 8px;border-radius:6px;min-width:60px;text-align:center}
+.route-name{font-size:12px;font-weight:600;color:var(--text)}
+.route-meta{font-size:10px;color:var(--text-3)}
+.route-progress{flex:1;height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
+.route-fill{height:100%;background:var(--primary);border-radius:3px}
+.route-pct{font-size:11px;font-weight:700;color:var(--text);min-width:30px;text-align:right}
+.manifest-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.manifest-item:last-child{border-bottom:none}
+.manifest-id{font-size:12px;font-weight:700;color:var(--primary)}
+.manifest-meta{font-size:10px;color:var(--text-3);margin-top:2px}
+.manifest-right{text-align:right}
+.manifest-count{font-size:12px;font-weight:700;color:var(--text)}
+.manifest-time{font-size:10px;color:var(--text-3)}
+.cod-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.cod-item:last-child{border-bottom:none}
+.cod-id{font-size:12px;font-weight:600;color:var(--text)}
+.cod-city{font-size:10px;color:var(--text-3);margin-top:2px}
+.cod-amount{font-size:13px;font-weight:800;color:var(--text)}
+.cod-status{font-size:10px;color:var(--text-3)}
+.rev-bar-row{display:flex;align-items:center;gap:12px;padding:6px 0}
+.rev-label{font-size:12px;color:var(--text-2);min-width:90px}
+.rev-bar-bg{flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden}
+.rev-bar-fill{height:100%;background:var(--primary);border-radius:4px}
+.rev-val{font-size:12px;font-weight:700;color:var(--text);min-width:80px;text-align:right}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-field label{display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px}
+.form-field input,.form-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;background:var(--surface)}
+.form-field input:focus,.form-field select:focus{border-color:var(--primary)}
+.btn-save{background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
 @media(max-width:1100px){.three-col{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.stats{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.sidebar{display:none}.three-col{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{display:none}.three-col{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -143,18 +193,18 @@ tr:hover td{background:#F8FAFC}
       </div>
       <nav>
         <div class="nav-group-label">Operations</div>
-        <div class="nav-link active">📊 NOC Dashboard</div>
-        <div class="nav-link">📦 Shipments <span class="nav-badge">5</span></div>
-        <div class="nav-link">🏭 Hub Management</div>
-        <div class="nav-link">🚛 Fleet</div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 NOC Dashboard</div>
+        <div class="nav-link" onclick="nav('shipments',this)">📦 Shipments <span class="nav-badge">5</span></div>
+        <div class="nav-link" onclick="nav('hubs',this)">🏭 Hub Management</div>
+        <div class="nav-link" onclick="nav('fleet',this)">🚛 Fleet</div>
         <div class="nav-group-label">Logistics</div>
-        <div class="nav-link">🗺 Route Planner</div>
-        <div class="nav-link">🔔 Exceptions</div>
-        <div class="nav-link">📋 Manifests</div>
+        <div class="nav-link" onclick="nav('routes',this)">🗺 Route Planner</div>
+        <div class="nav-link" onclick="nav('exceptions',this)">🔔 Exceptions <span class="nav-badge">12</span></div>
+        <div class="nav-link" onclick="nav('manifests',this)">📋 Manifests</div>
         <div class="nav-group-label">Finance</div>
-        <div class="nav-link">💰 COD Management</div>
-        <div class="nav-link">📈 Revenue</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link" onclick="nav('cod',this)">💰 COD Management</div>
+        <div class="nav-link" onclick="nav('revenue',this)">📈 Revenue</div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
@@ -163,13 +213,15 @@ tr:hover td{background:#F8FAFC}
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">Network Operations Center</div><div class="topbar-sub">Pakistan Network · Live · Jan 14, 2025</div></div>
+        <div><div class="topbar-title" id="page-title">Network Operations Center</div><div class="topbar-sub" id="page-sub">Pakistan Network · Live · Jan 14, 2025</div></div>
         <div class="topbar-actions">
           <button class="btn btn-outline">Print Manifest</button>
-          <button class="btn btn-primary">+ Book Shipment</button>
+          <button class="btn btn-primary" id="primary-btn">+ Book Shipment</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
           <div class="stat-card"><div class="stat-icon si-blue">📦</div><div class="stat-label">Shipments Today</div><div class="stat-value">1,284</div><div class="stat-delta delta-up">↑ 8.3% vs yesterday</div></div>
           <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Delivered</div><div class="stat-value">1,091</div><div class="stat-delta delta-up">85% success rate</div></div>
@@ -178,51 +230,305 @@ tr:hover td{background:#F8FAFC}
         </div>
         <div class="three-col">
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Hub Status</div><span style="font-size:11px;color:var(--success)">3 Active</span></div>
+            <div class="panel-head"><span class="panel-title">Hub Status</span><span class="panel-link">View All</span></div>
             <div class="panel-body">
-              <div class="hub-item"><div class="hub-dot dot-online"></div><div><div class="hub-name">ISB Hub</div><div class="hub-city">Islamabad</div></div><div class="hub-metric"><div class="hub-val">342 pkgs</div><div class="hub-sub">Capacity 78%</div></div></div>
-              <div class="hub-item"><div class="hub-dot dot-busy"></div><div><div class="hub-name">LHR Hub</div><div class="hub-city">Lahore</div></div><div class="hub-metric"><div class="hub-val">581 pkgs</div><div class="hub-sub">Capacity 91%</div></div></div>
-              <div class="hub-item"><div class="hub-dot dot-online"></div><div><div class="hub-name">KHI Hub</div><div class="hub-city">Karachi</div></div><div class="hub-metric"><div class="hub-val">461 pkgs</div><div class="hub-sub">Capacity 64%</div></div></div>
-              <div class="hub-item"><div class="hub-dot dot-online"></div><div><div class="hub-name">PES Hub</div><div class="hub-city">Peshawar</div></div><div class="hub-metric"><div class="hub-val">98 pkgs</div><div class="hub-sub">Capacity 42%</div></div></div>
+              <div class="hub-item"><div style="display:flex;align-items:center"><div class="hub-dot dot-online"></div></div><div><div class="hub-name">Karachi Central</div><div class="hub-city">Karachi</div></div><div class="hub-metric"><div class="hub-val">342</div><div class="hub-sub">shipments</div></div></div>
+              <div class="hub-item"><div style="display:flex;align-items:center"><div class="hub-dot dot-busy"></div></div><div><div class="hub-name">Lahore Hub</div><div class="hub-city">Lahore</div></div><div class="hub-metric"><div class="hub-val">289</div><div class="hub-sub">shipments</div></div></div>
+              <div class="hub-item"><div style="display:flex;align-items:center"><div class="hub-dot dot-online"></div></div><div><div class="hub-name">Islamabad Hub</div><div class="hub-city">Islamabad</div></div><div class="hub-metric"><div class="hub-val">187</div><div class="hub-sub">shipments</div></div></div>
+              <div class="hub-item"><div style="display:flex;align-items:center"><div class="hub-dot dot-online"></div></div><div><div class="hub-name">Faisalabad</div><div class="hub-city">Faisalabad</div></div><div class="hub-metric"><div class="hub-val">143</div><div class="hub-sub">shipments</div></div></div>
+              <div class="hub-item"><div style="display:flex;align-items:center"><div class="hub-dot dot-offline"></div></div><div><div class="hub-name">Multan Hub</div><div class="hub-city">Multan</div></div><div class="hub-metric"><div class="hub-val">0</div><div class="hub-sub">maintenance</div></div></div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Fleet Overview</div></div>
+            <div class="panel-head"><span class="panel-title">Fleet Status</span><span class="panel-link">View All</span></div>
             <div class="panel-body">
-              <div class="fleet-item"><div class="fleet-type">🚛</div><div><div class="fleet-name">Heavy Trucks</div><div class="fleet-count">14 / 18 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:78%"></div></div></div>
-              <div class="fleet-item"><div class="fleet-type">🚐</div><div><div class="fleet-name">Vans</div><div class="fleet-count">31 / 40 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:78%"></div></div></div>
-              <div class="fleet-item"><div class="fleet-type">🛵</div><div><div class="fleet-name">Bikes</div><div class="fleet-count">68 / 80 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:85%"></div></div></div>
-              <div class="fleet-item"><div class="fleet-type">🏍️</div><div><div class="fleet-name">Motorcycles</div><div class="fleet-count">24 / 35 active</div></div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:69%"></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🛵</div><div style="flex:1"><div class="fleet-name">Motorcycles</div><div class="fleet-count">87 active / 112 total</div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:78%"></div></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🚐</div><div style="flex:1"><div class="fleet-name">Vans</div><div class="fleet-count">24 active / 30 total</div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:80%"></div></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🚛</div><div style="flex:1"><div class="fleet-name">Trucks</div><div class="fleet-count">8 active / 12 total</div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:67%"></div></div></div></div>
+              <div class="fleet-item"><div class="fleet-type">🚲</div><div style="flex:1"><div class="fleet-name">Cycles</div><div class="fleet-count">15 active / 20 total</div><div class="fleet-bar-bg"><div class="fleet-bar-fill" style="width:75%"></div></div></div></div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Exceptions</div><span style="font-size:11px;color:var(--danger)">47 open</span></div>
+            <div class="panel-head"><span class="panel-title">Recent Exceptions</span><span class="panel-link">Resolve All</span></div>
             <div class="panel-body">
-              <div class="exc-item"><span class="exc-icon">🚫</span><div><div class="exc-title">Address Not Found</div><div class="exc-desc">AWB 291847 · ISB Hub</div></div><span class="exc-time">12 min ago</span></div>
-              <div class="exc-item"><span class="exc-icon">📵</span><div><div class="exc-title">Phone Unreachable</div><div class="exc-desc">AWB 291833 · LHR Hub</div></div><span class="exc-time">28 min ago</span></div>
-              <div class="exc-item"><span class="exc-icon">🔄</span><div><div class="exc-title">RTO Initiated</div><div class="exc-desc">AWB 291799 · KHI Hub</div></div><span class="exc-time">1h ago</span></div>
-              <div class="exc-item"><span class="exc-icon">⏰</span><div><div class="exc-title">Delivery Delayed</div><div class="exc-desc">AWB 291755 · ISB Hub</div></div><span class="exc-time">2h ago</span></div>
+              <div class="exc-item"><div class="exc-icon">📍</div><div><div class="exc-title">Wrong Address — KHI-2847</div><div class="exc-desc">Address not found in system</div></div><div class="exc-time">2m ago</div></div>
+              <div class="exc-item"><div class="exc-icon">📵</div><div><div class="exc-title">No Answer — LHR-3921</div><div class="exc-desc">3 attempts, customer unreachable</div></div><div class="exc-time">15m ago</div></div>
+              <div class="exc-item"><div class="exc-icon">🚫</div><div><div class="exc-title">Refused — ISB-1102</div><div class="exc-desc">Customer refused delivery</div></div><div class="exc-time">28m ago</div></div>
+              <div class="exc-item"><div class="exc-icon">💧</div><div><div class="exc-title">Damaged — KHI-2791</div><div class="exc-desc">Package damaged in transit</div></div><div class="exc-time">1h ago</div></div>
+              <div class="exc-item"><div class="exc-icon">⏰</div><div><div class="exc-title">Late SLA — LHR-3789</div><div class="exc-desc">Delayed by 4 hours</div></div><div class="exc-time">2h ago</div></div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- SHIPMENTS -->
+      <div id="sec-shipments" class="section" hidden>
         <div class="table-panel">
-          <div class="table-head"><span class="table-title">Shipment Tracker</span><input class="search-box" placeholder="Search AWB or consignee…"></div>
+          <div class="table-head">
+            <span class="table-title">All Shipments</span>
+            <input class="search-box" placeholder="Search tracking number…">
+          </div>
           <table>
-            <thead><tr><th>AWB</th><th>Consignee</th><th>Origin → Dest</th><th>Weight</th><th>COD</th><th>Status</th></tr></thead>
+            <thead><tr><th>Tracking #</th><th>Sender</th><th>Receiver</th><th>Origin</th><th>Destination</th><th>Status</th><th>ETA</th></tr></thead>
             <tbody>
-              <tr><td><b>PKT-291847</b></td><td>Khurram Enterprises</td><td>KHI → ISB</td><td>2.4 kg</td><td>₨4,500</td><td><span class="badge badge-amber">Exception</span></td></tr>
-              <tr><td><b>PKT-291844</b></td><td>Sana Textiles</td><td>LHR → KHI</td><td>8.1 kg</td><td>—</td><td><span class="badge badge-blue">In Transit</span></td></tr>
-              <tr><td><b>PKT-291841</b></td><td>Apex Electronics</td><td>ISB → LHR</td><td>1.2 kg</td><td>₨12,000</td><td><span class="badge badge-green">Delivered</span></td></tr>
-              <tr><td><b>PKT-291839</b></td><td>Maryam Boutique</td><td>KHI → LHR</td><td>0.8 kg</td><td>₨3,200</td><td><span class="badge badge-green">Delivered</span></td></tr>
-              <tr><td><b>PKT-291835</b></td><td>TechZone ISB</td><td>LHR → ISB</td><td>5.6 kg</td><td>₨28,000</td><td><span class="badge badge-blue">In Transit</span></td></tr>
-              <tr><td><b>PKT-291829</b></td><td>Rehman Traders</td><td>ISB → KHI</td><td>12.3 kg</td><td>—</td><td><span class="badge badge-red">RTO</span></td></tr>
+              <tr><td><b>KHI-2847</b></td><td>FashionHub</td><td>Sana Khan</td><td>Karachi</td><td>Lahore</td><td><span class="badge badge-amber">Exception</span></td><td>Jan 14</td></tr>
+              <tr><td><b>LHR-3921</b></td><td>TechZone</td><td>Ahmed Ali</td><td>Lahore</td><td>Islamabad</td><td><span class="badge badge-amber">No Answer</span></td><td>Jan 14</td></tr>
+              <tr><td><b>ISB-1102</b></td><td>BookStore PK</td><td>Rizwan M.</td><td>Islamabad</td><td>Rawalpindi</td><td><span class="badge badge-red">Refused</span></td><td>Jan 14</td></tr>
+              <tr><td><b>FSD-0892</b></td><td>HomeDecor</td><td>Nadia B.</td><td>Faisalabad</td><td>Gujranwala</td><td><span class="badge badge-blue">In Transit</span></td><td>Jan 15</td></tr>
+              <tr><td><b>KHI-2801</b></td><td>Electronics PK</td><td>Omar S.</td><td>Karachi</td><td>Hyderabad</td><td><span class="badge badge-green">Delivered</span></td><td>Jan 13</td></tr>
+              <tr><td><b>LHR-3888</b></td><td>StyleMart</td><td>Ayesha F.</td><td>Lahore</td><td>Multan</td><td><span class="badge badge-green">Delivered</span></td><td>Jan 13</td></tr>
+              <tr><td><b>ISB-1098</b></td><td>PharmaOne</td><td>Dr. Hassan</td><td>Islamabad</td><td>Abbottabad</td><td><span class="badge badge-blue">In Transit</span></td><td>Jan 15</td></tr>
+              <tr><td><b>KHI-2799</b></td><td>FoodBazaar</td><td>Zara A.</td><td>Karachi</td><td>Karachi</td><td><span class="badge badge-green">Delivered</span></td><td>Jan 14</td></tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <!-- HUB MANAGEMENT -->
+      <div id="sec-hubs" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">🏭</div><div class="stat-label">Total Hubs</div><div class="stat-value">14</div><div class="stat-delta delta-up">2 new this quarter</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Operational</div><div class="stat-value">12</div><div class="stat-delta delta-up">85.7% uptime</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🔧</div><div class="stat-label">Maintenance</div><div class="stat-value">2</div><div class="stat-delta delta-dn">Multan, Quetta</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">📦</div><div class="stat-label">Avg Throughput</div><div class="stat-value">892</div><div class="stat-delta delta-up">pkgs/hub/day</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Hub Directory</span><input class="search-box" placeholder="Search hub…"></div>
+          <table>
+            <thead><tr><th>Hub Name</th><th>City</th><th>Manager</th><th>Capacity</th><th>Today</th><th>Riders</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Karachi Central</b></td><td>Karachi</td><td>Kamran Baig</td><td>500</td><td>342</td><td>38</td><td><span class="badge badge-green">Online</span></td></tr>
+              <tr><td><b>Lahore Hub</b></td><td>Lahore</td><td>Farhan Malik</td><td>450</td><td>289</td><td>31</td><td><span class="badge badge-amber">Busy</span></td></tr>
+              <tr><td><b>Islamabad Hub</b></td><td>Islamabad</td><td>Sajid Rana</td><td>300</td><td>187</td><td>22</td><td><span class="badge badge-green">Online</span></td></tr>
+              <tr><td><b>Faisalabad</b></td><td>Faisalabad</td><td>Tahir Abbas</td><td>250</td><td>143</td><td>18</td><td><span class="badge badge-green">Online</span></td></tr>
+              <tr><td><b>Multan Hub</b></td><td>Multan</td><td>Asif Qureshi</td><td>200</td><td>0</td><td>0</td><td><span class="badge badge-red">Maintenance</span></td></tr>
+              <tr><td><b>Peshawar</b></td><td>Peshawar</td><td>Adil Khan</td><td>180</td><td>98</td><td>14</td><td><span class="badge badge-green">Online</span></td></tr>
+              <tr><td><b>Quetta Hub</b></td><td>Quetta</td><td>Naseer Bugti</td><td>150</td><td>0</td><td>0</td><td><span class="badge badge-red">Maintenance</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FLEET -->
+      <div id="sec-fleet" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">🚗</div><div class="stat-label">Total Vehicles</div><div class="stat-value">174</div><div class="stat-delta delta-up">↑ 12 added this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🟢</div><div class="stat-label">Active Now</div><div class="stat-value">134</div><div class="stat-delta delta-up">77% utilization</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🔧</div><div class="stat-label">In Service</div><div class="stat-value">24</div><div class="stat-delta delta-dn">8 overdue</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">⛽</div><div class="stat-label">Fuel Cost / Day</div><div class="stat-value">₨ 48K</div><div class="stat-delta delta-dn">↑ 5% vs last week</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Vehicle Register</span><input class="search-box" placeholder="Search vehicle…"></div>
+          <table>
+            <thead><tr><th>Vehicle #</th><th>Type</th><th>Rider</th><th>Hub</th><th>Status</th><th>Last Service</th><th>Fuel %</th></tr></thead>
+            <tbody>
+              <tr><td><b>KHI-M-001</b></td><td>🛵 Motorcycle</td><td>Ali Raza</td><td>Karachi Central</td><td><span class="badge badge-green">Active</span></td><td>Dec 28</td><td>72%</td></tr>
+              <tr><td><b>KHI-M-002</b></td><td>🛵 Motorcycle</td><td>Usman Shah</td><td>Karachi Central</td><td><span class="badge badge-green">Active</span></td><td>Jan 5</td><td>45%</td></tr>
+              <tr><td><b>LHR-V-008</b></td><td>🚐 Van</td><td>Raheel Ahmed</td><td>Lahore Hub</td><td><span class="badge badge-amber">In Service</span></td><td>—</td><td>0%</td></tr>
+              <tr><td><b>ISB-T-003</b></td><td>🚛 Truck</td><td>Nasir Hussain</td><td>Islamabad Hub</td><td><span class="badge badge-blue">Returning</span></td><td>Jan 2</td><td>28%</td></tr>
+              <tr><td><b>LHR-M-022</b></td><td>🛵 Motorcycle</td><td>Zubair M.</td><td>Lahore Hub</td><td><span class="badge badge-green">Active</span></td><td>Dec 20</td><td>60%</td></tr>
+              <tr><td><b>FSD-C-005</b></td><td>🚲 Cycle</td><td>Bilal Khan</td><td>Faisalabad</td><td><span class="badge badge-green">Active</span></td><td>Jan 10</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ROUTE PLANNER -->
+      <div id="sec-routes" class="section" hidden>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Active Routes — Today</span><span class="panel-link">Optimize All</span></div>
+            <div class="panel-body">
+              <div class="route-item"><div class="route-code">RT-KHI-1</div><div><div class="route-name">Karachi North Zone</div><div class="route-meta">38 stops · 24 km</div></div><div class="route-progress"><div class="route-fill" style="width:82%"></div></div><div class="route-pct">82%</div></div>
+              <div class="route-item"><div class="route-code">RT-KHI-2</div><div><div class="route-name">Karachi South Zone</div><div class="route-meta">31 stops · 19 km</div></div><div class="route-progress"><div class="route-fill" style="width:65%"></div></div><div class="route-pct">65%</div></div>
+              <div class="route-item"><div class="route-code">RT-LHR-1</div><div><div class="route-name">Lahore Gulberg</div><div class="route-meta">44 stops · 28 km</div></div><div class="route-progress"><div class="route-fill" style="width:90%"></div></div><div class="route-pct">90%</div></div>
+              <div class="route-item"><div class="route-code">RT-LHR-2</div><div><div class="route-name">Lahore DHA</div><div class="route-meta">52 stops · 35 km</div></div><div class="route-progress"><div class="route-fill" style="width:45%"></div></div><div class="route-pct">45%</div></div>
+              <div class="route-item"><div class="route-code">RT-ISB-1</div><div><div class="route-name">Islamabad F/G Sectors</div><div class="route-meta">29 stops · 22 km</div></div><div class="route-progress"><div class="route-fill" style="width:70%"></div></div><div class="route-pct">70%</div></div>
+              <div class="route-item"><div class="route-code">RT-ISB-2</div><div><div class="route-name">Islamabad E-7 to D-12</div><div class="route-meta">18 stops · 12 km</div></div><div class="route-progress"><div class="route-fill" style="width:55%"></div></div><div class="route-pct">55%</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="map-placeholder" style="height:360px">
+              <div style="font-size:40px">🗺</div>
+              <div class="map-label">Live Route Map</div>
+              <div class="map-sub">14 active routes across Pakistan</div>
+              <div class="map-dot" style="top:30%;left:25%"></div>
+              <div class="map-dot" style="top:20%;left:55%;background:#F59E0B"></div>
+              <div class="map-dot" style="top:25%;left:65%;background:#F59E0B"></div>
+              <div class="map-dot" style="top:35%;left:30%;background:#EF4444"></div>
+              <div class="map-dot" style="top:45%;left:40%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXCEPTIONS -->
+      <div id="sec-exceptions" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-red">🔔</div><div class="stat-label">Open Exceptions</div><div class="stat-value">47</div><div class="stat-delta delta-dn">12 added today</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📵</div><div class="stat-label">No Answer</div><div class="stat-value">18</div><div class="stat-delta">38% of exceptions</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📍</div><div class="stat-label">Wrong Address</div><div class="stat-value">14</div><div class="stat-delta">30% of exceptions</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Resolved Today</div><div class="stat-value">23</div><div class="stat-delta delta-up">↑ 15% vs yesterday</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Exception Queue</span><input class="search-box" placeholder="Search tracking #…"></div>
+          <table>
+            <thead><tr><th>Tracking #</th><th>Type</th><th>Hub</th><th>Attempts</th><th>Raised</th><th>Assigned</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td><b>KHI-2847</b></td><td><span class="badge badge-blue">Wrong Address</span></td><td>Karachi Central</td><td>1</td><td>2h ago</td><td>Kamran B.</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Resolve</button></td></tr>
+              <tr><td><b>LHR-3921</b></td><td><span class="badge badge-amber">No Answer</span></td><td>Lahore Hub</td><td>3</td><td>15m ago</td><td>Farhan M.</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">RTO</button></td></tr>
+              <tr><td><b>ISB-1102</b></td><td><span class="badge badge-red">Refused</span></td><td>Islamabad Hub</td><td>1</td><td>28m ago</td><td>Sajid R.</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">RTO</button></td></tr>
+              <tr><td><b>KHI-2791</b></td><td><span class="badge badge-red">Damaged</span></td><td>Karachi Central</td><td>0</td><td>1h ago</td><td>Unassigned</td><td><button class="btn btn-outline" style="padding:4px 10px;font-size:11px">Assign</button></td></tr>
+              <tr><td><b>LHR-3789</b></td><td><span class="badge badge-amber">Late SLA</span></td><td>Lahore Hub</td><td>2</td><td>2h ago</td><td>Farhan M.</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Resolve</button></td></tr>
+              <tr><td><b>FSD-0822</b></td><td><span class="badge badge-blue">Wrong Address</span></td><td>Faisalabad</td><td>2</td><td>3h ago</td><td>Tahir A.</td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px">Resolve</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MANIFESTS -->
+      <div id="sec-manifests" class="section" hidden>
+        <div class="two-col">
+          <div class="table-panel">
+            <div class="table-head"><span class="table-title">Today's Manifests</span><button class="btn btn-primary" style="padding:6px 14px;font-size:12px">+ New Manifest</button></div>
+            <table>
+              <thead><tr><th>Manifest ID</th><th>Hub</th><th>Packages</th><th>Rider</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><b>MF-KHI-0291</b></td><td>Karachi Central</td><td>42</td><td>Ali Raza</td><td><span class="badge badge-green">Dispatched</span></td></tr>
+                <tr><td><b>MF-KHI-0292</b></td><td>Karachi Central</td><td>38</td><td>Usman Shah</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+                <tr><td><b>MF-LHR-0188</b></td><td>Lahore Hub</td><td>51</td><td>Zubair M.</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+                <tr><td><b>MF-LHR-0189</b></td><td>Lahore Hub</td><td>44</td><td>Raheel A.</td><td><span class="badge badge-amber">Pending</span></td></tr>
+                <tr><td><b>MF-ISB-0099</b></td><td>Islamabad Hub</td><td>29</td><td>Bilal K.</td><td><span class="badge badge-green">Dispatched</span></td></tr>
+                <tr><td><b>MF-FSD-0071</b></td><td>Faisalabad</td><td>33</td><td>Nasir H.</td><td><span class="badge badge-blue">In Transit</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Manifest Detail — MF-KHI-0291</span></div>
+            <div class="panel-body">
+              <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+                <div style="font-size:11px;color:var(--text-2);margin-bottom:4px">RIDER</div>
+                <div style="font-size:13px;font-weight:700">Ali Raza · 🛵 KHI-M-001</div>
+              </div>
+              <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+                <div style="font-size:11px;color:var(--text-2);margin-bottom:4px">PROGRESS</div>
+                <div style="font-size:20px;font-weight:800">34 / 42</div>
+                <div style="font-size:11px;color:var(--success)">8 remaining · ETA 4:30 PM</div>
+              </div>
+              <div class="manifest-item"><div><div class="manifest-id">KHI-2801</div><div class="manifest-meta">Electronics PK → Hyderabad</div></div><div class="manifest-right"><span class="badge badge-green">Delivered</span></div></div>
+              <div class="manifest-item"><div><div class="manifest-id">KHI-2799</div><div class="manifest-meta">FoodBazaar → Karachi</div></div><div class="manifest-right"><span class="badge badge-green">Delivered</span></div></div>
+              <div class="manifest-item"><div><div class="manifest-id">KHI-2847</div><div class="manifest-meta">FashionHub → Lahore</div></div><div class="manifest-right"><span class="badge badge-red">Exception</span></div></div>
+              <div class="manifest-item"><div><div class="manifest-id">KHI-2850</div><div class="manifest-meta">HomeDecor → Karachi</div></div><div class="manifest-right"><span class="badge badge-blue">Pending</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COD MANAGEMENT -->
+      <div id="sec-cod" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">COD Collected</div><div class="stat-value">₨ 4.2M</div><div class="stat-delta delta-up">Today</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Pending Remittance</div><div class="stat-value">₨ 1.8M</div><div class="stat-delta delta-dn">From 3 hubs</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Remitted Today</div><div class="stat-value">₨ 2.4M</div><div class="stat-delta delta-up">↑ 18% vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🚫</div><div class="stat-label">Discrepancies</div><div class="stat-value">3</div><div class="stat-delta delta-dn">₨ 4,200 diff</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">COD Remittance Register</span><input class="search-box" placeholder="Search tracking #…"></div>
+          <table>
+            <thead><tr><th>Tracking #</th><th>Merchant</th><th>Amount</th><th>Hub</th><th>Rider</th><th>Collected</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>KHI-2801</b></td><td>Electronics PK</td><td>₨ 18,500</td><td>Karachi Central</td><td>Ali Raza</td><td>2:14 PM</td><td><span class="badge badge-green">Remitted</span></td></tr>
+              <tr><td><b>LHR-3888</b></td><td>StyleMart</td><td>₨ 4,200</td><td>Lahore Hub</td><td>Zubair M.</td><td>1:42 PM</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>KHI-2799</b></td><td>FoodBazaar</td><td>₨ 1,850</td><td>Karachi Central</td><td>Ali Raza</td><td>11:30 AM</td><td><span class="badge badge-green">Remitted</span></td></tr>
+              <tr><td><b>ISB-1090</b></td><td>PharmaOne</td><td>₨ 6,700</td><td>Islamabad Hub</td><td>Bilal K.</td><td>10:15 AM</td><td><span class="badge badge-green">Remitted</span></td></tr>
+              <tr><td><b>FSD-0880</b></td><td>HomeDecor</td><td>₨ 12,400</td><td>Faisalabad</td><td>Nasir H.</td><td>3:00 PM</td><td><span class="badge badge-amber">Pending</span></td></tr>
+              <tr><td><b>LHR-3900</b></td><td>TechZone</td><td>₨ 32,000</td><td>Lahore Hub</td><td>Raheel A.</td><td>—</td><td><span class="badge badge-red">Discrepancy</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REVENUE -->
+      <div id="sec-revenue" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-blue">📈</div><div class="stat-label">Revenue MTD</div><div class="stat-value">₨ 8.7M</div><div class="stat-delta delta-up">↑ 22% vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">💵</div><div class="stat-label">Today's Revenue</div><div class="stat-value">₨ 487K</div><div class="stat-delta delta-up">↑ 11% vs yesterday</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">🏪</div><div class="stat-label">Active Merchants</div><div class="stat-value">218</div><div class="stat-delta delta-up">↑ 14 new this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">📦</div><div class="stat-label">Avg Shipment Value</div><div class="stat-value">₨ 380</div><div class="stat-delta delta-up">↑ ₨ 42 vs last month</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Revenue by Hub</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Karachi</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:78%"></div></div><div class="rev-val">₨ 3.4M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Lahore</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:62%"></div></div><div class="rev-val">₨ 2.7M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Islamabad</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:44%"></div></div><div class="rev-val">₨ 1.9M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Faisalabad</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:28%"></div></div><div class="rev-val">₨ 1.2M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Peshawar</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:18%"></div></div><div class="rev-val">₨ 0.8M</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Top Merchants — January</span></div>
+            <div class="panel-body">
+              <div class="hub-item"><div><div class="hub-name">Electronics PK</div><div class="hub-city">Karachi · 1,200 shipments</div></div><div class="hub-metric"><div class="hub-val">₨ 1.2M</div></div></div>
+              <div class="hub-item"><div><div class="hub-name">StyleMart</div><div class="hub-city">Lahore · 980 shipments</div></div><div class="hub-metric"><div class="hub-val">₨ 890K</div></div></div>
+              <div class="hub-item"><div><div class="hub-name">TechZone</div><div class="hub-city">Islamabad · 720 shipments</div></div><div class="hub-metric"><div class="hub-val">₨ 650K</div></div></div>
+              <div class="hub-item"><div><div class="hub-name">FashionHub</div><div class="hub-city">Karachi · 540 shipments</div></div><div class="hub-metric"><div class="hub-val">₨ 480K</div></div></div>
+              <div class="hub-item"><div><div class="hub-name">PharmaOne</div><div class="hub-city">Islamabad · 430 shipments</div></div><div class="hub-metric"><div class="hub-val">₨ 390K</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Network Configuration</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Network Name</label><input value="CourierOS Pakistan Network"></div>
+            <div class="form-field"><label>Default SLA (hours)</label><input value="24"></div>
+            <div class="form-field"><label>COD Remittance Cycle</label><select><option>Daily</option><option>Weekly</option></select></div>
+            <div class="form-field"><label>Max Delivery Attempts</label><input value="3"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Notifications</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Exception Alert Email</label><input value="ops@courieros.app"></div>
+            <div class="form-field"><label>COD Discrepancy Alert</label><input value="finance@courieros.app"></div>
+            <div class="form-field"><label>Hub Manager SMS</label><select><option>Enabled</option><option>Disabled</option></select></div>
+            <div class="form-field"><label>SLA Breach Alert (mins before)</label><input value="60"></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
-<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
+<script>
+var TITLES={
+  dashboard:['Network Operations Center','Pakistan Network · Live · Jan 14, 2025','+ Book Shipment'],
+  shipments:['Shipments','1,284 shipments today across all hubs','+ Book Shipment'],
+  hubs:['Hub Management','14 hubs · 12 operational','+ Add Hub'],
+  fleet:['Fleet Management','174 vehicles · 77% utilization','+ Add Vehicle'],
+  routes:['Route Planner','14 active routes · Live tracking','Optimize Routes'],
+  exceptions:['Exception Management','47 open exceptions · 12 new today','Resolve All'],
+  manifests:['Manifests','Today\'s dispatch manifests','+ New Manifest'],
+  cod:['COD Management','₨ 4.2M collected today','Remit COD'],
+  revenue:['Revenue & Billing','January 2025 · All Hubs','Export Report'],
+  settings:['Settings','Network & system configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+</script>
 </body>
 </html>

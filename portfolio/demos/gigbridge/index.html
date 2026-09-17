@@ -3,211 +3,478 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GigBridge — Freelance & Gig Marketplace</title>
+<title>GigBridge — Freelance Marketplace</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F1F5F9;--surface:#FFFFFF;--sidebar:#1E293B;
+  --bg:#FFFBEB;--surface:#FFFFFF;--sidebar:#1C1400;
   --primary:#D97706;--primary-h:#B45309;
-  --text:#0F172A;--text-2:#475569;--text-3:#94A3B8;
-  --border:#E2E8F0;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --text:#1C1400;--text-2:#78350F;--text-3:#92400E;
+  --border:#FDE68A;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;
   --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
   --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.08);
 }
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1C1400;--surface:#2D2200;--sidebar:#0A0800;
+  --text:#FEF3C7;--text-2:#FDE68A;--text-3:#F59E0B;
+  --border:#451A03;--shadow:0 1px 3px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{--bg:#1C1400;--surface:#2D2200;--sidebar:#0A0800;--text:#FEF3C7;--text-2:#FDE68A;--text-3:#F59E0B;--border:#451A03;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:inherit;text-decoration:none}
-#login-screen{min-height:100vh;background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,#1C1400 0%,#0A0800 100%);display:flex;align-items:center;justify-content:center;padding:20px;position:fixed;inset:0;z-index:100}
 #login-screen.hidden{display:none}
 .login-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:100%;max-width:400px}
 .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .login-logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.login-logo-name{font-size:22px;font-weight:800;color:var(--text)}.login-logo-tag{font-size:11px;color:var(--text-3);font-weight:500}
-.login-heading{font-size:20px;font-weight:700;margin-bottom:4px}.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.login-logo-name{font-size:22px;font-weight:800;color:#1C1400}.login-logo-tag{font-size:11px;color:#92400E;font-weight:500}
+.login-heading{font-size:20px;font-weight:700;color:#1C1400;margin-bottom:4px}.login-sub{font-size:13px;color:#78350F;margin-bottom:24px}
 .demo-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#92400E}
 .form-group{margin-bottom:16px}
-.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;display:block}
-.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.form-label{font-size:12px;font-weight:600;color:#78350F;margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid #FDE68A;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:#1C1400;outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--primary)}
 .btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
-.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text-3)}
+.btn-login:hover{background:var(--primary-h)}.login-footer{text-align:center;margin-top:20px;font-size:12px;color:#92400E}
 #app{display:none;flex-direction:column;min-height:100vh}#app.visible{display:flex}
-.demo-bar{background:#0F172A;color:#94A3B8;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
+.demo-bar{background:#0A0800;color:#F59E0B;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}
 .demo-bar-dot{width:7px;height:7px;background:#10B981;border-radius:50%;display:inline-block;margin-right:8px}
-.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#64748B}.demo-bar-creds b{color:#94A3B8}
-.demo-bar-back{color:#64748B;transition:color .15s}.demo-bar-back:hover{color:#E2E8F0}
+.demo-bar-creds{display:flex;gap:16px}.demo-bar-creds span{color:#451A03}.demo-bar-creds b{color:#F59E0B}
+.demo-bar-back{color:#451A03;transition:color .15s}.demo-bar-back:hover{color:#FEF3C7}
 .shell{display:flex;flex:1}
 .sidebar{width:230px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 37px)}
 .sidebar-top{padding:18px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
 .sidebar-brand{display:flex;align-items:center;gap:10px}
 .sidebar-icon{width:34px;height:34px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.sidebar-name{font-size:15px;font-weight:700;color:#F1F5F9}.sidebar-tagline{font-size:10px;color:#64748B;margin-top:1px}
+.sidebar-name{font-size:15px;font-weight:700;color:#FEF3C7}.sidebar-tagline{font-size:10px;color:#92400E;margin-top:1px}
 nav{padding:8px 0;flex:1;overflow-y:auto}
-.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:10px 20px 4px}
-.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#94A3B8;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-.nav-link:hover{background:rgba(255,255,255,.04);color:#CBD5E1}
-.nav-link.active{background:rgba(217,119,6,.15);color:#FCD34D;border-left-color:#D97706;font-weight:600}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400E;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:#F59E0B;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-link:hover{background:rgba(255,255,255,.04);color:#FDE68A}
+.nav-link.active{background:rgba(217,119,6,.2);color:#FDE68A;border-left-color:#D97706;font-weight:600}
 .nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
 .sidebar-user{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
 .user-avatar{width:30px;height:30px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
-.user-name{font-size:12px;font-weight:600;color:#CBD5E1}.user-role{font-size:10px;color:#475569}
+.user-name{font-size:12px;font-weight:600;color:#FDE68A}.user-role{font-size:10px;color:#92400E}
 .main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .topbar-title{font-size:16px;font-weight:700}.topbar-sub{font-size:12px;color:var(--text-2);margin-top:1px}
 .topbar-actions{display:flex;gap:8px}
 .btn{padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-h)}
-.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-2)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-.content{padding:24px;display:flex;flex-direction:column;gap:20px}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.section{padding:24px;display:flex;flex-direction:column;gap:20px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
 .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.si-amber{background:#FFFBEB}.si-green{background:#F0FDF4}.si-blue{background:#EFF6FF}.si-red{background:#FFF1F2}
+.si-amber{background:#FFFBEB}.si-green{background:#F0FDF4}.si-blue{background:#EFF6FF}.si-red{background:#FFF1F2}.si-purple{background:#F5F3FF}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .stat-value{font-size:24px;font-weight:800;color:var(--text)}
 .stat-delta{font-size:11px;margin-top:4px;font-weight:600}.delta-up{color:var(--success)}.delta-dn{color:var(--danger)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
 .panel-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .panel-title{font-size:13px;font-weight:700}
-.panel-body{padding:16px 20px}
-.gig-list{display:flex;flex-direction:column;gap:10px}
-.gig-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border:1px solid var(--border);border-radius:10px;background:#FAFAFA}
-.gig-rank{font-size:18px;font-weight:800;color:var(--text-3);width:24px;flex-shrink:0;line-height:1}
-.gig-title{font-size:12px;font-weight:700;color:var(--text)}
-.gig-seller{font-size:11px;color:var(--text-3)}
-.gig-gmv{margin-left:auto;font-size:12px;font-weight:700;color:var(--primary);white-space:nowrap}
-.gmv-chart{display:flex;flex-direction:column;gap:8px}
-.gmv-cat{display:flex;align-items:center;gap:10px}
-.gmv-name{font-size:11px;color:var(--text-2);width:100px;flex-shrink:0}
-.gmv-bar-bg{flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden}
-.gmv-bar-fill{height:100%;border-radius:4px}
-.gmv-val{font-size:11px;font-weight:700;color:var(--text);width:36px;text-align:right}
+.panel-body{padding:14px 20px}
+.panel-link{font-size:11px;color:var(--primary);font-weight:600;cursor:pointer}
+.order-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.order-item:last-child{border-bottom:none}
+.order-icon{font-size:20px;flex-shrink:0}
+.order-title{font-size:12px;font-weight:700;color:var(--text)}
+.order-meta{font-size:10px;color:var(--text-2);margin-top:2px}
+.order-price{font-size:13px;font-weight:800;color:var(--primary);margin-left:auto;white-space:nowrap}
+.seller-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.seller-item:last-child{border-bottom:none}
+.seller-avatar{width:30px;height:30px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.seller-name{font-size:12px;font-weight:700;color:var(--text)}
+.seller-cat{font-size:10px;color:var(--text-2);margin-top:1px}
+.seller-rating{font-size:11px;font-weight:700;color:#D97706;margin-left:auto}
 .table-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
 .table-head{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .table-title{font-size:13px;font-weight:700}
-.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:180px}
+.search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px;background:var(--surface)}
 table{width:100%;border-collapse:collapse}
-th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:#F8FAFC;text-align:left;border-bottom:1px solid var(--border)}
-td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border)}
+th{padding:9px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:var(--bg);text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 20px;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#F8FAFC}
+tr:hover td{background:var(--bg)}
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
 .badge-green{background:#F0FDF4;color:#166534}.badge-amber{background:#FFFBEB;color:#92400E}
 .badge-blue{background:#EFF6FF;color:#1E40AF}.badge-red{background:#FFF1F2;color:#991B1B}
-.rating{color:#D97706;font-size:11px;font-weight:600}
-@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
-@media(max-width:640px){.sidebar{display:none}}
+.badge-purple{background:#F5F3FF;color:#5B21B6}.badge-gray{background:#F1F5F9;color:#475569}
+.listing-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow)}
+.listing-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.listing-cat{font-size:10px;color:var(--text-2);margin-bottom:8px}
+.listing-price{font-size:16px;font-weight:800;color:var(--primary)}
+.listing-meta{font-size:10px;color:var(--text-3);margin-top:6px}
+.listing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stars{color:#D97706;font-size:11px}
+.rev-bar-row{display:flex;align-items:center;gap:12px;padding:6px 0}
+.rev-label{font-size:12px;color:var(--text-2);min-width:90px}
+.rev-bar-bg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.rev-bar-fill{height:100%;background:var(--primary);border-radius:4px}
+.rev-val{font-size:12px;font-weight:700;color:var(--text);min-width:70px;text-align:right}
+.dispute-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.dispute-item:last-child{border-bottom:none}
+.dispute-icon{font-size:16px;flex-shrink:0}
+.dispute-title{font-size:12px;font-weight:700;color:var(--text)}
+.dispute-desc{font-size:10px;color:var(--text-2);margin-top:2px}
+.dispute-age{font-size:10px;color:var(--text-3);white-space:nowrap;margin-left:auto}
+.payout-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.payout-item:last-child{border-bottom:none}
+.payout-name{font-size:12px;font-weight:700;color:var(--text)}
+.payout-method{font-size:10px;color:var(--text-2);margin-top:2px}
+.payout-amount{font-size:13px;font-weight:800;color:var(--text)}
+.form-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.form-section-title{font-size:13px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-field label{display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px}
+.form-field input,.form-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;background:var(--surface)}
+.form-field input:focus,.form-field select:focus{border-color:var(--primary)}
+.btn-save{background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+@media(max-width:1100px){.listing-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.three-col{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.sidebar{display:none}.listing-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">💼</div>
-      <div><div class="login-logo-name">GigBridge</div><div class="login-logo-tag">Freelance & Gig Marketplace</div></div>
+      <div class="login-logo-icon">🌉</div>
+      <div><div class="login-logo-name">GigBridge</div><div class="login-logo-tag">Freelance Marketplace Platform</div></div>
     </div>
     <div class="login-heading">Admin Login</div>
-    <div class="login-sub">Sign in to the GigBridge admin panel</div>
+    <div class="login-sub">Sign in to manage your marketplace</div>
     <div class="demo-notice">⚠️ <b>Demo Mode</b> — Credentials pre-filled. Click Sign In to explore.</div>
-    <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="admin@gigbridge.app"></div>
+    <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="demo@gigbridge.app"></div>
     <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" value="demo1234"></div>
     <button class="btn-login" onclick="doLogin()">Sign In →</button>
-    <div class="login-footer">GigBridge v1.9 · Secure demo environment</div>
+    <div class="login-footer">GigBridge v1.8 · Secure demo environment</div>
   </div>
 </div>
 <div id="app">
   <div class="demo-bar">
-    <div><span class="demo-bar-dot"></span>Demo Mode — GigBridge Freelance & Gig Marketplace Admin</div>
-    <div class="demo-bar-creds"><span>Login: <b>admin@gigbridge.app</b></span><span>Password: <b>demo1234</b></span></div>
+    <div><span class="demo-bar-dot"></span>Demo Mode — GigBridge Freelance Marketplace</div>
+    <div class="demo-bar-creds"><span>Login: <b>demo@gigbridge.app</b></span><span>Password: <b>demo1234</b></span></div>
     <a class="demo-bar-back" href="../../">← Back to Portfolio</a>
   </div>
   <div class="shell">
     <aside class="sidebar">
       <div class="sidebar-top">
         <div class="sidebar-brand">
-          <div class="sidebar-icon">💼</div>
+          <div class="sidebar-icon">🌉</div>
           <div><div class="sidebar-name">GigBridge</div><div class="sidebar-tagline">Marketplace Admin</div></div>
         </div>
       </div>
       <nav>
         <div class="nav-group-label">Marketplace</div>
-        <div class="nav-link active">📊 Dashboard</div>
-        <div class="nav-link">🛒 Orders <span class="nav-badge">18</span></div>
-        <div class="nav-link">🎨 Gig Listings</div>
-        <div class="nav-link">👤 Sellers</div>
-        <div class="nav-group-label">Revenue</div>
-        <div class="nav-link">💰 Transactions</div>
-        <div class="nav-link">📈 GMV Analytics</div>
-        <div class="nav-link">💸 Payouts</div>
-        <div class="nav-group-label">Moderation</div>
-        <div class="nav-link">🔍 Reviews</div>
-        <div class="nav-link">⚠️ Disputes</div>
-        <div class="nav-link">⚙️ Settings</div>
+        <div class="nav-link active" onclick="nav('dashboard',this)">📊 Dashboard</div>
+        <div class="nav-link" onclick="nav('orders',this)">📦 Orders <span class="nav-badge">7</span></div>
+        <div class="nav-link" onclick="nav('listings',this)">📋 Listings</div>
+        <div class="nav-link" onclick="nav('sellers',this)">👤 Sellers</div>
+        <div class="nav-group-label">Finance</div>
+        <div class="nav-link" onclick="nav('transactions',this)">💳 Transactions</div>
+        <div class="nav-link" onclick="nav('gmv',this)">📈 GMV & Revenue</div>
+        <div class="nav-link" onclick="nav('payouts',this)">💰 Payouts</div>
+        <div class="nav-group-label">Quality</div>
+        <div class="nav-link" onclick="nav('reviews',this)">⭐ Reviews</div>
+        <div class="nav-link" onclick="nav('disputes',this)">⚖️ Disputes <span class="nav-badge">3</span></div>
+        <div class="nav-link" onclick="nav('settings',this)">⚙️ Settings</div>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">DA</div>
-        <div><div class="user-name">Demo Admin</div><div class="user-role">Platform Admin</div></div>
+        <div><div class="user-name">Demo Admin</div><div class="user-role">Marketplace Admin</div></div>
       </div>
     </aside>
     <div class="main">
       <div class="topbar">
-        <div><div class="topbar-title">Marketplace Dashboard</div><div class="topbar-sub">All Categories · January 2025</div></div>
+        <div><div class="topbar-title" id="page-title">Marketplace Dashboard</div><div class="topbar-sub" id="page-sub">January 2025 · All Categories</div></div>
         <div class="topbar-actions">
-          <button class="btn btn-outline">Reports</button>
-          <button class="btn btn-primary">+ Feature Gig</button>
+          <button class="btn btn-outline">Export</button>
+          <button class="btn btn-primary" id="primary-btn">+ Add Listing</button>
         </div>
       </div>
-      <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section">
         <div class="stats">
-          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">Total GMV</div><div class="stat-value">$84K</div><div class="stat-delta delta-up">↑ 18.2% this month</div></div>
-          <div class="stat-card"><div class="stat-icon si-blue">🛒</div><div class="stat-label">Active Orders</div><div class="stat-value">312</div><div class="stat-delta delta-up">↑ 34 vs last week</div></div>
-          <div class="stat-card"><div class="stat-icon si-green">👥</div><div class="stat-label">Active Sellers</div><div class="stat-value">1,840</div><div class="stat-delta delta-up">↑ 142 new</div></div>
-          <div class="stat-card"><div class="stat-icon si-red">💳</div><div class="stat-label">Platform Revenue</div><div class="stat-value">$12.6K</div><div class="stat-delta delta-up">15% take rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">GMV (Jan)</div><div class="stat-value">₨ 12.4M</div><div class="stat-delta delta-up">↑ 28% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">📦</div><div class="stat-label">Orders (Jan)</div><div class="stat-value">1,842</div><div class="stat-delta delta-up">↑ 19% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">👤</div><div class="stat-label">Active Sellers</div><div class="stat-value">328</div><div class="stat-delta delta-up">↑ 24 new this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">📋</div><div class="stat-label">Active Listings</div><div class="stat-value">2,104</div><div class="stat-delta delta-up">↑ 182 this month</div></div>
         </div>
-        <div class="two-col">
+        <div class="three-col">
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">Top Gigs by GMV</div></div>
+            <div class="panel-head"><span class="panel-title">Recent Orders</span><span class="panel-link">View All</span></div>
             <div class="panel-body">
-              <div class="gig-list">
-                <div class="gig-item"><span class="gig-rank">#1</span><div><div class="gig-title">Logo Design & Brand Identity Pack</div><div class="gig-seller">by designcraft_pro · ★ 4.98</div></div><span class="gig-gmv">$8,420</span></div>
-                <div class="gig-item"><span class="gig-rank">#2</span><div><div class="gig-title">React / Next.js Web Development</div><div class="gig-seller">by codemaster_js · ★ 4.95</div></div><span class="gig-gmv">$7,180</span></div>
-                <div class="gig-item"><span class="gig-rank">#3</span><div><div class="gig-title">Social Media Content Creation</div><div class="gig-seller">by social_queen99 · ★ 4.92</div></div><span class="gig-gmv">$5,640</span></div>
-                <div class="gig-item"><span class="gig-rank">#4</span><div><div class="gig-title">SEO Audit & Optimization Report</div><div class="gig-seller">by seoexpert_hub · ★ 4.89</div></div><span class="gig-gmv">$4,920</span></div>
-              </div>
+              <div class="order-item"><div class="order-icon">🎨</div><div><div class="order-title">Logo Design Package</div><div class="order-meta">Buyer: Ali Raza → Seller: DesignPro</div></div><div class="order-price">₨ 4,500</div></div>
+              <div class="order-item"><div class="order-icon">💻</div><div><div class="order-title">WordPress Website</div><div class="order-meta">Buyer: Sara K. → Seller: WebWorks</div></div><div class="order-price">₨ 18,000</div></div>
+              <div class="order-item"><div class="order-icon">✍️</div><div><div class="order-title">Article Writing ×5</div><div class="order-meta">Buyer: ContentCo → Seller: WriteRight</div></div><div class="order-price">₨ 3,000</div></div>
+              <div class="order-item"><div class="order-icon">📱</div><div><div class="order-title">Social Media Kit</div><div class="order-meta">Buyer: StartupPK → Seller: DesignPro</div></div><div class="order-price">₨ 7,500</div></div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><div class="panel-title">GMV by Category</div></div>
+            <div class="panel-head"><span class="panel-title">Top Sellers</span><span class="panel-link">View All</span></div>
             <div class="panel-body">
-              <div class="gmv-chart">
-                <div class="gmv-cat"><span class="gmv-name">Design</span><div class="gmv-bar-bg"><div class="gmv-bar-fill" style="width:92%;background:#D97706"></div></div><span class="gmv-val">$28K</span></div>
-                <div class="gmv-cat"><span class="gmv-name">Development</span><div class="gmv-bar-bg"><div class="gmv-bar-fill" style="width:78%;background:#2563EB"></div></div><span class="gmv-val">$24K</span></div>
-                <div class="gmv-cat"><span class="gmv-name">Marketing</span><div class="gmv-bar-bg"><div class="gmv-bar-fill" style="width:52%;background:#7C3AED"></div></div><span class="gmv-val">$16K</span></div>
-                <div class="gmv-cat"><span class="gmv-name">Writing</span><div class="gmv-bar-bg"><div class="gmv-bar-fill" style="width:32%;background:#059669"></div></div><span class="gmv-val">$10K</span></div>
-                <div class="gmv-cat"><span class="gmv-name">Video</span><div class="gmv-bar-bg"><div class="gmv-bar-fill" style="width:20%;background:#EF4444"></div></div><span class="gmv-val">$6K</span></div>
-              </div>
+              <div class="seller-item"><div class="seller-avatar">DP</div><div><div class="seller-name">DesignPro Studio</div><div class="seller-cat">Graphic Design · 142 orders</div></div><div class="seller-rating">⭐ 4.9</div></div>
+              <div class="seller-item"><div class="seller-avatar">WW</div><div><div class="seller-name">WebWorks PK</div><div class="seller-cat">Web Dev · 98 orders</div></div><div class="seller-rating">⭐ 4.8</div></div>
+              <div class="seller-item"><div class="seller-avatar">WR</div><div><div class="seller-name">WriteRight</div><div class="seller-cat">Content Writing · 87 orders</div></div><div class="seller-rating">⭐ 4.7</div></div>
+              <div class="seller-item"><div class="seller-avatar">SE</div><div><div class="seller-name">SEOExpert</div><div class="seller-cat">Digital Marketing · 74 orders</div></div><div class="seller-rating">⭐ 4.9</div></div>
+              <div class="seller-item"><div class="seller-avatar">VM</div><div><div class="seller-name">VideoMaster</div><div class="seller-cat">Video Editing · 63 orders</div></div><div class="seller-rating">⭐ 4.6</div></div>
             </div>
           </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">GMV by Category</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Web Dev</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:72%"></div></div><div class="rev-val">₨ 3.8M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Design</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:58%"></div></div><div class="rev-val">₨ 2.9M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Writing</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:42%"></div></div><div class="rev-val">₨ 2.1M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Marketing</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:35%"></div></div><div class="rev-val">₨ 1.8M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Video</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:22%"></div></div><div class="rev-val">₨ 1.2M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Other</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:10%"></div></div><div class="rev-val">₨ 0.6M</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div id="sec-orders" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">📦</div><div class="stat-label">Total Orders (Jan)</div><div class="stat-value">1,842</div><div class="stat-delta delta-up">↑ 19% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Completed</div><div class="stat-value">1,604</div><div class="stat-delta delta-up">87% completion</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">⏳</div><div class="stat-label">In Progress</div><div class="stat-value">192</div><div class="stat-delta">Active work</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🚫</div><div class="stat-label">Cancelled</div><div class="stat-value">46</div><div class="stat-delta delta-dn">2.5% cancel rate</div></div>
         </div>
         <div class="table-panel">
-          <div class="table-head"><span class="table-title">Recent Orders</span><input class="search-box" placeholder="Search orders…"></div>
+          <div class="table-head"><span class="table-title">All Orders</span><input class="search-box" placeholder="Search order #…"></div>
           <table>
-            <thead><tr><th>Order ID</th><th>Buyer</th><th>Gig</th><th>Seller</th><th>Amount</th><th>Rating</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td><b>GB-10841</b></td><td>TechStart Inc</td><td>Logo Design Pack</td><td>designcraft_pro</td><td>$250</td><td><span class="rating">★ 5.0</span></td><td><span class="badge badge-green">Completed</span></td></tr>
-            <tr><td><b>GB-10840</b></td><td>Sarah Wilson</td><td>React Web App</td><td>codemaster_js</td><td>$800</td><td>—</td><td><span class="badge badge-blue">In Progress</span></td></tr>
-            <tr><td><b>GB-10839</b></td><td>Bloom Brands</td><td>Social Content × 30</td><td>social_queen99</td><td>$180</td><td><span class="rating">★ 4.8</span></td><td><span class="badge badge-green">Completed</span></td></tr>
-            <tr><td><b>GB-10838</b></td><td>Marcus Lee</td><td>SEO Audit</td><td>seoexpert_hub</td><td>$150</td><td>—</td><td><span class="badge badge-amber">Revision</span></td></tr>
-            <tr><td><b>GB-10837</b></td><td>DeltaX Corp</td><td>Brand Identity</td><td>designcraft_pro</td><td>$420</td><td>—</td><td><span class="badge badge-blue">In Progress</span></td></tr>
-          </tbody>
+            <thead><tr><th>Order #</th><th>Service</th><th>Buyer</th><th>Seller</th><th>Amount</th><th>Placed</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>GB-8841</b></td><td>Logo Design Package</td><td>Ali Raza</td><td>DesignPro Studio</td><td>₨ 4,500</td><td>Jan 14</td><td><span class="badge badge-blue">In Progress</span></td></tr>
+              <tr><td><b>GB-8839</b></td><td>WordPress Website</td><td>Sara Khan</td><td>WebWorks PK</td><td>₨ 18,000</td><td>Jan 13</td><td><span class="badge badge-blue">In Progress</span></td></tr>
+              <tr><td><b>GB-8832</b></td><td>Article Writing ×5</td><td>ContentCo</td><td>WriteRight</td><td>₨ 3,000</td><td>Jan 12</td><td><span class="badge badge-green">Completed</span></td></tr>
+              <tr><td><b>GB-8820</b></td><td>Social Media Kit</td><td>StartupPK</td><td>DesignPro Studio</td><td>₨ 7,500</td><td>Jan 11</td><td><span class="badge badge-green">Completed</span></td></tr>
+              <tr><td><b>GB-8815</b></td><td>SEO Audit Report</td><td>Bilal R.</td><td>SEOExpert</td><td>₨ 5,000</td><td>Jan 10</td><td><span class="badge badge-green">Completed</span></td></tr>
+              <tr><td><b>GB-8801</b></td><td>Video Editing ×3</td><td>MediaHub</td><td>VideoMaster</td><td>₨ 9,000</td><td>Jan 9</td><td><span class="badge badge-red">Cancelled</span></td></tr>
+              <tr><td><b>GB-8798</b></td><td>Mobile App UI</td><td>AppCo PK</td><td>WebWorks PK</td><td>₨ 25,000</td><td>Jan 8</td><td><span class="badge badge-green">Completed</span></td></tr>
+            </tbody>
           </table>
         </div>
       </div>
+
+      <!-- LISTINGS -->
+      <div id="sec-listings" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">📋</div><div class="stat-label">Total Listings</div><div class="stat-value">2,104</div><div class="stat-delta delta-up">↑ 182 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Active</div><div class="stat-value">1,892</div><div class="stat-delta">89.9% live</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">⏳</div><div class="stat-label">Pending Review</div><div class="stat-value">141</div><div class="stat-delta delta-dn">Awaiting approval</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">🚫</div><div class="stat-label">Suspended</div><div class="stat-value">71</div><div class="stat-delta delta-dn">Policy violations</div></div>
+        </div>
+        <div class="listing-grid">
+          <div class="listing-card"><div class="listing-title">Professional Logo Design</div><div class="listing-cat">Graphic Design · DesignPro Studio</div><div class="listing-price">₨ 3,500</div><div class="listing-meta"><span class="stars">★★★★★</span> 4.9 · 142 orders</div></div>
+          <div class="listing-card"><div class="listing-title">WordPress Website (5 pages)</div><div class="listing-cat">Web Development · WebWorks PK</div><div class="listing-price">₨ 15,000</div><div class="listing-meta"><span class="stars">★★★★★</span> 4.8 · 98 orders</div></div>
+          <div class="listing-card"><div class="listing-title">SEO-Optimized Blog Article</div><div class="listing-cat">Content Writing · WriteRight</div><div class="listing-meta"><span class="stars">★★★★★</span> 4.7 · 87 orders</div><div class="listing-price">₨ 600</div></div>
+          <div class="listing-card"><div class="listing-title">Full SEO Audit + Report</div><div class="listing-cat">Digital Marketing · SEOExpert</div><div class="listing-price">₨ 5,000</div><div class="listing-meta"><span class="stars">★★★★★</span> 4.9 · 74 orders</div></div>
+          <div class="listing-card"><div class="listing-title">Short Video Edit (3 min)</div><div class="listing-cat">Video Editing · VideoMaster</div><div class="listing-price">₨ 2,500</div><div class="listing-meta"><span class="stars">★★★★☆</span> 4.6 · 63 orders</div></div>
+          <div class="listing-card"><div class="listing-title">Social Media Pack (30 posts)</div><div class="listing-cat">Graphic Design · DesignPro Studio</div><div class="listing-price">₨ 7,500</div><div class="listing-meta"><span class="stars">★★★★★</span> 4.9 · 58 orders</div></div>
+        </div>
+      </div>
+
+      <!-- SELLERS -->
+      <div id="sec-sellers" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">👤</div><div class="stat-label">Total Sellers</div><div class="stat-value">328</div><div class="stat-delta delta-up">↑ 24 this month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">🟢</div><div class="stat-label">Active (30d)</div><div class="stat-value">284</div><div class="stat-delta">86.6% active rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">⭐</div><div class="stat-label">Avg Rating</div><div class="stat-value">4.72</div><div class="stat-delta delta-up">↑ 0.08 vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">💰</div><div class="stat-label">Avg Seller GMV</div><div class="stat-value">₨ 37.8K</div><div class="stat-delta delta-up">↑ 12% vs Dec</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Seller Directory</span><input class="search-box" placeholder="Search sellers…"></div>
+          <table>
+            <thead><tr><th>Seller</th><th>Category</th><th>Listings</th><th>Orders (Jan)</th><th>GMV (Jan)</th><th>Rating</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>DesignPro Studio</b></td><td>Graphic Design</td><td>14</td><td>142</td><td>₨ 520K</td><td>⭐ 4.9</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>WebWorks PK</b></td><td>Web Development</td><td>8</td><td>98</td><td>₨ 980K</td><td>⭐ 4.8</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>WriteRight</b></td><td>Content Writing</td><td>22</td><td>87</td><td>₨ 180K</td><td>⭐ 4.7</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>SEOExpert</b></td><td>Digital Marketing</td><td>6</td><td>74</td><td>₨ 370K</td><td>⭐ 4.9</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>VideoMaster</b></td><td>Video Editing</td><td>10</td><td>63</td><td>₨ 220K</td><td>⭐ 4.6</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td><b>AppDev PK</b></td><td>Mobile Apps</td><td>5</td><td>12</td><td>₨ 420K</td><td>⭐ 4.5</td><td><span class="badge badge-amber">New</span></td></tr>
+              <tr><td><b>SpamWriter99</b></td><td>Content Writing</td><td>3</td><td>0</td><td>₨ 0</td><td>⭐ 2.1</td><td><span class="badge badge-red">Suspended</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div id="sec-transactions" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">💳</div><div class="stat-label">Transactions (Jan)</div><div class="stat-value">1,842</div><div class="stat-delta delta-up">↑ 19%</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Successful</div><div class="stat-value">1,796</div><div class="stat-delta">97.5% success</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">❌</div><div class="stat-label">Failed</div><div class="stat-value">46</div><div class="stat-delta delta-dn">2.5% failure</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">💵</div><div class="stat-label">Avg Order Value</div><div class="stat-value">₨ 6,731</div><div class="stat-delta delta-up">↑ 8% vs Dec</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Transaction Log</span><input class="search-box" placeholder="Search transaction…"></div>
+          <table>
+            <thead><tr><th>Txn ID</th><th>Order #</th><th>Buyer</th><th>Amount</th><th>Method</th><th>Time</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>TXN-44821</b></td><td>GB-8841</td><td>Ali Raza</td><td>₨ 4,500</td><td>JazzCash</td><td>Jan 14, 10:22 AM</td><td><span class="badge badge-green">Success</span></td></tr>
+              <tr><td><b>TXN-44818</b></td><td>GB-8839</td><td>Sara Khan</td><td>₨ 18,000</td><td>Bank Transfer</td><td>Jan 13, 3:45 PM</td><td><span class="badge badge-green">Success</span></td></tr>
+              <tr><td><b>TXN-44801</b></td><td>GB-8832</td><td>ContentCo</td><td>₨ 3,000</td><td>EasyPaisa</td><td>Jan 12, 11:10 AM</td><td><span class="badge badge-green">Success</span></td></tr>
+              <tr><td><b>TXN-44792</b></td><td>GB-8820</td><td>StartupPK</td><td>₨ 7,500</td><td>Card</td><td>Jan 11, 2:30 PM</td><td><span class="badge badge-green">Success</span></td></tr>
+              <tr><td><b>TXN-44789</b></td><td>GB-8801</td><td>MediaHub</td><td>₨ 9,000</td><td>JazzCash</td><td>Jan 9, 9:15 AM</td><td><span class="badge badge-red">Refunded</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- GMV & REVENUE -->
+      <div id="sec-gmv" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">📈</div><div class="stat-label">GMV (Jan)</div><div class="stat-value">₨ 12.4M</div><div class="stat-delta delta-up">↑ 28% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">💰</div><div class="stat-label">Platform Revenue</div><div class="stat-value">₨ 1.24M</div><div class="stat-delta delta-up">10% take rate</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">📊</div><div class="stat-label">GMV YTD</div><div class="stat-value">₨ 12.4M</div><div class="stat-delta">Jan 2025</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">🎯</div><div class="stat-label">Jan Target</div><div class="stat-value">120%</div><div class="stat-delta delta-up">Target exceeded</div></div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">GMV by Category — January</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">Web Dev</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:72%"></div></div><div class="rev-val">₨ 3.8M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Design</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:58%"></div></div><div class="rev-val">₨ 2.9M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Writing</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:42%"></div></div><div class="rev-val">₨ 2.1M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Marketing</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:35%"></div></div><div class="rev-val">₨ 1.8M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">Video</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:22%"></div></div><div class="rev-val">₨ 1.2M</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">Monthly GMV Trend</span></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+              <div class="rev-bar-row"><div class="rev-label">August</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:52%"></div></div><div class="rev-val">₨ 6.4M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">September</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:60%"></div></div><div class="rev-val">₨ 7.4M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">October</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:65%"></div></div><div class="rev-val">₨ 8.1M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">November</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:72%"></div></div><div class="rev-val">₨ 8.9M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">December</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:78%"></div></div><div class="rev-val">₨ 9.7M</div></div>
+              <div class="rev-bar-row"><div class="rev-label">January</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:100%"></div></div><div class="rev-val">₨ 12.4M</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYOUTS -->
+      <div id="sec-payouts" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">💰</div><div class="stat-label">Payouts (Jan)</div><div class="stat-value">₨ 11.2M</div><div class="stat-delta delta-up">90% of GMV to sellers</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Processed</div><div class="stat-value">₨ 9.8M</div><div class="stat-delta delta-up">87.5% done</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">⏳</div><div class="stat-label">Pending</div><div class="stat-value">₨ 1.4M</div><div class="stat-delta delta-dn">Scheduled Jan 31</div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">🏦</div><div class="stat-label">Top Method</div><div class="stat-value">JazzCash</div><div class="stat-delta">48% of payouts</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Payout Queue</span><span class="panel-link">Process All</span></div>
+          <div class="panel-body">
+            <div class="payout-item"><div><div class="payout-name">DesignPro Studio</div><div class="payout-method">JazzCash · 0321-XXXXXXX</div></div><div><div class="payout-amount">₨ 468,000</div><span class="badge badge-green">Processed</span></div></div>
+            <div class="payout-item"><div><div class="payout-name">WebWorks PK</div><div class="payout-method">Bank Transfer · HBL ×4821</div></div><div><div class="payout-amount">₨ 882,000</div><span class="badge badge-green">Processed</span></div></div>
+            <div class="payout-item"><div><div class="payout-name">WriteRight</div><div class="payout-method">EasyPaisa · 0311-XXXXXXX</div></div><div><div class="payout-amount">₨ 162,000</div><span class="badge badge-amber">Pending</span></div></div>
+            <div class="payout-item"><div><div class="payout-name">SEOExpert</div><div class="payout-method">JazzCash · 0333-XXXXXXX</div></div><div><div class="payout-amount">₨ 333,000</div><span class="badge badge-amber">Pending</span></div></div>
+            <div class="payout-item"><div><div class="payout-name">VideoMaster</div><div class="payout-method">Bank Transfer · MCB ×9102</div></div><div><div class="payout-amount">₨ 198,000</div><span class="badge badge-amber">Pending</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div id="sec-reviews" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-amber">⭐</div><div class="stat-label">Avg Platform Rating</div><div class="stat-value">4.72</div><div class="stat-delta delta-up">↑ 0.08 vs last month</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">📝</div><div class="stat-label">Reviews (Jan)</div><div class="stat-value">1,604</div><div class="stat-delta delta-up">87% left a review</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🏆</div><div class="stat-label">5-Star Reviews</div><div class="stat-value">72%</div><div class="stat-delta delta-up">↑ 4% vs Dec</div></div>
+          <div class="stat-card"><div class="stat-icon si-red">⚠️</div><div class="stat-label">1-2 Star Reviews</div><div class="stat-value">3.8%</div><div class="stat-delta delta-dn">Need attention</div></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-head"><span class="table-title">Recent Reviews</span><input class="search-box" placeholder="Search reviews…"></div>
+          <table>
+            <thead><tr><th>Buyer</th><th>Seller</th><th>Service</th><th>Rating</th><th>Review</th><th>Date</th></tr></thead>
+            <tbody>
+              <tr><td>Ali Raza</td><td>DesignPro</td><td>Logo Design</td><td><span class="stars">★★★★★</span> 5.0</td><td>"Excellent work, very professional!"</td><td>Jan 14</td></tr>
+              <tr><td>Sara Khan</td><td>WebWorks</td><td>WordPress Site</td><td><span class="stars">★★★★★</span> 5.0</td><td>"Delivered on time, great quality"</td><td>Jan 13</td></tr>
+              <tr><td>ContentCo</td><td>WriteRight</td><td>Article ×5</td><td><span class="stars">★★★★☆</span> 4.0</td><td>"Good writing, minor revisions needed"</td><td>Jan 12</td></tr>
+              <tr><td>StartupPK</td><td>DesignPro</td><td>Social Pack</td><td><span class="stars">★★★★★</span> 5.0</td><td>"Amazing designs, will order again"</td><td>Jan 11</td></tr>
+              <tr><td>Bilal R.</td><td>SEOExpert</td><td>SEO Audit</td><td><span class="stars">★★★★★</span> 5.0</td><td>"Very detailed report, great insights"</td><td>Jan 10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DISPUTES -->
+      <div id="sec-disputes" class="section" hidden>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon si-red">⚖️</div><div class="stat-label">Open Disputes</div><div class="stat-value">3</div><div class="stat-delta delta-dn">Action required</div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">⏳</div><div class="stat-label">Under Review</div><div class="stat-value">1</div><div class="stat-delta">Mediation in progress</div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Resolved (Jan)</div><div class="stat-value">12</div><div class="stat-delta delta-up">Avg 2.4 days to resolve</div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">💰</div><div class="stat-label">Refunds Issued</div><div class="stat-value">₨ 84K</div><td><div class="stat-delta">This month</div></td></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Open Disputes</span></div>
+          <div class="panel-body">
+            <div class="dispute-item"><div class="dispute-icon">⚠️</div><div><div class="dispute-title">GB-8801 — MediaHub vs VideoMaster</div><div class="dispute-desc">Buyer claims work not delivered per brief. Seller says scope creep. ₨ 9,000 in escrow.</div></div><div class="dispute-age"><span class="badge badge-red">5 days old</span></div></div>
+            <div class="dispute-item"><div class="dispute-icon">⚠️</div><div><div class="dispute-title">GB-8755 — TechFirm vs AppDev PK</div><div class="dispute-desc">Quality issue — app has bugs. Seller offered 1 revision. Buyer wants refund. ₨ 25,000 in escrow.</div></div><div class="dispute-age"><span class="badge badge-amber">2 days old</span></div></div>
+            <div class="dispute-item"><div class="dispute-icon">⚠️</div><div><div class="dispute-title">GB-8740 — Rizwan M. vs WriteRight</div><div class="dispute-desc">Plagiarism claimed in delivered articles. Copyscape report attached by buyer. ₨ 1,800 in escrow.</div></div><div class="dispute-age"><span class="badge badge-amber">1 day old</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="sec-settings" class="section" hidden>
+        <div class="form-section">
+          <div class="form-section-title">Marketplace Settings</div>
+          <div class="form-grid">
+            <div class="form-field"><label>Marketplace Name</label><input value="GigBridge Pakistan"></div>
+            <div class="form-field"><label>Platform Commission (%)</label><input value="10"></div>
+            <div class="form-field"><label>Payout Cycle</label><select><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option></select></div>
+            <div class="form-field"><label>Escrow Hold Period (days)</label><input value="7"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Seller Verification</div>
+          <div class="form-grid">
+            <div class="form-field"><label>CNIC Verification</label><select><option>Required</option><option>Optional</option></select></div>
+            <div class="form-field"><label>Min Payout Amount (₨)</label><input value="1000"></div>
+            <div class="form-field"><label>Dispute Window (days)</label><input value="14"></div>
+            <div class="form-field"><label>Auto-complete Order (days)</label><input value="7"></div>
+          </div>
+        </div>
+        <div><button class="btn-save">Save Settings</button></div>
+      </div>
+
     </div>
   </div>
 </div>
-<script>function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}</script>
+<script>
+var TITLES={
+  dashboard:['Marketplace Dashboard','January 2025 · All Categories','+ Add Listing'],
+  orders:['Orders','1,842 orders in January 2025','Export'],
+  listings:['Listings','2,104 active listings on platform','+ Add Listing'],
+  sellers:['Sellers','328 verified sellers','+ Invite Seller'],
+  transactions:['Transactions','Payment & refund log','Export'],
+  gmv:['GMV & Revenue','January 2025 · ₨ 12.4M GMV','Export Report'],
+  payouts:['Payouts','Seller earnings disbursement','Process Payouts'],
+  reviews:['Reviews','Buyer ratings & feedback','Moderate'],
+  disputes:['Disputes','3 open disputes requiring action','Resolve All'],
+  settings:['Settings','Marketplace configuration','Save']
+};
+function nav(key,el){
+  document.querySelectorAll('.nav-link').forEach(function(l){l.classList.remove('active')});
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.hidden=true});
+  var s=document.getElementById('sec-'+key);
+  if(s)s.hidden=false;
+  var t=TITLES[key];
+  if(t){document.getElementById('page-title').textContent=t[0];document.getElementById('page-sub').textContent=t[1];document.getElementById('primary-btn').textContent=t[2];}
+}
+function doLogin(){document.getElementById('login-screen').classList.add('hidden');document.getElementById('app').classList.add('visible')}
+</script>
 </body>
 </html>
